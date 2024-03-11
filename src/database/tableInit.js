@@ -13,10 +13,10 @@ export async function createUsersTable() {
 }
 
 // create Links table if not exist
-export async function createLinksTable() {
+export async function createVehiclesTable() {
   try {
     const createTableQuery = await pool.query(
-      'CREATE TABLE IF NOT EXISTS "links" ( link_id VARCHAR(225) UNIQUE PRIMARY KEY, longurl VARCHAR(225), shorturl VARCHAR(225), visit_count NUMERIC, activated BOOLEAN NOT NULL, user_id VARCHAR(225) REFERENCES "users"(user_id), creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP )'
+      'CREATE TABLE IF NOT EXISTS "vehicles" ( link_id VARCHAR(225) UNIQUE PRIMARY KEY, longurl VARCHAR(225), shorturl VARCHAR(225), visit_count NUMERIC, activated BOOLEAN NOT NULL, user_id VARCHAR(225) REFERENCES "users"(user_id), creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP )'
     );
     console.log("links table created successfully");
   } catch (error) {
@@ -24,10 +24,22 @@ export async function createLinksTable() {
   }
 }
 
+// create vehicle_records table if is not exist
 export async function createRedirectTable() {
   try {
     const createTableQuery = await pool.query(
-      'CREATE TABLE IF NOT EXISTS "redirect_analytics" ( id SERIAL, link_id VARCHAR(225) REFERENCES "links"(link_id), longurl VARCHAR(225), visit_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, browser_used VARCHAR(255), location VARCHAR(255) )'
+      'CREATE TABLE IF NOT EXISTS "vehicle_records" ( id SERIAL, link_id VARCHAR(225) REFERENCES "links"(link_id), longurl VARCHAR(225), visit_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, browser_used VARCHAR(255), location VARCHAR(255) )'
+    );
+    console.log("redirect_analytics table created successfully");
+  } catch (error) {
+    console.log(error, "Error creating redirect_analytics table");
+  }
+}
+
+export async function createRedirectTable() {
+  try {
+    const createTableQuery = await pool.query(
+      'CREATE TABLE IF NOT EXISTS "vehicle_records" ( id SERIAL, link_id VARCHAR(225) REFERENCES "links"(link_id), longurl VARCHAR(225), visit_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, browser_used VARCHAR(255), location VARCHAR(255) )'
     );
     console.log("redirect_analytics table created successfully");
   } catch (error) {
