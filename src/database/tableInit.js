@@ -4,7 +4,7 @@ import pool from "./connection.js";
 export async function createUsersTable() {
   try {
     const createTableQuery = await pool.query(
-      'CREATE TABLE IF NOT EXISTS "users" ( user_id VARCHAR(225) UNIQUE PRIMARY KEY, username VARCHAR(225) NOT NULL UNIQUE, email VARCHAR(255) NOT NULL UNIQUE, password VARCHAR(225) NOT NULL, admin_id VARCHAR(225), validation_key VARCHAR(255) NOT NULL UNIQUE, validated BOOLEAN NOT NULL, premiumuser_id VARCHAR(255) UNIQUE, creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP )'
+      'CREATE TABLE IF NOT EXISTS "users" ( user_id VARCHAR(225) UNIQUE PRIMARY KEY, fname VARCHAR(225) NOT NULL, lname VARCHAR(225) NOT NULL, email VARCHAR(255) NOT NULL UNIQUE, password VARCHAR(225) NOT NULL,  validation_key VARCHAR(255) NOT NULL UNIQUE, validated BOOLEAN NOT NULL, admin_id VARCHAR(225) UNIQUE, creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP )'
     );
     console.log("users table created successfully");
   } catch (error) {
@@ -12,36 +12,25 @@ export async function createUsersTable() {
   }
 }
 
-// create Links table if not exist
+// create Vehicles table if not exist
 export async function createVehiclesTable() {
   try {
     const createTableQuery = await pool.query(
-      'CREATE TABLE IF NOT EXISTS "vehicles" ( link_id VARCHAR(225) UNIQUE PRIMARY KEY, longurl VARCHAR(225), shorturl VARCHAR(225), visit_count NUMERIC, activated BOOLEAN NOT NULL, user_id VARCHAR(225) REFERENCES "users"(user_id), creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP )'
+      'CREATE TABLE IF NOT EXISTS "vehicles" ( vehicle_id VARCHAR(225) UNIQUE PRIMARY KEY, brand VARCHAR(225) REQUIRED, model VARCHAR(225) REQUIRED, purchase_date NUMERIC, mileage, creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, user_id VARCHAR(225) REFERENCES "users"(user_id) )'
     );
-    console.log("links table created successfully");
+    console.log("vehicles table created successfully");
   } catch (error) {
-    console.log(error, "Error creating links table");
+    console.log(error, "Error creating vehicles table");
   }
 }
 
-// create vehicle_records table if is not exist
-export async function createRedirectTable() {
+// create Service_records table if is not exist
+export async function createServiceRecordsTable() {
   try {
     const createTableQuery = await pool.query(
-      'CREATE TABLE IF NOT EXISTS "vehicle_records" ( id SERIAL, link_id VARCHAR(225) REFERENCES "links"(link_id), longurl VARCHAR(225), visit_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, browser_used VARCHAR(255), location VARCHAR(255) )'
+      'CREATE TABLE IF NOT EXISTS "service_records" ( service_id VARCHAR(225) UNIQUE PRIMARY KEY, next_mileage VARCHAR(225), next_mileage VARCHAR(225), next_date VARCHAR(225), cost NUMERIC, service_name VARCHAR(255) REQUIRED, place VARCHAR(255), tags, notes VARCHAR(1000), service_date, creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, vehicle_id VARCHAR(225) REFERENCES "vehicles"(vehicle_id) )'
     );
-    console.log("redirect_analytics table created successfully");
-  } catch (error) {
-    console.log(error, "Error creating redirect_analytics table");
-  }
-}
-
-export async function createRedirectTable() {
-  try {
-    const createTableQuery = await pool.query(
-      'CREATE TABLE IF NOT EXISTS "vehicle_records" ( id SERIAL, link_id VARCHAR(225) REFERENCES "links"(link_id), longurl VARCHAR(225), visit_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, browser_used VARCHAR(255), location VARCHAR(255) )'
-    );
-    console.log("redirect_analytics table created successfully");
+    console.log("service_records table created successfully");
   } catch (error) {
     console.log(error, "Error creating redirect_analytics table");
   }
