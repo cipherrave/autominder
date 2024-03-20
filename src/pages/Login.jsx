@@ -1,5 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import "@tailwindcss/forms";
+import axios from "axios";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+const baseURL = "http://localhost:8989/login";
 
 function Login() {
   const nav = useNavigate();
@@ -8,6 +21,23 @@ function Login() {
   }
   function navRegister() {
     nav("/register");
+  }
+
+  async function handleSubmit(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+
+    try {
+      const response = await axios.post(baseURL, values);
+      const token = response.data.token;
+      // Save the token to local storage to call private APIs
+      localStorage.setItem("token", token);
+      nav("/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -26,6 +56,7 @@ function Login() {
             <a className="block text-blue-600" href="#">
               <span className="sr-only">Home</span>
               <svg
+                onClick={navHome}
                 className="h-8 sm:h-10"
                 viewBox="0 0 28 24"
                 fill="none"
@@ -45,57 +76,50 @@ function Login() {
             <p className="mt-4 leading-relaxed text-gray-500">
               Let's get you back in.
             </p>
+            <br></br>
 
-            <form action="#" className="mt-8 grid grid-cols-6 gap-6">
-              <div className="col-span-6">
-                <label
-                  htmlFor="Email"
-                  className="block text-sm font-medium text-gray-700"
+            <Card className="w-96">
+              <form onSubmit={handleSubmit}>
+                <br></br>
+                <CardContent className="space-y-2">
+                  <div className="space-y-1">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      type="email"
+                      placeholder="Email"
+                      id="email"
+                      name="email"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      id="password"
+                      name="password"
+                    />
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button type="submit" className="w-full">
+                    Log In
+                  </Button>
+                </CardFooter>
+              </form>
+            </Card>
+
+            <div className="col-span-6 sm:flex sm:items-center sm:gap-4 w-full p-6">
+              <p className="mt-4 text-sm text-gray-500 sm:mt-0">
+                Don't have an account?{" "}
+                <a
+                  onClick={navRegister}
+                  className="text-gray-700 underline cursor-pointer"
                 >
-                  Email
-                </label>
-
-                <input
-                  type="email"
-                  id="Email"
-                  name="email"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="Password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-
-                <input
-                  type="password"
-                  id="Password"
-                  name="password"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                />
-              </div>
-
-              <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-                  Log In
-                </button>
-
-                <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                  Don't have an account?{" "}
-                  <a
-                    onClick={navRegister}
-                    className="text-gray-700 underline cursor-pointer"
-                  >
-                    Register
-                  </a>
-                  .
-                </p>
-              </div>
-            </form>
+                  Register
+                </a>
+              </p>
+            </div>
           </div>
         </main>
       </div>

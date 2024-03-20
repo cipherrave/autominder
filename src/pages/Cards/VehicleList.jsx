@@ -1,7 +1,62 @@
-export default function VehicleList() {
+import { useReducer, useEffect } from "react";
+import { vehicleReducer, initialState } from "../../reducers/vehicleReducer";
+import { FETCH_ACTIONS } from "../../actions";
+import axios from "axios";
+import { Button } from "@material-tailwind/react";
+
+const VehicleList = () => {
+  const [state, dispatch] = useReducer(vehicleReducer, initialState);
+  const token = localStorage.getItem("token");
+  const { items, loading, error } = state;
+
+  useEffect(() => {
+    dispatch({ type: FETCH_ACTIONS.PROGRESS });
+
+    const getItems = async () => {
+      try {
+        let response = await axios.get(
+          "http://localhost:8989/user/vehicle/all",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          dispatch({ type: FETCH_ACTIONS.SUCCESS, data: response.data });
+        }
+      } catch (err) {
+        console.error(err);
+        dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
+      }
+    };
+
+    getItems();
+  }, []);
+
   return (
     <div>
-      <div className="text-xs text-gray-400 tracking-wider">VEHICLES</div>
+      <div className="flex justify-between h-9">
+        <h1 className="text-xs text-gray-400 tracking-wider self-center">
+          VEHICLES
+        </h1>
+        <Button className="self-center p-1">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+        </Button>
+      </div>
       <div className="relative mt-2">
         <input
           type="text"
@@ -21,88 +76,41 @@ export default function VehicleList() {
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </div>
-      <div className="space-y-4 mt-3">
-        <button className="bg-white p-3 w-full flex flex-col rounded-md dark:bg-gray-800 shadow">
-          <div className="flex xl:flex-row flex-col items-center font-medium text-gray-900 dark:text-white pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
-            <img
-              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=046c29138c1335ef8edee7daf521ba50"
-              className="w-7 h-7 mr-2 rounded-full"
-              alt="profile"
-            />
-            Kathyrn Murphy
-          </div>
-          <div className="flex items-center w-full">
-            <div className="text-xs py-1 px-2 leading-none dark:bg-gray-900 bg-blue-100 text-blue-500 rounded-md">
-              Car{" "}
-            </div>
-            <div className="ml-auto text-xs text-gray-500">$1,902.00</div>
-          </div>
-        </button>
-        <button className="bg-white p-3 w-full flex flex-col rounded-md dark:bg-gray-800 shadow-lg relative ring-2 ring-blue-500 focus:outline-none">
-          <div className="flex xl:flex-row flex-col items-center font-medium text-gray-900 dark:text-white pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
-            <img
-              src="https://assets.codepen.io/344846/internal/avatars/users/default.png?fit=crop&format=auto&height=512&version=1582611188&width=512"
-              className="w-7 h-7 mr-2 rounded-full"
-              alt="profile"
-            />
-            Mert Cukuren
-          </div>
-          <div className="flex items-center w-full">
-            <div className="text-xs py-1 px-2 leading-none dark:bg-gray-900 bg-green-100 text-green-600 rounded-md">
-              Sales
-            </div>
-            <div className="ml-auto text-xs text-gray-500">$2,794.00</div>
-          </div>
-        </button>
-        <button className="bg-white p-3 w-full flex flex-col rounded-md dark:bg-gray-800 shadow">
-          <div className="flex xl:flex-row flex-col items-center font-medium text-gray-900 dark:text-white pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
-            <img
-              src="https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-              className="w-7 h-7 mr-2 rounded-full"
-              alt="profile"
-            />
-            Albert Flores
-          </div>
-          <div className="flex items-center w-full">
-            <div className="text-xs py-1 px-2 leading-none dark:bg-gray-900 bg-yellow-100 text-yellow-600 rounded-md">
-              Marketing
-            </div>
-            <div className="ml-auto text-xs text-gray-400">$0.00</div>
-          </div>
-        </button>
-        <button className="bg-white p-3 w-full flex flex-col rounded-md dark:bg-gray-800 shadow">
-          <div className="flex xl:flex-row flex-col items-center font-medium text-gray-900 dark:text-white pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
-            <img
-              src="https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-              className="w-7 h-7 mr-2 rounded-full"
-              alt="profile"
-            />
-            Jane Cooper
-          </div>
-          <div className="flex items-center w-full">
-            <div className="text-xs py-1 px-2 leading-none dark:bg-gray-900 bg-blue-100 text-blue-500 rounded-md">
-              Design
-            </div>
-            <div className="ml-auto text-xs text-gray-500">$762.00</div>
-          </div>
-        </button>
-        <button className="bg-white p-3 w-full flex flex-col rounded-md dark:bg-gray-800 shadow">
-          <div className="flex xl:flex-row flex-col items-center font-medium text-gray-900 dark:text-white pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
-            <img
-              src="https://images.unsplash.com/photo-1507120878965-54b2d3939100?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=99fbace66d1bfa48c9c6dc8afcac3aab"
-              className="w-7 h-7 mr-2 rounded-full"
-              alt="profile"
-            />
-            Ronald Richards
-          </div>
-          <div className="flex items-center w-full">
-            <div className="text-xs py-1 px-2 leading-none dark:bg-gray-900 bg-green-100 text-green-600 rounded-md">
-              Sales
-            </div>
-            <div className="ml-auto text-xs text-gray-400">$0.00</div>
-          </div>
-        </button>
-      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <div className="space-y-4 mt-3">
+          {items.map((item) => (
+            <button
+              className="bg-white p-3 w-full flex flex-col rounded-md dark:bg-gray-800 shadow"
+              key={item.vehicle_id}
+            >
+              <div className="flex xl:flex-row flex-col items-center font-medium text-gray-900 dark:text-white pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
+                <img
+                  src=""
+                  className="w-7 h-7 mr-2 rounded-full"
+                  alt="profile"
+                />
+                <h1>{item.vname}</h1>
+              </div>
+              <div className="flex xl:flex-row sm:flex-col gap-2 items-start w-full justify-around">
+                <div className="flex-col text-xs sm:center py-1 px-2 dark:bg-gray-900 bg-blue-100 text-blue-500 rounded-md w-full xl:text-start">
+                  <p>{item.brand}</p>
+                  <p> {item.model}</p>
+                  <p>{item.reg_num}</p>
+                </div>
+                <div className="self-center text-l text-gray-500 w-3/5">
+                  <b>{item.mileage} km</b>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default VehicleList;

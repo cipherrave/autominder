@@ -1,18 +1,49 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import React from "react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+const baseURL = "http://localhost:8989/register";
 
 function Register() {
+  const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
   function navLogin() {
     nav("/login");
   }
-  function navDashboard() {
-    nav("/dashboard");
-  }
   function navHome() {
     nav("/");
+  }
+
+  async function handleSubmit(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+
+    try {
+      setIsLoading(true);
+      const response = await axios.post(baseURL, values);
+      console.log(response);
+      nav("/login");
+    } catch (error) {
+      // api error handling
+      alert("Registration failed");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -43,146 +74,161 @@ function Register() {
                 />
               </svg>
             </a>
-
             <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
               Welcome!
             </h1>
-
             <p className="mt-4 leading-relaxed text-gray-500">
-              Let's get you started.
+              Let's get started.
             </p>
+            <br></br>
+            <Tabs defaultValue="personal" className="w-96">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="personal">Personal</TabsTrigger>
+                <TabsTrigger value="company">Company</TabsTrigger>
+              </TabsList>
+              <TabsContent value="personal">
+                <Card>
+                  <br />
+                  <form onSubmit={handleSubmit}>
+                    <CardContent className="space-y-2">
+                      <div className="space-y-1">
+                        <Label htmlFor="fname">First Name</Label>
+                        <Input
+                          type="text"
+                          placeholder="First Name"
+                          id="fname"
+                          name="fname"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="lname">Last Name</Label>
+                        <Input
+                          type="text"
+                          placeholder="Last Name"
+                          id="lname"
+                          name="lname"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input
+                          type="email"
+                          placeholder="Email"
+                          id="email"
+                          name="email"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                          type="password"
+                          placeholder="Password"
+                          id="password"
+                          name="password"
+                        />
+                      </div>
+                      <input
+                        type="checkbox"
+                        placeholder="company"
+                        id="company"
+                        name="company"
+                        className="hidden"
+                      />
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        disabled={isLoading}
+                        value={isLoading ? "Registering..." : "Register"}
+                        type="submit"
+                        className="w-full"
+                      >
+                        Create Account
+                      </Button>
+                    </CardFooter>
+                  </form>
+                </Card>
+              </TabsContent>
+              <TabsContent value="company">
+                <Card>
+                  <form onSubmit={handleSubmit}>
+                    <br />
 
-            <form action="#" className="mt-8 grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="FirstName"
-                  className="block text-sm font-medium text-gray-700"
+                    <CardContent className="space-y-2">
+                      <div className="space-y-1">
+                        <Label htmlFor="company_name">Company Name</Label>
+                        <Input
+                          type="text"
+                          id="company_name"
+                          name="company_name"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input
+                          type="email"
+                          placeholder="Email"
+                          id="email"
+                          name="email"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                          type="password"
+                          placeholder="Password"
+                          id="password"
+                          name="password"
+                        />
+                      </div>
+                      <input
+                        type="checkbox"
+                        defaultChecked
+                        placeholder="company"
+                        id="company"
+                        name="company"
+                        className="hidden"
+                      />
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        disabled={isLoading}
+                        value={isLoading ? "Registering..." : "Register"}
+                        type="submit"
+                        className="w-full"
+                      >
+                        Create Account{" "}
+                      </Button>
+                    </CardFooter>
+                  </form>
+                </Card>
+              </TabsContent>
+            </Tabs>
+
+            <div className="col-span-6 w-96 p-6">
+              <p className="text-sm text-gray-500">
+                By creating an account, you agree to our{" "}
+                <a href="#" className="text-gray-700 underline">
+                  terms and conditions
+                </a>{" "}
+                and{" "}
+                <a href="#" className="text-gray-700 underline">
+                  privacy policy
+                </a>
+                .
+              </p>
+              <br />
+
+              <p className="mt-4 text-sm text-gray-500 sm:mt-0">
+                Already have an account?{" "}
+                <a
+                  onClick={navLogin}
+                  className="text-gray-700 underline cursor-pointer"
                 >
-                  First Name
-                </label>
-
-                <input
-                  type="text"
-                  id="FirstName"
-                  name="first_name"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="LastName"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Last Name
-                </label>
-
-                <input
-                  type="text"
-                  id="LastName"
-                  name="last_name"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                />
-              </div>
-
-              <div className="col-span-6">
-                <label
-                  htmlFor="Email"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  {" "}
-                  Email{" "}
-                </label>
-
-                <input
-                  type="email"
-                  id="Email"
-                  name="email"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="Password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  {" "}
-                  Password{" "}
-                </label>
-
-                <input
-                  type="password"
-                  id="Password"
-                  name="password"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="PasswordConfirmation"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password Confirmation
-                </label>
-
-                <input
-                  type="password"
-                  id="PasswordConfirmation"
-                  name="password_confirmation"
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                />
-              </div>
-
-              <div className="col-span-6">
-                <label htmlFor="MarketingAccept" className="flex gap-4">
-                  <input
-                    type="checkbox"
-                    id="MarketingAccept"
-                    name="marketing_accept"
-                    className="size-5 rounded-md border-gray-200 bg-white shadow-sm"
-                  />
-
-                  <span className="text-sm text-gray-700">
-                    I want to receive emails about events, product updates and
-                    company announcements.
-                  </span>
-                </label>
-              </div>
-
-              <div className="col-span-6">
-                <p className="text-sm text-gray-500">
-                  By creating an account, you agree to our
-                  <a href="#" className="text-gray-700 underline">
-                    {" "}
-                    terms and conditions{" "}
-                  </a>
-                  and
-                  <a href="#" className="text-gray-700 underline">
-                    privacy policy
-                  </a>
-                  .
-                </p>
-              </div>
-
-              <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-                  Create an account
-                </button>
-
-                <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                  Already have an account?{" "}
-                  <a
-                    onClick={navLogin}
-                    className="text-gray-700 underline cursor-pointer"
-                  >
-                    Log in
-                  </a>
-                  .
-                </p>
-              </div>
-            </form>
+                  Log in
+                </a>
+                .
+              </p>
+            </div>
           </div>
         </main>
       </div>
