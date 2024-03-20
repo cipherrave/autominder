@@ -25,10 +25,12 @@ export default function Header() {
   }
 
   return (
-    <div className="sm:px-7 p-4 px-4 items-center flex w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:text-white dark:border-gray-800 sticky top-0">
+    <div className="sm:px-5 h-[50px] p-4 px-6 items-center flex w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:text-white dark:border-gray-800 sticky top-0">
       <div className="flex w-full items-center">
-        <div className="flex items-center text-2xl text-gray-900 dark:text-white ">
-          <h3>AutoMinder</h3>
+        <div className="flex items-center ">
+          <h1 className="font-semibold text-1xl text-gray-900 dark:text-white">
+            AutoMinder
+          </h1>
         </div>
         <div className="ml-auto sm:flex items-center justify-end">
           <DropdownMenu>
@@ -59,13 +61,15 @@ export default function Header() {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
                 <DropdownMenuItem>Settings</DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>GitHub</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <a href="https://github.com/cipherrave/autominder">
+                <DropdownMenuItem>GitHub</DropdownMenuItem>
+              </a>
+              <a href="https://cipherrave.github.io">
+                <DropdownMenuItem>cipherrave</DropdownMenuItem>
+              </a>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 Log Out

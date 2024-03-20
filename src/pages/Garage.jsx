@@ -1,6 +1,7 @@
 import VehicleList from "./Cards/VehicleList";
 import Header from "./Menus/Header";
 import Sidebar from "./Menus/Sidebar";
+import VehicleDetails from "./Cards/VehicleDetails";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -43,15 +44,18 @@ function Garage() {
   return isLoading ? (
     <div>Loading...</div>
   ) : (
-    <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm ">
-      <div className="bg-white dark:bg-gray-900 dark:border-gray-800 w-20 flex-shrink-0 border-r border-gray-200 flex-col">
+    <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm">
+      <div className="bg-white dark:bg-gray-900 dark:border-gray-800 flex-shrink-0 border-r border-gray-200 flex-col">
         <Sidebar></Sidebar>
       </div>
       <div className="flex-grow overflow-hidden h-full flex flex-col">
         <Header></Header>
-        <div className="flex-grow flex overflow-x-hidden">
+        <div className="flex-grow flex overflow-x-hidden w-full">
           <div className="xl:w-72 w-48 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto lg:block sm:block hidden p-5">
             <VehicleList></VehicleList>
+          </div>
+          <div className=" flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 w-full">
+            <VehicleDetails> </VehicleDetails>
           </div>
         </div>
       </div>

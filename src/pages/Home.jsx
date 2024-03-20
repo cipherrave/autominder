@@ -25,7 +25,7 @@ function Home() {
     nav("/register");
   }
   return (
-    <div>
+    <div className="overflow-y-auto">
       <div className="bg-white">
         <header className="absolute inset-x-0 top-0 z-50">
           <nav

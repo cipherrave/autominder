@@ -93,7 +93,7 @@ const VehicleList = () => {
                   className="w-7 h-7 mr-2 rounded-full"
                   alt="profile"
                 />
-                <h1>{item.vname}</h1>
+                <h1 className="text-lg ">{item.vname}</h1>
               </div>
               <div className="flex xl:flex-row sm:flex-col gap-2 items-start w-full justify-around">
                 <div className="flex-col text-xs sm:center py-1 px-2 dark:bg-gray-900 bg-blue-100 text-blue-500 rounded-md w-full xl:text-start">
