@@ -9,18 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import MileageDialog from "../Dialog/MileageDialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import ServiceList from "./ServiceList";
 
 export default function SummaryDash() {
@@ -28,6 +16,14 @@ export default function SummaryDash() {
   function navService() {
     nav("/service");
   }
+  function navAddVehicle() {
+    nav("/addVehicle");
+  }
+
+  function navAddService() {
+    nav("/addService");
+  }
+
   return (
     <div className="flex flex-wrap gap-3 flex-shrink w-full">
       <Card className="flex-grow sm:max-h-[400px] h-auto">
@@ -57,29 +53,25 @@ export default function SummaryDash() {
             <p>on services</p>
           </div>
         </CardContent>
-        <CardFooter className="pt-4">
-          <MileageDialog></MileageDialog>{" "}
-        </CardFooter>
+        <CardFooter></CardFooter>
       </Card>
-      <Card className=" flex-grow w-[400px]">
+      <Card className=" flex-grow w-[400px] h-fit">
         <CardHeader>
-          <CardTitle>Attention</CardTitle>
-          <CardDescription>
-            Deploy your new project in one-click.
-          </CardDescription>
+          <CardTitle>Shortcut</CardTitle>
         </CardHeader>
-        <CardContent></CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-          <Button>Deploy</Button>
-        </CardFooter>
+        <CardContent className="flex flex-row gap-4">
+          <Button className="h-[100px] w-1/2" onClick={navAddVehicle}>
+            Add Vehicle
+          </Button>
+          <Button className="h-[100px] w-1/2" onClick={navAddService}>
+            Record a Service
+          </Button>
+        </CardContent>
       </Card>
       <Card className=" flex-grow overflow-auto">
         <CardHeader>
-          <CardTitle>Attention</CardTitle>
-          <CardDescription>
-            Deploy your new project in one-click.
-          </CardDescription>
+          <CardTitle className="text-5xl">Services</CardTitle>
+          <CardDescription>Quick look at your recent services </CardDescription>
         </CardHeader>
         <CardContent>
           <ServiceList></ServiceList>

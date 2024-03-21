@@ -19,61 +19,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const VehicleDetails = () => {
+const AddServiceCard = () => {
   return (
     <Card className="flex-grow">
       <CardHeader>
-        <CardTitle className="text-3xl">Vehicle Name</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
+        <CardTitle className="text-3xl">Create a Service</CardTitle>
       </CardHeader>
-      <CardContent className="w-full">
-        <form className="flex flex-col gap-8 sm:flex-row ">
-          <div className="w-full sm:w-1/4">
-            <div className="grid w-full items-sel gap-4">
-              <img
-                src=""
-                className="w-full h-[200px] mr-2 rounded-md bg-slate-950"
-                alt="profile"
-              />{" "}
-              <Input type="file"></Input>
-            </div>
-          </div>
-          <div className="w-full sm:w-3/4">
+      <CardContent>
+        <form className="flex flex-col gap-8">
+          <div className="w-full">
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Nickname</Label>
+                <Label htmlFor="name">Service Name</Label>
                 <Input id="name" type="text" placeholder="" />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Mileage</Label>
-                <Input id="name" type="number" placeholder="" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Registration Number</Label>
-                <Input id="name" placeholder="" type="text" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Brand</Label>
-                <Input id="name" placeholder="" type="text" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Model</Label>
-                <Input id="name" placeholder="" type="text" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name" type="number">
-                  Purchase Year
-                </Label>
-                <Input id="name" placeholder="" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name" type="number">
-                  Notes{" "}
-                </Label>
-                <Textarea id="name" placeholder="" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="framework">Framework</Label>
+                <Label htmlFor="framework">Which Vehicle</Label>
                 <Select>
                   <SelectTrigger id="framework">
                     <SelectValue placeholder="Select" />
@@ -86,16 +47,44 @@ const VehicleDetails = () => {
                   </SelectContent>
                 </Select>
               </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Cost</Label>
+                <Input id="name" type="number" placeholder="" />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Service Date</Label>
+                <Input id="name" placeholder="" type="text" />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Next Service Mileage</Label>
+                <Input id="name" placeholder="" type="text" />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Next Service Date</Label>
+                <Input id="name" placeholder="" type="text" />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name" type="number">
+                  Place{" "}
+                </Label>{" "}
+                <Input id="name" placeholder="" />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name" type="number">
+                  Notes{" "}
+                </Label>
+                <Textarea id="name" placeholder="" />
+              </div>
             </div>
           </div>
         </form>
       </CardContent>
       <CardFooter className="flex justify-end gap-4">
         <Button variant="outline">Cancel</Button>
-        <Button>Update</Button>
+        <Button>Create</Button>
       </CardFooter>
     </Card>
   );
 };
 
-export default VehicleDetails;
+export default AddServiceCard;

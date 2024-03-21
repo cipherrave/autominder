@@ -48,9 +48,6 @@ function Dashboard() {
       <div className="flex-grow overflow-hidden h-full flex flex-col">
         <Header></Header>
         <div className="flex-grow flex overflow-x-hidden w-full">
-          <div className="xl:w-72 w-48 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto lg:block sm:block hidden p-5">
-            <VehicleList></VehicleList>
-          </div>
           <div className=" flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 ">
             <SummaryDash></SummaryDash>
           </div>

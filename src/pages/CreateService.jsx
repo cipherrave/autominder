@@ -1,10 +1,10 @@
 import Header from "./Menus/Header";
-import VehicleDetails from "./Cards/VehicleDetails";
+import AddServiceCard from "./Cards/AddServiceCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Garage() {
+function CreateService() {
   // check token is valid
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -47,7 +47,7 @@ function Garage() {
         <Header></Header>
         <div className="flex-grow flex overflow-x-hidden w-full">
           <div className=" flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 w-full">
-            <VehicleDetails></VehicleDetails>{" "}
+            <AddServiceCard></AddServiceCard>
           </div>
         </div>
       </div>
@@ -55,4 +55,4 @@ function Garage() {
   );
 }
 
-export default Garage;
+export default CreateService;

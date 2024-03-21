@@ -16,11 +16,13 @@ import { Button } from "@/components/ui/button";
 
 function Service() {
   // check token is valid
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isLoading, setLoading] = useState(true);
   const [fname, setFname] = useState(null);
-
+  const nav = useNavigate();
+  function navAddService() {
+    nav("/addService");
+  }
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
@@ -56,11 +58,27 @@ function Service() {
       <div className="flex-grow overflow-hidden h-full flex flex-col">
         <Header></Header>
         <div className="flex-grow flex overflow-x-hidden gap-2">
-          <div className="xl:w-72 w-48 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto lg:block sm:block hidden p-5">
-            <VehicleList></VehicleList>
-          </div>
-          <div className=" p-5 flex-grow w-[500px] overflow-auto">
-            <h1 className="text-2xl font-semibold">Service List</h1>
+          <div className=" p-6 flex-grow w-[500px] overflow-auto">
+            <div className="flex justify-between">
+              <h1 className="text-2xl font-semibold">Service List</h1>{" "}
+              <Button onClick={navAddService}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+              </Button>{" "}
+            </div>
+
             <br />
             <ServiceList></ServiceList>
           </div>

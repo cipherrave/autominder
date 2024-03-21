@@ -57,18 +57,6 @@ export function DeleteAccountDialog() {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="name">
-              Enter your password to proceed with deletion
-            </Label>
-            <Input
-              type="password"
-              placeholder="Password..."
-              id="password"
-              name="password"
-            />
-          </div>
-          <br></br>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <Button variant="destructive" type="submit">

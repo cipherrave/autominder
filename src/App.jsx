@@ -3,7 +3,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Garage from "./pages/Garage";
+import CreateVehicle from "./pages/CreateVehicle";
 import Service from "./pages/Service";
+import CreateService from "./pages/CreateService";
 import Settings from "./pages/Settings";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./pages/Register";
@@ -39,8 +41,18 @@ function App() {
     },
 
     {
+      path: "/addVehicle",
+      element: <CreateVehicle />,
+    },
+
+    {
       path: "/service",
       element: <Service />,
+    },
+
+    {
+      path: "/addService",
+      element: <CreateService />,
     },
 
     {

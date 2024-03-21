@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import * as React from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -20,62 +22,72 @@ import {
 } from "@/components/ui/select";
 import { DeleteAccountDialog } from "../Dialog/DeleteAccountDialog";
 
-const VehicleDetails = () => {
+const baseURL = "http://localhost:8989/login";
+
+const SettingsCard = () => {
+  const nav = useNavigate();
+
+  async function handleSubmit(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+
+    try {
+      const response = await axios.post(baseURL, values);
+      const token = response.data.token;
+      // Save the token to local storage to call private APIs
+      localStorage.setItem("token", token);
+      nav("/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <div className="flex flex-wrap gap-3 flex-shrink w-full">
-      <Card className=" flex-grow w-full">
+      <Card className=" flex-grow">
         <CardHeader>
           <CardTitle className="text-3xl">Settings</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="flex flex-col gap-8 sm:flex-row ">
-            <div className="w-full sm:w-1/4">
-              <div className="grid w-full items-sel gap-4">
-                <img
-                  src=""
-                  className="w-full h-[200px] mr-2 rounded-md bg-slate-950"
-                  alt="profile"
-                />{" "}
-                <Input type="file"></Input>
+          <form className="flex flex-colsm:flex-row ">
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">First Name</Label>
+                <Input id="fname" name="fname" type="text" placeholder="" />
               </div>
-            </div>
-            <div className="w-full sm:w-3/4">
-              <div className="grid w-full items-center gap-4">
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">First Name</Label>
-                  <Input id="name" type="text" placeholder="" />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Last Name</Label>
-                  <Input id="name" type="text" placeholder="" />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Email</Label>
-                  <Input id="name" placeholder="" type="email" />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Change Password</Label>
-                  <Input id="name" placeholder="" type="password" />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Company Name</Label>
-                  <Input id="name" placeholder="" type="text" />
-                </div>
-
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="framework">Framework</Label>
-                  <Select>
-                    <SelectTrigger id="framework">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectItem value="next">Next.js</SelectItem>
-                      <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                      <SelectItem value="astro">Astro</SelectItem>
-                      <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Last Name</Label>
+                <Input id="lname" name="lname" type="text" placeholder="" />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Email</Label>
+                <Input id="email" name="email" placeholder="" type="email" />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Change Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  placeholder=""
+                  type="password"
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="framework">Do you own a workshop?</Label>
+                <Select>
+                  <SelectTrigger id="framework">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent position="popper">
+                    <SelectItem value="true">Yes</SelectItem>
+                    <SelectItem value="false">No</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Company Name</Label>
+                <Input id="name" placeholder="" type="text" />
               </div>
             </div>
           </form>
@@ -102,4 +114,4 @@ const VehicleDetails = () => {
   );
 };
 
-export default VehicleDetails;
+export default SettingsCard;

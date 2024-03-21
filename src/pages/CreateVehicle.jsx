@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Garage() {
+function CreateVehicle() {
   // check token is valid
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -55,4 +55,4 @@ function Garage() {
   );
 }
 
-export default Garage;
+export default CreateVehicle;

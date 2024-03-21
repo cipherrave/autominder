@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const VehicleDetails = () => {
+const AddVehicleCard = () => {
   return (
     <Card className="flex-grow">
       <CardHeader>
@@ -98,4 +98,4 @@ const VehicleDetails = () => {
   );
 };
 
-export default VehicleDetails;
+export default AddVehicleCard;

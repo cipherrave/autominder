@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-import MyLogo from "../assets/icons/cipherravelogo.png";
 
 const navigation = [
   { name: "AutoMinder", href: "#" },
