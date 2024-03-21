@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Garage from "./pages/Garage";
 import Service from "./pages/Service";
+import Settings from "./pages/Settings";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./pages/Register";
 import Validation from "./pages/Validation";
@@ -40,6 +41,11 @@ function App() {
     {
       path: "/service",
       element: <Service />,
+    },
+
+    {
+      path: "/settings",
+      element: <Settings />,
     },
 
     {

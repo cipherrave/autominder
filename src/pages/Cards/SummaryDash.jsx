@@ -1,6 +1,5 @@
 import * as React from "react";
-import MileageDrawer from "../Drawer/MileageDrawer";
-
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,64 +11,23 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import MileageDialog from "../Dialog/MileageDialog";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-const invoices = [
-  {
-    invoice: "INV001",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import ServiceList from "./ServiceList";
 
 export default function SummaryDash() {
+  const nav = useNavigate();
+  function navService() {
+    nav("/service");
+  }
   return (
     <div className="flex flex-wrap gap-3 flex-shrink w-full">
       <Card className="flex-grow sm:max-h-[400px] h-auto">
@@ -100,9 +58,7 @@ export default function SummaryDash() {
           </div>
         </CardContent>
         <CardFooter className="pt-4">
-          <Button className="w-full" onClick={MileageDrawer}>
-            Update Mileage
-          </Button>
+          <MileageDialog></MileageDialog>{" "}
         </CardFooter>
       </Card>
       <Card className=" flex-grow w-[400px]">
@@ -118,7 +74,7 @@ export default function SummaryDash() {
           <Button>Deploy</Button>
         </CardFooter>
       </Card>
-      <Card className=" flex-grow w-[400px]">
+      <Card className=" flex-grow overflow-auto">
         <CardHeader>
           <CardTitle>Attention</CardTitle>
           <CardDescription>
@@ -126,39 +82,10 @@ export default function SummaryDash() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table className="w-full">
-            <TableCaption>A list of your recent invoices.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Invoice</TableHead>
-                <TableHead>Method</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow key={invoice.invoice}>
-                  <TableCell className="font-medium">
-                    {invoice.invoice}
-                  </TableCell>
-                  <TableCell>{invoice.paymentMethod}</TableCell>
-                  <TableCell className="text-right">
-                    {invoice.totalAmount}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={2}>Total</TableCell>
-                <TableCell className="text-right">$2,500.00</TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
+          <ServiceList></ServiceList>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-          <Button>Deploy</Button>
+        <CardFooter className="flex justify-end">
+          <Button onClick={navService}>Go To Service</Button>
         </CardFooter>
       </Card>
     </div>

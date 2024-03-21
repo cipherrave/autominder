@@ -1,11 +1,18 @@
 import { useReducer, useEffect } from "react";
-import { vehicleReducer, initialState } from "../../reducers/vehicleReducer";
+import { Button } from "@/components/ui/button";
+import { reducer, initialState } from "../../reducers/reducer";
 import { FETCH_ACTIONS } from "../../actions";
 import axios from "axios";
-import { Button } from "@material-tailwind/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const VehicleList = () => {
-  const [state, dispatch] = useReducer(vehicleReducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const token = localStorage.getItem("token");
   const { items, loading, error } = state;
 
@@ -83,29 +90,65 @@ const VehicleList = () => {
       ) : (
         <div className="space-y-4 mt-3">
           {items.map((item) => (
-            <button
+            <div
               className="bg-white p-3 w-full flex flex-col rounded-md dark:bg-gray-800 shadow"
               key={item.vehicle_id}
             >
-              <div className="flex xl:flex-row flex-col items-center font-medium text-gray-900 dark:text-white pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
-                <img
-                  src=""
-                  className="w-7 h-7 mr-2 rounded-full"
-                  alt="profile"
-                />
+              <div className="flex xl:flex-col flex-col items-start justify-between font-medium text-gray-900 dark:text-white pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
+                <div
+                  className="flex w-full justify-between
+                "
+                >
+                  <img
+                    src=""
+                    className="w-7 h-7 mr-2 rounded-full"
+                    alt="profile"
+                  />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="text"
+                        size="icon"
+                        className="self-center w-5"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                          />
+                        </svg>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>View Vehicle</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>Add Service</DropdownMenuItem>
+                      <DropdownMenuItem>Update Mileage</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
                 <h1 className="text-lg ">{item.vname}</h1>
               </div>
               <div className="flex xl:flex-row sm:flex-col gap-2 items-start w-full justify-around">
-                <div className="flex-col text-xs sm:center py-1 px-2 dark:bg-gray-900 bg-blue-100 text-blue-500 rounded-md w-full xl:text-start">
+                <div className="flex-col text-xs sm:center py-1 dark:bg-gray-900 rounded-md w-full xl:text-start">
                   <p>{item.brand}</p>
                   <p> {item.model}</p>
                   <p>{item.reg_num}</p>
                 </div>
-                <div className="self-center text-l text-gray-500 w-3/5">
+                <div className="text-l text-start text-gray-500 w-3/5">
                   <b>{item.mileage} km</b>
                 </div>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       )}

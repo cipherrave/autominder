@@ -1,10 +1,18 @@
 import VehicleList from "./Cards/VehicleList";
 import Header from "./Menus/Header";
-import Sidebar from "./Menus/Sidebar";
 import ServiceList from "./Cards/ServiceList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 function Service() {
   // check token is valid
@@ -45,16 +53,17 @@ function Service() {
     <div>Loading...</div>
   ) : (
     <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm ">
-      <div className="bg-white dark:bg-gray-900 dark:border-gray-800 flex-shrink-0 border-r border-gray-200 flex-col">
-        <Sidebar></Sidebar>
-      </div>
       <div className="flex-grow overflow-hidden h-full flex flex-col">
         <Header></Header>
-        <div className="flex-grow flex overflow-x-hidden">
+        <div className="flex-grow flex overflow-x-hidden gap-2">
           <div className="xl:w-72 w-48 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto lg:block sm:block hidden p-5">
             <VehicleList></VehicleList>
           </div>
-          <ServiceList></ServiceList>
+          <div className=" p-5 flex-grow w-[500px] overflow-auto">
+            <h1 className="text-2xl font-semibold">Service List</h1>
+            <br />
+            <ServiceList></ServiceList>
+          </div>
         </div>
       </div>
     </div>

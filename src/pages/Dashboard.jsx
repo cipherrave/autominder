@@ -45,9 +45,6 @@ function Dashboard() {
     <div>Loading...</div>
   ) : (
     <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm">
-      <div className="bg-white dark:bg-gray-900 dark:border-gray-800 flex-shrink-0 border-r border-gray-200 flex-col">
-        <Sidebar></Sidebar>
-      </div>
       <div className="flex-grow overflow-hidden h-full flex flex-col">
         <Header></Header>
         <div className="flex-grow flex overflow-x-hidden w-full">

@@ -8,84 +8,124 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useReducer, useEffect } from "react";
+import { reducer, initialState } from "../../reducers/reducer";
+import { FETCH_ACTIONS } from "../../actions";
+import axios from "axios";
+import { Button } from "@material-tailwind/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
+const ServiceList = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const token = localStorage.getItem("token");
+  const { items, loading, error } = state;
 
-export default function ServiceList() {
+  useEffect(() => {
+    dispatch({ type: FETCH_ACTIONS.PROGRESS });
+
+    const getItems = async () => {
+      try {
+        let response = await axios.get(
+          "http://localhost:8989/user/service/all",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          dispatch({ type: FETCH_ACTIONS.SUCCESS, data: response.data });
+        }
+      } catch (err) {
+        console.error(err);
+        dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
+      }
+    };
+
+    getItems();
+  }, []);
+
   return (
-    <div className="flex flex-wrap gap-3 flex-shrink w-full p-6">
-      <div>Your Recent Services</div>
+    <div className="flex flex-wrap flex-grow overflow-auto">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead className="w-[100px]">Service ID</TableHead>
+            <TableHead>Service Name</TableHead>
+            <TableHead>Service Date</TableHead>
+            <TableHead>Next Mileage</TableHead>
+            <TableHead>Next Service Date</TableHead>
+            <TableHead>Cost (RM)</TableHead>
+            <TableHead>Vehicle ID</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
-              <TableCell className="text-right">
-                {invoice.totalAmount}
+          {items.map((item) => (
+            <TableRow key={item.service_id}>
+              <TableCell className="font-medium">{item.service_id}</TableCell>
+              <TableCell>{item.service_name}</TableCell>
+              <TableCell>{item.service_date}</TableCell>
+              <TableCell>{item.next_mileage}</TableCell>
+              <TableCell>{item.next_date}</TableCell>
+              <TableCell>{item.cost}</TableCell>
+              <TableCell>{item.vehicle_id}</TableCell>
+              <TableCell>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="text" className="self-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                        />
+                      </svg>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>View Service</DropdownMenuItem>
+                    <DropdownMenuItem>View Vehicle</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
     </div>
   );
-}
+};
+
+export default ServiceList;

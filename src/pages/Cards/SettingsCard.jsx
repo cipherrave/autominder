@@ -18,16 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DeleteAccountDialog } from "../Dialog/DeleteAccountDialog";
 
 const VehicleDetails = () => {
   return (
     <div className="flex flex-wrap gap-3 flex-shrink w-full">
-      <Card className="flex-grow">
+      <Card className=" flex-grow w-full">
         <CardHeader>
-          <CardTitle className="text-3xl">Vehicle Name</CardTitle>
-          <CardDescription>
-            Deploy your new project in one-click.
-          </CardDescription>
+          <CardTitle className="text-3xl">Settings</CardTitle>
         </CardHeader>
         <CardContent>
           <form className="flex flex-col gap-8 sm:flex-row ">
@@ -44,37 +42,26 @@ const VehicleDetails = () => {
             <div className="w-full sm:w-3/4">
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Nickname</Label>
+                  <Label htmlFor="name">First Name</Label>
                   <Input id="name" type="text" placeholder="" />
                 </div>
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Mileage</Label>
-                  <Input id="name" type="number" placeholder="" />
+                  <Label htmlFor="name">Last Name</Label>
+                  <Input id="name" type="text" placeholder="" />
                 </div>
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Registration Number</Label>
+                  <Label htmlFor="name">Email</Label>
+                  <Input id="name" placeholder="" type="email" />
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="name">Change Password</Label>
+                  <Input id="name" placeholder="" type="password" />
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="name">Company Name</Label>
                   <Input id="name" placeholder="" type="text" />
                 </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Brand</Label>
-                  <Input id="name" placeholder="" type="text" />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name">Model</Label>
-                  <Input id="name" placeholder="" type="text" />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name" type="number">
-                    Purchase Year
-                  </Label>
-                  <Input id="name" placeholder="" />
-                </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="name" type="number">
-                    Notes{" "}
-                  </Label>
-                  <Textarea id="name" placeholder="" />
-                </div>
+
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="framework">Framework</Label>
                   <Select>
@@ -94,8 +81,21 @@ const VehicleDetails = () => {
           </form>
         </CardContent>
         <CardFooter className="flex justify-end gap-4">
-          <Button variant="outline">Cancel</Button>
+          <Button variant="secondary">Cancel</Button>
           <Button>Update</Button>
+        </CardFooter>
+      </Card>
+      <Card className=" flex-grow w-full">
+        <CardHeader>
+          <CardTitle>Delete Account</CardTitle>
+          <CardDescription>Click here to delete your account.</CardDescription>
+          <CardDescription>
+            Deletion is permanent and your data is not recoverable. Proceed with
+            caution.
+          </CardDescription>
+        </CardHeader>
+        <CardFooter className="flex justify-end gap-4">
+          <DeleteAccountDialog></DeleteAccountDialog>
         </CardFooter>
       </Card>
     </div>

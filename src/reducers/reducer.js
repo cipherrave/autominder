@@ -6,7 +6,7 @@ const initialState = {
   error: null,
 };
 
-const serviceReducer = (state, action) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case FETCH_ACTIONS.PROGRESS: {
       return {
@@ -37,4 +37,4 @@ const serviceReducer = (state, action) => {
   }
 };
 
-export { serviceReducer, initialState };
+export { reducer, initialState };
