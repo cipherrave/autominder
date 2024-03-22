@@ -176,8 +176,11 @@ function Home() {
               </h1>
 
               <p className="mt-4 sm:text-xl/relaxed">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Nesciunt illo tenetur fuga ducimus numquam ea!
+                AutoMinder, the revolutionary car maintenance tracker app that
+                transforms your smartphone into a powerful vehicle management
+                tool. Designed for modern drivers, AutoMinder ensures your car
+                receives the care it deserves, keeping it in top-notch condition
+                day after day.
               </p>
 
               <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -188,13 +191,6 @@ function Home() {
                 >
                   Get Started
                 </a>
-
-                <a
-                  className="block w-full rounded px-12 py-3 text-sm font-medium text-red-600 shadow hover:text-red-700 focus:outline-none focus:ring active:text-red-500 sm:w-auto"
-                  href="#"
-                >
-                  Learn More
-                </a>
               </div>
             </div>
           </div>
@@ -203,7 +199,7 @@ function Home() {
           <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
             <div className="mx-auto max-w-lg text-center">
               <h2 className="text-3xl font-bold sm:text-4xl text-white">
-                Kickstart your marketing
+                Why Choose AutoMinder?
               </h2>
 
               <p className="mt-4 text-gray-300">
@@ -220,29 +216,35 @@ function Home() {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-10 text-pink-500"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  stroke="orange"
+                  className="w-6 h-6 "
                 >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                    d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z"
                   />
                 </svg>
-
                 <h2 className="mt-4 text-xl font-bold text-white">
-                  Digital campaigns
+                  Comprehensive Maintenance Tracking{" "}
                 </h2>
-
+                <br />
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ut
-                  quo possimus adipisci distinctio alias voluptatum blanditiis
-                  laudantium.
+                  <b>Log Every Detail:</b> From oil changes to brake
+                  inspections, keep a detailed record of every service.
+                </p>
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Maintenance Timeline:</b> Visualize your car’s maintenance
+                  schedule with an easy-to-read timeline.
+                </p>{" "}
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Document Storage:</b> Safely store receipts, service
+                  records, and warranty information all in one place.{" "}
                 </p>
               </a>
 
@@ -252,29 +254,35 @@ function Home() {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-10 text-pink-500"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  stroke="red"
+                  className="w-6 h-6"
                 >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                    d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"
                   />
                 </svg>
-
                 <h2 className="mt-4 text-xl font-bold text-white">
-                  Digital campaigns
+                  Smart Reminders{" "}
                 </h2>
-
+                <br />
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ut
-                  quo possimus adipisci distinctio alias voluptatum blanditiis
-                  laudantium.
+                  <b>Personalized Alerts:</b> Receive notifications tailored to
+                  your car’s unique maintenance schedule.
+                </p>
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Service Countdowns:</b> Know exactly when your next service
+                  is due with countdown timers.
+                </p>{" "}
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Warranty Warnings:</b> Get notified before warranties
+                  expire to take full advantage of your coverage.
                 </p>
               </a>
 
@@ -284,29 +292,35 @@ function Home() {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-10 text-pink-500"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  stroke="green"
+                  className="w-6 h-6"
                 >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                    d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
                   />
                 </svg>
-
                 <h2 className="mt-4 text-xl font-bold text-white">
-                  Digital campaigns
+                  Insightful Analytics{" "}
                 </h2>
-
+                <br />
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ut
-                  quo possimus adipisci distinctio alias voluptatum blanditiis
-                  laudantium.
+                  <b>Performance Metrics: </b> Track and analyze your car’s
+                  performance over time.
+                </p>
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Cost Tracking: </b> Monitor your spending on maintenance
+                  and repairs to budget smarter.
+                </p>{" "}
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Fuel Log:</b> Keep tabs on your fuel usage and expenses to
+                  optimize your driving habits.
                 </p>
               </a>
 
@@ -316,29 +330,35 @@ function Home() {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-10 text-pink-500"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  stroke="yellow"
+                  className="w-6 h-6"
                 >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                    d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
                   />
                 </svg>
-
                 <h2 className="mt-4 text-xl font-bold text-white">
-                  Digital campaigns
+                  Expert Guidance
                 </h2>
-
+                <br />
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ut
-                  quo possimus adipisci distinctio alias voluptatum blanditiis
-                  laudantium.
+                  <b>Maintenance Tips: </b> Learn from a library of tips on car
+                  care and preventive maintenance.
+                </p>
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Troubleshooting Help: </b> Access quick solutions for
+                  common car issues.
+                </p>{" "}
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Service Recommendations:</b> Get suggestions for trusted
+                  mechanics and service centers near you.
                 </p>
               </a>
 
@@ -348,29 +368,35 @@ function Home() {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-10 text-pink-500"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  strokeWsidth="1.5"
+                  stroke="cyan"
+                  className="w-6 h-6"
                 >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                    d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 0 1-1.161.886l-.143.048a1.107 1.107 0 0 0-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 0 1-1.652.928l-.679-.906a1.125 1.125 0 0 0-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 0 0-8.862 12.872M12.75 3.031a9 9 0 0 1 6.69 14.036m0 0-.177-.529A2.25 2.25 0 0 0 17.128 15H16.5l-.324-.324a1.453 1.453 0 0 0-2.328.377l-.036.073a1.586 1.586 0 0 1-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 0 1-5.276 3.67m0 0a9 9 0 0 1-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25"
                   />
                 </svg>
-
                 <h2 className="mt-4 text-xl font-bold text-white">
-                  Digital campaigns
+                  Eco-Conscious Features{" "}
                 </h2>
-
+                <br />
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ut
-                  quo possimus adipisci distinctio alias voluptatum blanditiis
-                  laudantium.
+                  <b>Emission Estimates: </b> Understand your car’s
+                  environmental impact with emission tracking.
+                </p>
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Eco-Drive Challenges: </b> Participate in challenges
+                  designed to promote eco-friendly driving.
+                </p>{" "}
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Green Score:</b> Earn a green score based on your driving
+                  and maintenance habits.
                 </p>
               </a>
 
@@ -380,141 +406,37 @@ function Home() {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-10 text-pink-500"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  stroke="white"
+                  className="w-6 h-6"
                 >
-                  <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                  <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                    d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
                   />
                 </svg>
-
                 <h2 className="mt-4 text-xl font-bold text-white">
-                  Digital campaigns
+                  User-Friendly Interface{" "}
                 </h2>
-
+                <br />
                 <p className="mt-1 text-sm text-gray-300">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex ut
-                  quo possimus adipisci distinctio alias voluptatum blanditiis
-                  laudantium.
+                  <b>Intuitive Design: </b>Navigate the app with ease thanks to
+                  a clean, user-friendly interface.
                 </p>
-              </a>
-            </div>
-
-            <div className="mt-12 text-center">
-              <a
-                href="#"
-                className="inline-block rounded bg-pink-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-pink-700 focus:outline-none focus:ring focus:ring-yellow-400"
-              >
-                Get Started Today
+                <br />
+                <p className="mt-1 text-sm text-gray-300">
+                  <b>Customizable Dashboard: </b> Tailor the app’s dashboard to
+                  show the information most important to you.
+                </p>{" "}
+                <br />
               </a>
             </div>
           </div>
         </div>
-        <div className="space-y-4">
-          <details
-            className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden"
-            open
-          >
-            <summary className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900">
-              <h2 className="font-medium">
-                Lorem ipsum dolor sit amet consectetur adipisicing?
-              </h2>
 
-              <span className="relative size-5 shrink-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="absolute inset-0 size-5 opacity-100 group-open:opacity-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="absolute inset-0 size-5 opacity-0 group-open:opacity-100"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </span>
-            </summary>
-
-            <p className="mt-4 leading-relaxed text-gray-700">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic
-              veritatis molestias culpa in, recusandae laboriosam neque aliquid
-              libero nesciunt voluptate dicta quo officiis explicabo
-              consequuntur distinctio corporis earum similique!
-            </p>
-          </details>
-
-          <details className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden">
-            <summary className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900">
-              <h2 className="font-medium">
-                Lorem ipsum dolor sit amet consectetur adipisicing?
-              </h2>
-
-              <span className="relative size-5 shrink-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="absolute inset-0 opacity-100 group-open:opacity-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="absolute inset-0 opacity-0 group-open:opacity-100"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </span>
-            </summary>
-
-            <p className="mt-4 leading-relaxed text-gray-700">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic
-              veritatis molestias culpa in, recusandae laboriosam neque aliquid
-              libero nesciunt voluptate dicta quo officiis explicabo
-              consequuntur distinctio corporis earum similique!
-            </p>
-          </details>
-        </div>
         <footer className="bg-gray-100">
           <div className="relative mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 lg:pt-24">
             <div className="absolute end-4 top-4 sm:end-6 sm:top-6 lg:end-8 lg:top-8">

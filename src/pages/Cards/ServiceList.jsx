@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "../../reducers/reducer";
 import { FETCH_ACTIONS } from "../../actions";
 import axios from "axios";
@@ -27,26 +27,19 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 const ServiceList = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const token = localStorage.getItem("token");
   const { items, loading, error } = state;
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
 
     const getItems = async () => {
       try {
+        setLoading(true);
         let response = await axios.get(
           "http://localhost:8989/user/service/all",
           {
@@ -61,18 +54,38 @@ const ServiceList = () => {
       } catch (err) {
         console.error(err);
         dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
+      } finally {
+        setLoading(false);
       }
     };
 
     getItems();
   }, []);
 
-  return (
+  async function deleteService(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    try {
+      await axios.delete(deleteURL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      handleLogout();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <div className="flex flex-wrap flex-grow overflow-auto">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Service ID</TableHead>
             <TableHead>Service Name</TableHead>
             <TableHead>Service Date</TableHead>
             <TableHead>Next Mileage</TableHead>
@@ -84,7 +97,6 @@ const ServiceList = () => {
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.service_id}>
-              <TableCell className="font-medium">{item.service_id}</TableCell>
               <TableCell>{item.service_name}</TableCell>
               <TableCell>{item.service_date}</TableCell>
               <TableCell>{item.next_mileage}</TableCell>

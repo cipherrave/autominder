@@ -18,7 +18,6 @@ function Service() {
   // check token is valid
   const token = localStorage.getItem("token");
   const [isLoading, setLoading] = useState(true);
-  const [fname, setFname] = useState(null);
   const nav = useNavigate();
   function navAddService() {
     nav("/addService");
@@ -36,7 +35,6 @@ function Service() {
           Authorization: `Bearer ${token}`,
         },
       });
-      setFname(response.data.fname);
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
@@ -68,7 +66,7 @@ function Service() {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="w-6 h-6 mr-2"
                 >
                   <path
                     strokeLinecap="round"
@@ -76,6 +74,7 @@ function Service() {
                     d="M12 4.5v15m7.5-7.5h-15"
                   />
                 </svg>
+                Add Service
               </Button>{" "}
             </div>
 

@@ -13,22 +13,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog } from "@headlessui/react";
 
-const navigation = [
-  { name: "AutoMinder", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "FAQ", href: "#" },
-  { name: "Company", href: "#" },
-];
-
 const VehicleList = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const token = localStorage.getItem("token");
   const { items, loading, error } = state;
+  const [isLoading, setLoading] = useState(true);
+
   const nav = useNavigate();
 
   function navAddVehicle() {
     nav("/addVehicle");
+  }
+
+  function navGarage() {
+    nav("/garage");
   }
 
   useEffect(() => {
@@ -50,13 +49,17 @@ const VehicleList = () => {
       } catch (err) {
         console.error(err);
         dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
+      } finally {
+        setLoading(false);
       }
     };
 
     getItems();
   }, []);
 
-  return (
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <div>
       <Button
         variant="text"
@@ -84,26 +87,31 @@ const VehicleList = () => {
       >
         <div className="fixed inset-0 z-50" />
         <Dialog.Panel className="fixed inset-y-0 left-0 top-[50px] z-50 w-10/12 overflow-y-auto bg-white px-6 py-3 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 shadow-2xl">
-          <div className="flex flex-row justify-between">
-            <h1 className="text-xs text-gray-400 tracking-wider self-center">
-              VEHICLES
-            </h1>
-            <Button onClick={navAddVehicle}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-            </Button>{" "}
+          <div className="flex flex-col w-full gap-4">
+            <Button className="w-full" onClick={navGarage}>
+              Go to garage
+            </Button>
+            <div className="flex flex-row justify-between">
+              <h1 className="text-xs text-gray-400 tracking-wider self-center">
+                VEHICLES
+              </h1>
+              <Button onClick={navAddVehicle}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+              </Button>{" "}
+            </div>
           </div>
 
           {loading ? (
@@ -114,48 +122,16 @@ const VehicleList = () => {
             <div className="space-y-4 mt-3">
               {items.map((item) => (
                 <div
-                  className="bg-white p-3 w-full flex flex-col rounded-md dark:bg-gray-800"
+                  className="bg-white p-3 w-full flex flex-col rounded-md dark:bg-gray-800 border-2"
                   key={item.vehicle_id}
                 >
                   <div className="flex xl:flex-col flex-col items-start justify-between font-medium text-gray-900 dark:text-white pb-2 mb-2 xl:border-b border-gray-200 border-opacity-75 dark:border-gray-700 w-full">
-                    <div
-                      className="flex w-full justify-between
-                "
-                    >
-                      <img
+                    <div className="flex w-full justify-between">
+                      <div
                         src=""
-                        className="w-7 h-7 mr-2 rounded-full"
+                        className="w-7 h-7 mr-2 rounded-full bg-orange-500"
                         alt="profile"
                       />
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="text"
-                            size="icon"
-                            className="self-center w-5"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="currentColor"
-                              className="w-6 h-6"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                              />
-                            </svg>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                          <DropdownMenuItem>View Vehicle</DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem>Add Service</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
                     </div>
                     <h1 className="text-lg ">{item.vname}</h1>
                   </div>
@@ -180,3 +156,7 @@ const VehicleList = () => {
 };
 
 export default VehicleList;
+
+function navViewVehicle(value) {
+  nav("/vehicle/");
+}

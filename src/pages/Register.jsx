@@ -31,14 +31,11 @@ function Register() {
     event.preventDefault();
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
-
     try {
       setIsLoading(true);
       const response = await axios.post(baseURL, values);
-      console.log(response);
       nav("/login");
     } catch (error) {
-      // api error handling
       alert("Registration failed");
       console.error(error);
     } finally {
@@ -139,12 +136,7 @@ function Register() {
                       />
                     </CardContent>
                     <CardFooter>
-                      <Button
-                        disabled={isLoading}
-                        value={isLoading ? "Registering..." : "Register"}
-                        type="submit"
-                        className="w-full"
-                      >
+                      <Button type="submit" className="w-full">
                         Create Account
                       </Button>
                     </CardFooter>

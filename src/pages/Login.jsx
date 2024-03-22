@@ -36,6 +36,7 @@ function Login() {
       localStorage.setItem("token", token);
       nav("/dashboard");
     } catch (error) {
+      alert("Login failed :(");
       console.error(error);
     }
   }

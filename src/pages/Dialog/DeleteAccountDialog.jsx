@@ -1,6 +1,5 @@
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -10,8 +9,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -20,7 +18,6 @@ const baseURL = "http://localhost:8989/user/deleteUser";
 export function DeleteAccountDialog() {
   const token = localStorage.getItem("token");
   const nav = useNavigate();
-
   function handleLogout() {
     localStorage.removeItem("token");
     nav("/");

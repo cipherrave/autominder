@@ -9,7 +9,6 @@ function Settings() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isLoading, setLoading] = useState(true);
-  const [fname, setFname] = useState(null);
 
   async function checkToken() {
     // if token is not present, redirect to login
@@ -24,7 +23,6 @@ function Settings() {
           Authorization: `Bearer ${token}`,
         },
       });
-      setFname(response.data.fname);
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);

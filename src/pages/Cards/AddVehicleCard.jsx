@@ -11,89 +11,135 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
+const baseURL = "http://localhost:8989/vehicle/create";
 
 const AddVehicleCard = () => {
+  const token = localStorage.getItem("token");
+  const user_id = jwtDecode(token).user_id;
+
+  const nav = useNavigate();
+  function navGarage() {
+    nav("/garage");
+  }
+
+  async function handleSubmit(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    try {
+      await axios.post(baseURL, values);
+      alert("Vehicle added successfully!");
+      nav("/dashboard");
+    } catch (error) {
+      // api error handling
+      alert("Vehicle not added. Something is wrong...");
+      console.error(error);
+    }
+  }
+
   return (
     <Card className="flex-grow">
       <CardHeader>
-        <CardTitle className="text-3xl">Vehicle Name</CardTitle>
+        <CardTitle className="text-3xl">Add a Vehicle</CardTitle>
         <CardDescription>Deploy your new project in one-click.</CardDescription>
       </CardHeader>
-      <CardContent className="w-full">
-        <form className="flex flex-col gap-8 sm:flex-row ">
-          <div className="w-full sm:w-1/4">
-            <div className="grid w-full items-sel gap-4">
-              <img
-                src=""
-                className="w-full h-[200px] mr-2 rounded-md bg-slate-950"
-                alt="profile"
-              />{" "}
-              <Input type="file"></Input>
-            </div>
-          </div>
-          <div className="w-full sm:w-3/4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+        <CardContent className="w-full">
+          <div className="w-full">
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Nickname</Label>
-                <Input id="name" type="text" placeholder="" />
+                <Label htmlFor="vname">Nickname</Label>
+                <Input
+                  id="vname"
+                  name="vname"
+                  type="text"
+                  placeholder=""
+                  required
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Mileage</Label>
-                <Input id="name" type="number" placeholder="" />
+                <Input
+                  id="mileage"
+                  name="mileage"
+                  type="number"
+                  placeholder=""
+                  required
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Registration Number</Label>
-                <Input id="name" placeholder="" type="text" />
+                <Input
+                  id="reg_num"
+                  name="reg_num"
+                  placeholder=""
+                  type="text"
+                  required
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Brand</Label>
-                <Input id="name" placeholder="" type="text" />
+                <Input
+                  id="brand"
+                  name="brand"
+                  placeholder=""
+                  type="text"
+                  required
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Model</Label>
-                <Input id="name" placeholder="" type="text" />
+                <Input
+                  id="model"
+                  name="model"
+                  placeholder=""
+                  type="text"
+                  required
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name" type="number">
-                  Purchase Year
-                </Label>
-                <Input id="name" placeholder="" />
+                <Label htmlFor="name">Purchase Year</Label>
+                <Input
+                  id="purchase_year"
+                  name="purchase_year"
+                  type="number"
+                  min="1901"
+                  max="2099"
+                  step="1"
+                  placeholder=""
+                  required
+                />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name" type="number">
-                  Notes{" "}
-                </Label>
-                <Textarea id="name" placeholder="" />
+                <Label htmlFor="name">Notes </Label>
+                <Textarea id="note" name="note" placeholder="" />
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="framework">Framework</Label>
-                <Select>
-                  <SelectTrigger id="framework">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="next">Next.js</SelectItem>
-                    <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                    <SelectItem value="astro">Astro</SelectItem>
-                    <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="hidden">
+                <Label htmlFor="user_id">User ID</Label>
+                <Input
+                  id="user_id"
+                  name="user_id"
+                  type="text"
+                  placeholder=""
+                  defaultValue={user_id}
+                  required
+                />
               </div>
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-end gap-4">
-        <Button variant="outline">Cancel</Button>
-        <Button>Update</Button>
-      </CardFooter>
+        </CardContent>
+        <CardFooter className="flex justify-end gap-4">
+          <Button variant="outline" onClick={navGarage}>
+            Cancel
+          </Button>
+          <Button type="submit">Create</Button>
+        </CardFooter>
+      </form>
     </Card>
   );
 };

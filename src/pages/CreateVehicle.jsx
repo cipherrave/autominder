@@ -1,5 +1,5 @@
 import Header from "./Menus/Header";
-import VehicleDetails from "./Cards/VehicleDetails";
+import AddVehicleCard from "./Cards/AddVehicleCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,6 @@ function CreateVehicle() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [isLoading, setLoading] = useState(true);
-  const [fname, setFname] = useState(null);
 
   async function checkToken() {
     // if token is not present, redirect to login
@@ -24,7 +23,6 @@ function CreateVehicle() {
           Authorization: `Bearer ${token}`,
         },
       });
-      setFname(response.data.fname);
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
@@ -47,7 +45,7 @@ function CreateVehicle() {
         <Header></Header>
         <div className="flex-grow flex overflow-x-hidden w-full">
           <div className=" flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 w-full">
-            <VehicleDetails></VehicleDetails>{" "}
+            <AddVehicleCard></AddVehicleCard>
           </div>
         </div>
       </div>

@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ServiceList from "./ServiceList";
+import MileageDialog from "../Dialog/MileageDialog";
 
 export default function SummaryDash() {
   const nav = useNavigate();
@@ -24,15 +25,20 @@ export default function SummaryDash() {
     nav("/addService");
   }
 
+  function navGarage() {
+    nav("/garage");
+  }
+
   return (
     <div className="flex flex-wrap gap-3 flex-shrink w-full">
-      <Card className="flex-grow sm:max-h-[400px] h-auto">
+      <Card className="flex-grow sm:max-h-[400px] h-full">
         <CardHeader>
-          <CardTitle className="text-5xl">Summary</CardTitle>
+          <CardTitle className="text-3xl">Summary</CardTitle>
           <CardDescription className="pt-3">
             The following are the summary of your driving trend{" "}
           </CardDescription>
         </CardHeader>
+        <br />
         <CardContent className="md:flex-row sm:flex justify-evenly sm:justify-center gap-5 text-center w-full">
           <div className="w-full sm:w-1/3 h-32">
             <h1 className="text-2xl ml-[-5px]">🚘🏍️</h1>
@@ -53,24 +59,26 @@ export default function SummaryDash() {
             <p>on services</p>
           </div>
         </CardContent>
-        <CardFooter></CardFooter>
+        <CardFooter>
+          <MileageDialog></MileageDialog>
+        </CardFooter>
       </Card>
       <Card className=" flex-grow w-[400px] h-fit">
         <CardHeader>
           <CardTitle>Shortcut</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-row gap-4">
-          <Button className="h-[100px] w-1/2" onClick={navAddVehicle}>
+          <Button className="w-1/2 h-32" onClick={navAddVehicle}>
             Add Vehicle
           </Button>
-          <Button className="h-[100px] w-1/2" onClick={navAddService}>
+          <Button className="w-1/2 h-32" onClick={navAddService}>
             Record a Service
           </Button>
         </CardContent>
       </Card>
       <Card className=" flex-grow overflow-auto">
         <CardHeader>
-          <CardTitle className="text-5xl">Services</CardTitle>
+          <CardTitle className="text-3xl">Services</CardTitle>
           <CardDescription>Quick look at your recent services </CardDescription>
         </CardHeader>
         <CardContent>
