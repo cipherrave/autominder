@@ -49,7 +49,14 @@ const ServiceList = () => {
           }
         );
         if (response.status === 200) {
-          dispatch({ type: FETCH_ACTIONS.SUCCESS, data: response.data });
+          // save response data into localStorage as vehicleData for other local uses
+          const serviceArray = response.data;
+          const serviceString = JSON.stringify(serviceArray);
+          localStorage.setItem("serviceData", serviceString);
+
+          // parse vehicleData from localStorage
+          const readService = JSON.parse(localStorage.getItem("serviceData"));
+          dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readService });
         }
       } catch (err) {
         console.error(err);
@@ -97,16 +104,18 @@ const ServiceList = () => {
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.service_id}>
-              <TableCell>{item.service_name}</TableCell>
+              <TableCell className="font-semibold">
+                {item.service_name}
+              </TableCell>
               <TableCell>{item.service_date}</TableCell>
               <TableCell>{item.next_mileage}</TableCell>
               <TableCell>{item.next_date}</TableCell>
               <TableCell>{item.cost}</TableCell>
               <TableCell>{item.vehicle_id}</TableCell>
-              <TableCell>
+              <TableCell className="text-center">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="text" className="self-center">
+                    <Button variant="text">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -123,12 +132,14 @@ const ServiceList = () => {
                       </svg>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
+                  <DropdownMenuContent>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>View Service</DropdownMenuItem>
                     <DropdownMenuItem>View Vehicle</DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                    <DropdownMenuItem className="font-semibold text-red-700">
+                      Delete
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>

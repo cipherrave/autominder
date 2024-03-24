@@ -4,14 +4,6 @@ import { reducer, initialState } from "../../reducers/reducer";
 import { FETCH_ACTIONS } from "../../actions";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -25,13 +17,24 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const baseURL = "http://localhost:8989/service/create";
 
 const AddServiceCard = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
+
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [isLoading, setIsLoading] = useState(false);
   const { items, loading, error } = state;
 
@@ -86,111 +89,135 @@ const AddServiceCard = () => {
   return isLoading ? (
     <div>Loading...</div>
   ) : (
-    <Card className="flex-grow">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-        <CardHeader>
-          <CardTitle className="text-3xl">Create a Service</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Service Name</Label>
-              <Input
-                id="service_name"
-                name="service_name"
-                type="text"
-                placeholder=""
-                required
-              />
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="flex flex-row gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+          <p className="hidden md:block">Add a service</p>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[600px]">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+          <DialogHeader>
+            <DialogTitle className="text-3xl">Create a Service</DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="h-[500px] p-4">
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Service Name</Label>
+                <Input
+                  id="service_name"
+                  name="service_name"
+                  type="text"
+                  placeholder=""
+                  required
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="vehicle_id">Which Vehicle</Label>
+                <Select id="vehicle_id" name="vehicle_id">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select your vehicle" />
+                  </SelectTrigger>
+                  {loading ? (
+                    <p>Loading...</p>
+                  ) : error ? (
+                    <p>{error}</p>
+                  ) : (
+                    <SelectContent position="popper">
+                      {items.map((item) => (
+                        <SelectItem
+                          key={item.vehicle_id}
+                          value={item.vehicle_id}
+                        >
+                          {item.vname}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  )}
+                </Select>
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="cost">Cost (RM)</Label>
+                <Input
+                  id="cost"
+                  name="cost"
+                  type="number"
+                  placeholder=""
+                  required
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Service Date</Label>
+                <Input
+                  id="service_date"
+                  name="service_date"
+                  placeholder=""
+                  type="date"
+                  required
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Next Service Mileage</Label>
+                <Input
+                  id="next_mileage"
+                  name="next_mileage"
+                  placeholder=""
+                  type="number"
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Next Service Date</Label>
+                <Input
+                  id="next_date"
+                  name="next_date"
+                  type="date"
+                  placeholder=""
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Service Location </Label>{" "}
+                <Input id="place" name="place" type="text" placeholder="" />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Notes </Label>
+                <Textarea id="notes" name="notes" type="text" placeholder="" />
+              </div>
+              <div className="hidden">
+                <Label htmlFor="user_id">User ID</Label>
+                <Input
+                  id="user_id"
+                  name="user_id"
+                  type="text"
+                  placeholder=""
+                  defaultValue={user_id}
+                  required
+                />
+              </div>
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="vehicle_id">Which Vehicle</Label>
-              <Select id="vehicle_id" name="vehicle_id">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your vehicle" />
-                </SelectTrigger>
-                {loading ? (
-                  <p>Loading...</p>
-                ) : error ? (
-                  <p>{error}</p>
-                ) : (
-                  <SelectContent position="popper">
-                    {items.map((item) => (
-                      <SelectItem key={item.vehicle_id} value={item.vehicle_id}>
-                        {item.vname}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                )}
-              </Select>
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="cost">Cost (RM)</Label>
-              <Input
-                id="cost"
-                name="cost"
-                type="number"
-                placeholder=""
-                required
-              />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Service Date</Label>
-              <Input
-                id="service_date"
-                name="service_date"
-                placeholder=""
-                type="date"
-                required
-              />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Next Service Mileage</Label>
-              <Input
-                id="next_mileage"
-                name="next_mileage"
-                placeholder=""
-                type="number"
-              />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Next Service Date</Label>
-              <Input
-                id="next_date"
-                name="next_date"
-                type="date"
-                placeholder=""
-              />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Place </Label>{" "}
-              <Input id="place" name="place" type="text" placeholder="" />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Notes </Label>
-              <Textarea id="notes" name="notes" type="text" placeholder="" />
-            </div>
-            <div className="hidden">
-              <Label htmlFor="user_id">User ID</Label>
-              <Input
-                id="user_id"
-                name="user_id"
-                type="text"
-                placeholder=""
-                defaultValue={user_id}
-                required
-              />
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-end gap-4">
-          <Button variant="outline" onClick={navService}>
-            Cancel
-          </Button>
-          <Button type="submit">Create</Button>
-        </CardFooter>
-      </form>
-    </Card>
+          </ScrollArea>
+          <DialogFooter className="flex justify-end gap-4">
+            <Button variant="outline" onClick={navService}>
+              Cancel
+            </Button>
+            <Button type="submit">Create</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

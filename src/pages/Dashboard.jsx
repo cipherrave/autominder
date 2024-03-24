@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import VehicleList from "./Cards/VehicleList";
 
 function Dashboard() {
   const token = localStorage.getItem("token");
@@ -44,6 +45,9 @@ function Dashboard() {
       <div className="flex-grow overflow-hidden h-full flex flex-col">
         <Header></Header>
         <div className="flex-grow flex overflow-x-hidden w-full">
+          <div className="w-[400px] p-5 overflow-y-auto hidden xl:block">
+            <VehicleList></VehicleList>
+          </div>
           <div className="flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 ">
             <h1 className="text-3xl font-semibold">Welcome, {fname}!</h1>
             <br />

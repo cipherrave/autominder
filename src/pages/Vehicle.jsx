@@ -6,9 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { Button } from "@/components/ui/button";
 import VehicleList from "./Cards/VehicleList";
-import AddVehicleCard from "./Cards/AddVehicleCard";
 
-function Garage() {
+function Vehicle() {
   // check token is valid
   const token = localStorage.getItem("token");
   let fname = jwtDecode(token).fname;
@@ -54,13 +53,30 @@ function Garage() {
       <div className="flex-grow h-full flex flex-col">
         <Header></Header>
         <div className="flex overflow-auto">
-          <div className="w-[400px] p-5 overflow-y-auto hidden xl:block">
+          <div className="p-5 overflow-y-auto hidden xl:block">
             <VehicleList></VehicleList>
           </div>
           <div className=" flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 w-full gap-8">
             <div className="flex flex-row gap-4 justify-between">
               <h1 className="text-3xl font-semibold">{fname}'s Garage</h1>
-              <AddVehicleCard></AddVehicleCard>
+              <Button onClick={navAddVehicle}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6 mr-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+                {"  "}
+                <p className="hidden sm:block"> Add Vehicle</p>
+              </Button>
             </div>
             <br />
             <VehicleDetails></VehicleDetails>
@@ -71,4 +87,4 @@ function Garage() {
   );
 }
 
-export default Garage;
+export default Vehicle;

@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/card";
 import ServiceList from "./ServiceList";
 import MileageDialog from "../Dialog/MileageDialog";
+import AddServiceCard from "./AddServiceCard";
+import AddVehicleCard from "./AddVehicleCard";
 
 export default function SummaryDash() {
   const nav = useNavigate();
@@ -30,8 +32,8 @@ export default function SummaryDash() {
   }
 
   return (
-    <div className="flex flex-wrap gap-3 flex-shrink w-full">
-      <Card className="flex-grow sm:max-h-[400px] h-full">
+    <div className="flex flex-wrap gap-4 flex-shrink w-full">
+      <Card className="flex-grow h-fit">
         <CardHeader>
           <CardTitle className="text-3xl">Summary</CardTitle>
           <CardDescription className="pt-3">
@@ -39,7 +41,7 @@ export default function SummaryDash() {
           </CardDescription>
         </CardHeader>
         <br />
-        <CardContent className="md:flex-row sm:flex justify-evenly sm:justify-center gap-5 text-center w-full">
+        <CardContent className="md:flex-row sm:flex justify-evenly sm:justify-center gap-4 text-center w-full pb-12 ">
           <div className="w-full sm:w-1/3 h-32">
             <h1 className="text-2xl ml-[-5px]">🚘🏍️</h1>
             <h1>You own</h1>
@@ -58,24 +60,19 @@ export default function SummaryDash() {
             <h1 className="text-3xl font-semibold">RM 3000</h1>
             <p>on services</p>
           </div>
+          <br></br>
         </CardContent>
         <CardFooter>
-          <MileageDialog></MileageDialog>
+          <div className="w-full flex flex-col gap-1">
+            <MileageDialog></MileageDialog>
+            <div className="flex flex-row gap-2">
+              <AddVehicleCard></AddVehicleCard>
+              <AddServiceCard></AddServiceCard>
+            </div>
+          </div>
         </CardFooter>
       </Card>
-      <Card className=" flex-grow w-[400px] h-fit">
-        <CardHeader>
-          <CardTitle>Shortcut</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-row gap-4">
-          <Button className="w-1/2 h-32" onClick={navAddVehicle}>
-            Add Vehicle
-          </Button>
-          <Button className="w-1/2 h-32" onClick={navAddService}>
-            Record a Service
-          </Button>
-        </CardContent>
-      </Card>
+
       <Card className=" flex-grow overflow-auto">
         <CardHeader>
           <CardTitle className="text-3xl">Services</CardTitle>

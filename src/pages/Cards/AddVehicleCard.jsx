@@ -14,6 +14,16 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const baseURL = "http://localhost:8989/vehicle/create";
 
@@ -43,14 +53,33 @@ const AddVehicleCard = () => {
   }
 
   return (
-    <Card className="flex-grow">
-      <CardHeader>
-        <CardTitle className="text-3xl">Add a Vehicle</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-        <CardContent className="w-full">
-          <div className="w-full">
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="flex flex-row gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+          <p className="hidden md:block">Add a vehicle</p>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="w-full">
+        <DialogHeader>
+          <DialogTitle className="text-3xl">Add a Vehicle</DialogTitle>
+          <DialogDescription>Add a vehicle, new or used </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+          <ScrollArea className="h-[500px] p-4">
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="vname">Nickname</Label>
@@ -131,16 +160,16 @@ const AddVehicleCard = () => {
                 />
               </div>
             </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-end gap-4">
-          <Button variant="outline" onClick={navGarage}>
-            Cancel
-          </Button>
-          <Button type="submit">Create</Button>
-        </CardFooter>
-      </form>
-    </Card>
+          </ScrollArea>
+          <DialogFooter className="flex justify-end gap-4">
+            <Button variant="outline" onClick={navGarage}>
+              Cancel
+            </Button>
+            <Button type="submit">Create</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

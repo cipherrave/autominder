@@ -1,6 +1,7 @@
 import VehicleList from "./Cards/VehicleList";
 import Header from "./Menus/Header";
 import ServiceList from "./Cards/ServiceList";
+import AddServiceCard from "./Cards/AddServiceCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -19,9 +20,7 @@ function Service() {
   const token = localStorage.getItem("token");
   const [isLoading, setLoading] = useState(true);
   const nav = useNavigate();
-  function navAddService() {
-    nav("/addService");
-  }
+
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
@@ -55,27 +54,14 @@ function Service() {
     <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm ">
       <div className="flex-grow overflow-hidden h-full flex flex-col">
         <Header></Header>
-        <div className="flex-grow flex overflow-x-hidden gap-2">
-          <div className=" p-6 flex-grow w-[500px] overflow-auto">
+        <div className=" flex overflow-x-hidden">
+          <div className="w-[300px] p-5 overflow-y-auto hidden xl:block">
+            <VehicleList></VehicleList>
+          </div>
+          <div className=" p-6 flex-grow overflow-auto">
             <div className="flex justify-between">
-              <h1 className="text-2xl font-semibold">Service List</h1>{" "}
-              <Button onClick={navAddService}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6 mr-2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4.5v15m7.5-7.5h-15"
-                  />
-                </svg>
-                Add Service
-              </Button>{" "}
+              <h1 className="text-3xl font-semibold">Service List</h1>
+              <AddServiceCard></AddServiceCard>
             </div>
 
             <br />
