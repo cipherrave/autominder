@@ -13,6 +13,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ModeToggle } from "../components/mode-toggle";
 
 const baseURL = "http://localhost:8989/register";
 
@@ -44,190 +54,328 @@ function Register() {
   }
 
   return (
-    <section className="bg-white">
-      <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
-          <img
-            alt=""
-            src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </aside>
-
-        <main className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-          <div className="max-w-xl lg:max-w-3xl">
-            <div className="px-6">
-              <a className="block text-blue-600">
-                <span className="sr-only">Home</span>
-                <svg
-                  onClick={navHome}
-                  className="h-8 sm:h-10"
-                  viewBox="0 0 28 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M0.41 10.3847C1.14777 7.4194 2.85643 4.7861 5.2639 2.90424C7.6714 1.02234 10.6393 0 13.695 0C16.7507 0 19.7186 1.02234 22.1261 2.90424C24.5336 4.7861 26.2422 7.4194 26.98 10.3847H25.78C23.7557 10.3549 21.7729 10.9599 20.11 12.1147C20.014 12.1842 19.9138 12.2477 19.81 12.3047H19.67C19.5662 12.2477 19.466 12.1842 19.37 12.1147C17.6924 10.9866 15.7166 10.3841 13.695 10.3841C11.6734 10.3841 9.6976 10.9866 8.02 12.1147C7.924 12.1842 7.8238 12.2477 7.72 12.3047H7.58C7.4762 12.2477 7.376 12.1842 7.28 12.1147C5.6171 10.9599 3.6343 10.3549 1.61 10.3847H0.41ZM23.62 16.6547C24.236 16.175 24.9995 15.924 25.78 15.9447H27.39V12.7347H25.78C24.4052 12.7181 23.0619 13.146 21.95 13.9547C21.3243 14.416 20.5674 14.6649 19.79 14.6649C19.0126 14.6649 18.2557 14.416 17.63 13.9547C16.4899 13.1611 15.1341 12.7356 13.745 12.7356C12.3559 12.7356 11.0001 13.1611 9.86 13.9547C9.2343 14.416 8.4774 14.6649 7.7 14.6649C6.9226 14.6649 6.1657 14.416 5.54 13.9547C4.4144 13.1356 3.0518 12.7072 1.66 12.7347H0V15.9447H1.61C2.39051 15.924 3.154 16.175 3.77 16.6547C4.908 17.4489 6.2623 17.8747 7.65 17.8747C9.0377 17.8747 10.392 17.4489 11.53 16.6547C12.1468 16.1765 12.9097 15.9257 13.69 15.9447C14.4708 15.9223 15.2348 16.1735 15.85 16.6547C16.9901 17.4484 18.3459 17.8738 19.735 17.8738C21.1241 17.8738 22.4799 17.4484 23.62 16.6547ZM23.62 22.3947C24.236 21.915 24.9995 21.664 25.78 21.6847H27.39V18.4747H25.78C24.4052 18.4581 23.0619 18.886 21.95 19.6947C21.3243 20.156 20.5674 20.4049 19.79 20.4049C19.0126 20.4049 18.2557 20.156 17.63 19.6947C16.4899 18.9011 15.1341 18.4757 13.745 18.4757C12.3559 18.4757 11.0001 18.9011 9.86 19.6947C9.2343 20.156 8.4774 20.4049 7.7 20.4049C6.9226 20.4049 6.1657 20.156 5.54 19.6947C4.4144 18.8757 3.0518 18.4472 1.66 18.4747H0V21.6847H1.61C2.39051 21.664 3.154 21.915 3.77 22.3947C4.908 23.1889 6.2623 23.6147 7.65 23.6147C9.0377 23.6147 10.392 23.1889 11.53 22.3947C12.1468 21.9165 12.9097 21.6657 13.69 21.6847C14.4708 21.6623 15.2348 21.9135 15.85 22.3947C16.9901 23.1884 18.3459 23.6138 19.735 23.6138C21.1241 23.6138 22.4799 23.1884 23.62 22.3947Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </a>
-              <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-                Welcome!
-              </h1>
-              <p className="mt-4 leading-relaxed text-gray-500">
-                Let's get started.
-              </p>
-              <br />
-            </div>
-
-            <Tabs defaultValue="personal" className="flex- grow w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="personal">Personal</TabsTrigger>
-                <TabsTrigger value="company">Company</TabsTrigger>
-              </TabsList>
-              <TabsContent value="personal">
-                <Card>
-                  <br />
-                  <form onSubmit={handleSubmit}>
-                    <CardContent className="space-y-2">
-                      <div className="space-y-1">
-                        <Label htmlFor="fname">First Name</Label>
-                        <Input
-                          type="text"
-                          placeholder="First Name"
-                          id="fname"
-                          name="fname"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="lname">Last Name</Label>
-                        <Input
-                          type="text"
-                          placeholder="Last Name"
-                          id="lname"
-                          name="lname"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="email">Email Address</Label>
-                        <Input
-                          type="email"
-                          placeholder="Email"
-                          id="email"
-                          name="email"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                          type="password"
-                          placeholder="Password"
-                          id="password"
-                          name="password"
-                        />
-                      </div>
-                      <input
-                        type="checkbox"
-                        placeholder="company"
-                        id="company"
-                        name="company"
-                        className="hidden"
-                      />
-                    </CardContent>
-                    <CardFooter>
-                      <Button type="submit" className="w-full">
-                        Create Account
-                      </Button>
-                    </CardFooter>
-                  </form>
-                </Card>
-              </TabsContent>
-              <TabsContent value="company">
-                <Card>
-                  <form onSubmit={handleSubmit}>
-                    <br />
-
-                    <CardContent className="space-y-2">
-                      <div className="space-y-1">
-                        <Label htmlFor="company_name">Company Name</Label>
-                        <Input
-                          type="text"
-                          id="company_name"
-                          name="company_name"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="email">Email Address</Label>
-                        <Input
-                          type="email"
-                          placeholder="Email"
-                          id="email"
-                          name="email"
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                          type="password"
-                          placeholder="Password"
-                          id="password"
-                          name="password"
-                        />
-                      </div>
-                      <input
-                        type="checkbox"
-                        defaultChecked
-                        placeholder="company"
-                        id="company"
-                        name="company"
-                        className="hidden"
-                      />
-                    </CardContent>
-                    <CardFooter>
-                      <Button
-                        disabled={isLoading}
-                        value={isLoading ? "Registering..." : "Register"}
-                        type="submit"
-                        className="w-full"
-                      >
-                        Create Account{" "}
-                      </Button>
-                    </CardFooter>
-                  </form>
-                </Card>
-              </TabsContent>
-            </Tabs>
-
-            <div className="col-span-6 w-96 p-6">
-              <p className="text-sm text-gray-500">
-                By creating an account, you agree to our{" "}
-                <a href="#" className="text-gray-700 underline">
-                  terms and conditions
-                </a>{" "}
-                and{" "}
-                <a href="#" className="text-gray-700 underline">
-                  privacy policy
-                </a>
-                .
-              </p>
-              <br />
-
-              <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-                Already have an account?{" "}
-                <a
-                  onClick={navLogin}
-                  className="text-gray-700 underline cursor-pointer"
-                >
-                  Log in
-                </a>
-                .
-              </p>
-            </div>
+    <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+      <div className="flex flex-col items-center justify-center py-12">
+        <div className="mx-auto w-[350px] gap-6">
+          <div>
+            <ModeToggle></ModeToggle>
           </div>
-        </main>
+          <div className="flex flex-col gap-2 text-start">
+            <h1 className="text-3xl font-bold">Welcome!</h1>
+            <p className="text-balance text-muted-foreground">
+              Let's get you started.
+            </p>
+          </div>
+          <br></br>
+          <Tabs defaultValue="personal" className="flex- grow w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="personal">Personal</TabsTrigger>
+              <TabsTrigger value="company">Company</TabsTrigger>
+            </TabsList>
+            <TabsContent value="personal">
+              <Card>
+                <br />
+                <form onSubmit={handleSubmit}>
+                  <CardContent className="space-y-2">
+                    <div className="space-y-1">
+                      <Label htmlFor="fname">First Name</Label>
+                      <Input
+                        type="text"
+                        placeholder="First Name"
+                        id="fname"
+                        name="fname"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="lname">Last Name</Label>
+                      <Input
+                        type="text"
+                        placeholder="Last Name"
+                        id="lname"
+                        name="lname"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input
+                        type="email"
+                        placeholder="Email"
+                        id="email"
+                        name="email"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        type="password"
+                        placeholder="Password"
+                        id="password"
+                        name="password"
+                      />
+                    </div>
+                    <input
+                      type="checkbox"
+                      placeholder="company"
+                      id="company"
+                      name="company"
+                      className="hidden"
+                    />
+                  </CardContent>
+                  <CardFooter>
+                    <Button type="submit" className="w-full">
+                      Create Account
+                    </Button>
+                  </CardFooter>
+                </form>
+              </Card>
+            </TabsContent>
+            <TabsContent value="company">
+              <Card>
+                <form onSubmit={handleSubmit}>
+                  <br />
+
+                  <CardContent className="space-y-2">
+                    <div className="space-y-1">
+                      <Label htmlFor="company_name">Company Name</Label>
+                      <Input
+                        type="text"
+                        id="company_name"
+                        name="company_name"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input
+                        type="email"
+                        placeholder="Email"
+                        id="email"
+                        name="email"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        type="password"
+                        placeholder="Password"
+                        id="password"
+                        name="password"
+                      />
+                    </div>
+                    <input
+                      type="checkbox"
+                      defaultChecked
+                      placeholder="company"
+                      id="company"
+                      name="company"
+                      className="hidden"
+                    />
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      disabled={isLoading}
+                      value={isLoading ? "Registering..." : "Register"}
+                      type="submit"
+                      className="w-full"
+                    >
+                      Create Account{" "}
+                    </Button>
+                  </CardFooter>
+                </form>
+              </Card>
+            </TabsContent>
+          </Tabs>
+          <div className="col-span-6 w-96 p-6">
+            <p className="text-sm">
+              By creating an account, you agree to our{" "}
+              <Dialog>
+                <DialogTrigger className="underline">
+                  terms and condition
+                </DialogTrigger>
+                <DialogContent className="w-11/12 p-6 align-middle">
+                  <DialogHeader>
+                    <DialogTitle>Terms and Conditions</DialogTitle>
+                  </DialogHeader>
+                  <ScrollArea className="h-[500px]">
+                    <DialogDescription>
+                      <b>Introduction</b>
+                      <br />
+                      Welcome to AutoMinder ("we", "our", "us")! As you have
+                      just clicked our Terms of Service, please pause, grab a
+                      cup of coffee and carefully read the following pages. It
+                      will take you approximately 20 minutes.
+                      <br></br>
+                      <br></br>
+                      <li>
+                        <b>These Terms and Conditions </b>("Terms", "Terms and
+                        Conditions") govern your relationship with AutoMinder
+                        website (the "Service") operated by cipherrave
+                        Industries Sdn Bhd ("us", "we", or "our").
+                      </li>
+                      <br />
+                      <li>
+                        <b>Acceptance of Terms</b>
+                        <br />
+                        By accessing and using the Service, you acknowledge that
+                        you have read, understood, and agree to be bound by
+                        these Terms and Conditions and our Privacy Policy, which
+                        is hereby incorporated by reference (collectively, these
+                        "Terms"). If you do not accept these Terms, then you may
+                        not use the Service.
+                      </li>
+                      <br />
+                      <li>
+                        <b>Changes to Terms</b>
+                        <br></br>
+                        We reserve the right, at our sole discretion, to modify
+                        or replace these Terms at any time. If a revision is
+                        material we will make reasonable efforts to provide at
+                        least 30 days' notice prior to any new terms taking
+                        effect. What constitutes a material change will be
+                        determined at our sole discretion.
+                      </li>
+                      <br />
+                      <li>
+                        <b>Content</b>
+                        <br></br>
+                        Our Service allows you to post, link, store, share and
+                        otherwise make available certain information, text,
+                        graphics, videos, or other material ("Content"). You are
+                        responsible for the Content that you post to the
+                        Service, including its legality, reliability, and
+                        appropriateness.
+                      </li>
+                      <br />
+                      <li>
+                        <b>Termination</b>
+                        <br />
+                        We may terminate or suspend your account immediately,
+                        without prior notice or liability, for any reason
+                        whatsoever, including without limitation if you breach
+                        the Terms.
+                      </li>
+                      <br />
+                      <li>
+                        <b>Governing Law </b>
+                        <br />
+                        These Terms shall be governed and construed in
+                        accordance with the laws of Isketambola, without regard
+                        to its conflict of law provisions.
+                      </li>
+                      <br />
+                      <li>
+                        <b> Contact Us</b>
+                        <br />
+                        If you have any questions about these Terms, please
+                        contact us at arif_akmal@hotmail.com.
+                      </li>
+                    </DialogDescription>
+                  </ScrollArea>
+                </DialogContent>
+              </Dialog>{" "}
+              and{" "}
+              <Dialog>
+                <DialogTrigger className="underline">
+                  privacy policy{" "}
+                </DialogTrigger>
+                <DialogContent className="w-11/12 p-6 align-middle">
+                  <DialogHeader>
+                    <DialogTitle>Privacy Policy</DialogTitle>
+                  </DialogHeader>
+                  <ScrollArea className="h-[500px]">
+                    <DialogDescription>
+                      <b>Introduction</b>
+                      <br />
+                      Welcome to **cipherrave Industries Sdn Bhd** ("we", "our",
+                      "us")! We are committed to protecting your personal
+                      information and your right to privacy. If you have any
+                      questions or concerns about our policy, or our practices
+                      with regards to your personal information, please contact
+                      us at arif_akmal@hotmail.com.
+                      <br></br>
+                      <br></br>
+                      <li>
+                        <b>Information We Collect </b>
+                        <br />
+                        We collect personal information that you voluntarily
+                        provide to us when you express an interest in obtaining
+                        information about us or our products and services, when
+                        you participate in activities on the **AutoMinder**
+                        website (the "Website") or otherwise when you contact
+                        us.
+                      </li>
+                      <br />
+                      <li>
+                        <b>Use of Your Information</b>
+                        <br />
+                        We use personal information collected via our Website
+                        for a variety of business purposes described below. We
+                        process your personal information for these purposes in
+                        reliance on our legitimate business interests, in order
+                        to enter into or perform a contract with you, with your
+                        consent, and/or for compliance with our legal
+                        obligations.
+                      </li>
+                      <br />
+                      <li>
+                        <b>Disclosure of Your Information</b>
+                        <br></br>
+                        We may share, sell, and disclose your information in the
+                        situations described below:
+                      </li>
+                      <br />
+                      **Vendors, Consultants and Other Third-Party Service
+                      Providers.** We may share your data with third-party
+                      vendors, service providers, contractors or agents who
+                      perform services for us or on our behalf and require
+                      access to such information to do that work.
+                      <br />
+                      <br />
+                      <li>
+                        <b>Security of Your Information</b>
+                        <br />
+                        We use administrative, technical, and physical security
+                        measures to help protect your personal information.
+                        While we have taken reasonable steps to secure the
+                        personal information you provide to us, please be aware
+                        that despite our efforts, no security measures are
+                        perfect or impenetrable, and no method of data
+                        transmission can be guaranteed against any interception
+                        or other type of misuse.
+                      </li>
+                      <br />
+                      <li>
+                        <b> Contact Us</b>
+                        <br />
+                        If you have any questions about these Privacy Policy,
+                        please contact us at arif_akmal@hotmail.com.
+                      </li>
+                    </DialogDescription>
+                  </ScrollArea>
+                </DialogContent>
+              </Dialog>
+              .
+            </p>
+            <br />
+
+            <p className="mt-4 text-sm sm:mt-0">
+              Already have an account?{" "}
+              <a onClick={navLogin} className="underline cursor-pointer">
+                Log in
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
-    </section>
+      <div className="hidden bg-muted lg:block">
+        <img
+          src="/placeholder.svg"
+          alt="Image"
+          width="1920"
+          height="1080"
+          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale bg-slate-400"
+        />
+      </div>
+    </div>
   );
 }
 

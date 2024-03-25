@@ -19,59 +19,69 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "../../reducers/reducer";
 import { FETCH_ACTIONS } from "../../actions";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
 
 export default function MileageDialog() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { items, loading, error } = state;
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
-  const [isLoading, setIsLoading] = useState(false);
-  const { items, loading, error } = state;
+  const vehicleData = localStorage.getItem("vehicleData");
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
     const getItems = async () => {
+      if (!vehicleData) {
+      }
       try {
-        let response = await axios.get(
-          "http://localhost:8989/user/vehicle/all",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          dispatch({ type: FETCH_ACTIONS.SUCCESS, data: response.data });
-        }
+        // parse vehicleData from localStorage
+        const readVehicle = JSON.parse(localStorage.getItem("vehicleData"));
+        dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readVehicle });
       } catch (err) {
         console.error(err);
         dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
+      } finally {
+        setLoading(false);
       }
     };
-
     getItems();
   }, []);
 
-  const baseURL = "http://localhost:8989/user/vehicle/update";
+  const updateURL = "http://localhost:8989/user/vehicle/update";
+  async function handleUpdate(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    console.log(values);
+    try {
+      await axios.put(updateURL, values);
+      alert("Mileage updated successfully!");
+    } catch (error) {
+      // api error handling
+      alert("Mileage not updated. Something is wrong...");
+      console.error(error);
+    }
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full h-20">Update Mileage</Button>
+        <Button>Update Mileage</Button>
       </DialogTrigger>
-      <form onSubmit={handleSubmit} className="flex flex-col">
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Update Mileage</DialogTitle>
-            <DialogDescription>
-              Select a vehicle to update its mileage
-            </DialogDescription>
-          </DialogHeader>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Update Mileage</DialogTitle>
+          <DialogDescription>
+            Select a vehicle to update its mileage
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleUpdate} className="flex flex-col gap-4">
           <div className="gap-4">
             <Label htmlFor="vehicle_id">Which Vehicle</Label>
             <Select id="vehicle_id" name="vehicle_id">
@@ -93,20 +103,42 @@ export default function MileageDialog() {
               )}
             </Select>
           </div>
-          <div className=" items-center gap-4">
-            <Label htmlFor="mileage" className="text-right">
-              Mileage
-            </Label>
-
+          <div className="flex flex-col space-y-1.5">
+            <Label htmlFor="name">Mileage</Label>
             <Input
               id="mileage"
               name="mileage"
               type="number"
-              className="col-span-3"
+              placeholder=""
+              required
             />
           </div>
           <div className="hidden">
             <Label htmlFor="user_id">User ID</Label>
+            <Input
+              id="user_id"
+              name="user_id"
+              type="text"
+              placeholder=""
+              defaultValue={user_id}
+              required
+            />
+            <Input
+              id="user_id"
+              name="user_id"
+              type="text"
+              placeholder=""
+              defaultValue={user_id}
+              required
+            />{" "}
+            <Input
+              id="user_id"
+              name="user_id"
+              type="text"
+              placeholder=""
+              defaultValue={user_id}
+              required
+            />{" "}
             <Input
               id="user_id"
               name="user_id"
@@ -121,26 +153,8 @@ export default function MileageDialog() {
               Update
             </Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   );
-}
-
-async function handleSubmit(event) {
-  event.preventDefault();
-  const data = new FormData(event.target);
-  console.log(data);
-  const values = Object.fromEntries(data.entries());
-  try {
-    const response = await axios.put(baseURL, values);
-    alert("Mileage updated successfully!");
-    nav("/dashboard");
-  } catch (error) {
-    // api error handling
-    alert("Fail to update mileage. Something is wrong...");
-    console.error(error);
-  } finally {
-    setIsLoading(false);
-  }
 }

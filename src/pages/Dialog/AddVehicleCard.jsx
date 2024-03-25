@@ -1,14 +1,6 @@
 import * as React from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
@@ -22,19 +14,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-const baseURL = "http://localhost:8989/vehicle/create";
 
 const AddVehicleCard = () => {
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
 
   const nav = useNavigate();
-  function navGarage() {
-    nav("/garage");
-  }
 
   async function handleSubmit(event) {
     // Prevent the default form submission
@@ -42,9 +30,21 @@ const AddVehicleCard = () => {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.post(baseURL, values);
+      await axios.post("http://localhost:8989/vehicle/create", values);
       alert("Vehicle added successfully!");
-      nav("/dashboard");
+      nav("/garage");
+      let getAllVehicle = await axios.get(
+        "http://localhost:8989/user/vehicle/all",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // save response data into localStorage as vehicleData for other local uses
+      const vehicleArray = getAllVehicle.data;
+      const vehicleString = JSON.stringify(vehicleArray);
+      localStorage.setItem("vehicleData", vehicleString);
     } catch (error) {
       // api error handling
       alert("Vehicle not added. Something is wrong...");
@@ -73,14 +73,13 @@ const AddVehicleCard = () => {
           <p className="hidden md:block">Add a vehicle</p>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-full">
-        <DialogHeader>
-          <DialogTitle className="text-3xl">Add a Vehicle</DialogTitle>
-          <DialogDescription>Add a vehicle, new or used </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-          <ScrollArea className="h-[500px] p-4">
-            <div className="grid w-full items-center gap-4">
+      <DialogContent className="sm:max-w-[600px]">
+        <ScrollArea className="h-[500px] pr-3">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+            <DialogHeader>
+              <DialogTitle className="text-3xl">Add a Vehicle</DialogTitle>
+            </DialogHeader>
+            <div className="grid w-full items-center gap-4 p-1">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="vname">Nickname</Label>
                 <Input
@@ -160,14 +159,17 @@ const AddVehicleCard = () => {
                 />
               </div>
             </div>
-          </ScrollArea>
-          <DialogFooter className="flex justify-end gap-4">
-            <Button variant="outline" onClick={navGarage}>
-              Cancel
-            </Button>
-            <Button type="submit">Create</Button>
-          </DialogFooter>
-        </form>
+            <br></br>
+            <DialogFooter className="flex justify-end gap-4">
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Close
+                </Button>
+              </DialogClose>
+              <Button type="submit">Create</Button>
+            </DialogFooter>
+          </form>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

@@ -49,19 +49,22 @@ export default function VehicleDetails() {
     const getItems = async () => {
       // parse vehicleData from localStorage
       const readVehicle = JSON.parse(localStorage.getItem("vehicleData"));
+      const readOneVehicle = readVehicle.length;
+      console.log(readVehicle);
+      console.log(readOneVehicle);
       dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readVehicle });
     };
     getItems();
   }, []);
 
-  const updateURL = "localhost:8989/user/vehicle/update";
+  const updateURL = "http://localhost:8989/user/vehicle/update";
   async function handleUpdate(event) {
     // Prevent the default form submission
     event.preventDefault();
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.post(updateURL, values);
+      await axios.put(updateURL, values);
       alert("Vehicle updated successfully!");
     } catch (error) {
       // api error handling
@@ -77,44 +80,41 @@ export default function VehicleDetails() {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <div className=" gap-4 grid sm:grid-cols-2 md:grid-cols-3 ">
-          {items.map((item, i) => (
-            <Card className="flex-grow flex-row w-full" key={item.vehicle_id}>
-              <CardTitle className="w-full h-[200px] bg-slate-600 rounded-t-sm flex justify-end pt-4">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="transparent" className="text-white">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                        />
-                      </svg>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>View Services</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="font-semibold text-red-700">
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </CardTitle>
-              <CardContent className="w-full pt-8">
+        <div className="gap-4 grid">
+          {items.map((item) => (
+            <Card
+              className="flex flex-grow flex-col xl:flex-row w-full"
+              key={item.vehicle_id}
+            >
+              <CardTitle className="w-full h-[200px] bg-slate-600 rounded-xl flex justify-end pt-4"></CardTitle>
+              <CardContent className="w-full pt-8 px-0">
                 <form onSubmit={handleUpdate}>
                   <CardContent>
                     <div className="w-full">
                       <div className="grid w-full items-center gap-4">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="transparent" className>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-6 h-6"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                                />
+                              </svg>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem>View Vehicle</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                         <div className="flex flex-col space-y-1.5">
                           <Label htmlFor="vname">Nickname</Label>
                           <Input

@@ -25,69 +25,73 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-const baseURL = "http://localhost:8989/service/create";
+import { Spinner } from "@material-tailwind/react";
 
 const AddServiceCard = () => {
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
-
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [isLoading, setIsLoading] = useState(false);
   const { items, loading, error } = state;
+  const [isLoading, setLoading] = useState(true);
+  const serviceData = localStorage.getItem("serviceData");
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const nav = useNavigate();
-  function navService() {
-    nav("/service");
-  }
+  useEffect(() => {
+    dispatch({ type: FETCH_ACTIONS.PROGRESS });
+    const getItems = async () => {
+      if (!serviceData) {
+      }
+      try {
+        // parse vehicleData from localStorage
+        const readVehicle = JSON.parse(localStorage.getItem("vehicleData"));
+        dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readVehicle });
+      } catch (err) {
+        console.error(err);
+        dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
+      } finally {
+        setLoading(false);
+      }
+    };
+    getItems();
+  }, []);
 
-  async function handleSubmit(event) {
+  async function handleCreate(event) {
     // Prevent the default form submission
     event.preventDefault();
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      const response = await axios.post(baseURL, values);
+      const response = await axios.post(
+        "http://localhost:8989/service/create",
+        values
+      );
       alert("Service created successfully!");
-      nav("/dashboard");
+      nav("/service");
+      let getAllService = await axios.get(
+        "http://localhost:8989/user/service/all",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // save response data into localStorage as serviceData for other local uses
+      const serviceArray = getAllService.data;
+      const serviceString = JSON.stringify(serviceArray);
+      localStorage.setItem("serviceData", serviceString);
     } catch (error) {
       // api error handling
       alert("Create service failed. Something is wrong...");
       console.error(error);
-    } finally {
-      setIsLoading(false);
     }
   }
 
-  useEffect(() => {
-    dispatch({ type: FETCH_ACTIONS.PROGRESS });
-
-    const getItems = async () => {
-      try {
-        let response = await axios.get(
-          "http://localhost:8989/user/vehicle/all",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          dispatch({ type: FETCH_ACTIONS.SUCCESS, data: response.data });
-        }
-      } catch (err) {
-        console.error(err);
-        dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
-      }
-    };
-
-    getItems();
-  }, []);
-
   return isLoading ? (
-    <div>Loading...</div>
+    <Spinner></Spinner>
   ) : (
     <Dialog>
       <DialogTrigger asChild>
@@ -110,12 +114,12 @@ const AddServiceCard = () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-          <DialogHeader>
-            <DialogTitle className="text-3xl">Create a Service</DialogTitle>
-          </DialogHeader>
-          <ScrollArea className="h-[500px] p-4">
-            <div className="grid w-full items-center gap-4">
+        <ScrollArea className="h-[500px] pr-3">
+          <form onSubmit={handleCreate} className="flex flex-col gap-8">
+            <DialogHeader>
+              <DialogTitle className="text-3xl">Create a Service</DialogTitle>
+            </DialogHeader>
+            <div className="grid w-full items-center gap-4 p-1">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Service Name</Label>
                 <Input
@@ -140,8 +144,8 @@ const AddServiceCard = () => {
                     <SelectContent position="popper">
                       {items.map((item) => (
                         <SelectItem
-                          key={item.vehicle_id}
                           value={item.vehicle_id}
+                          key={item.vehicle_id}
                         >
                           {item.vname}
                         </SelectItem>
@@ -208,14 +212,16 @@ const AddServiceCard = () => {
                 />
               </div>
             </div>
-          </ScrollArea>
-          <DialogFooter className="flex justify-end gap-4">
-            <Button variant="outline" onClick={navService}>
-              Cancel
-            </Button>
-            <Button type="submit">Create</Button>
-          </DialogFooter>
-        </form>
+            <DialogFooter className="flex justify-end gap-4">
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Close
+                </Button>
+              </DialogClose>
+              <Button type="submit">Create</Button>
+            </DialogFooter>
+          </form>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

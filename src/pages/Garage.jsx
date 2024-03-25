@@ -1,12 +1,20 @@
 import Header from "./Menus/Header";
-import VehicleDetails from "./Cards/VehicleDetails";
+import VehicleCards from "./Cards/VehicleCards";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { Button } from "@/components/ui/button";
 import VehicleList from "./Cards/VehicleList";
-import AddVehicleCard from "./Cards/AddVehicleCard";
+import AddVehicleCard from "./Dialog/AddVehicleCard";
+import {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 function Garage() {
   // check token is valid
@@ -50,20 +58,15 @@ function Garage() {
   return isLoading ? (
     <div>Loading...</div>
   ) : (
-    <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm">
-      <div className="flex-grow h-full flex flex-col">
+    <div className=" h-screen flex overflow-hidden text-sm">
+      <div className="w-full h-full flex flex-col">
         <Header></Header>
         <div className="flex overflow-auto">
-          <div className="w-[400px] p-5 overflow-y-auto hidden xl:block">
+          <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
             <VehicleList></VehicleList>
           </div>
-          <div className=" flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 w-full gap-8">
-            <div className="flex flex-row gap-4 justify-between">
-              <h1 className="text-3xl font-semibold">{fname}'s Garage</h1>
-              <AddVehicleCard></AddVehicleCard>
-            </div>
-            <br />
-            <VehicleDetails></VehicleDetails>
+          <div className=" flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-8">
+            <VehicleCards></VehicleCards>
           </div>
         </div>
       </div>

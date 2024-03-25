@@ -33,7 +33,7 @@ const SettingsCard = () => {
   const company_name = jwtDecode(token).company_name;
   const nav = useNavigate();
 
-  async function handleSubmit(event) {
+  async function handleUpdate(event) {
     // Prevent the default form submission
     event.preventDefault();
     const data = new FormData(event.target);
@@ -48,15 +48,13 @@ const SettingsCard = () => {
       alert("Update failed :(");
     }
   }
+
   return (
     <div className="flex flex-wrap gap-3 flex-shrink w-full">
       <Card className=" flex-grow">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-          <CardHeader>
-            <CardTitle className="text-3xl">Settings</CardTitle>
-          </CardHeader>
+        <form onSubmit={handleUpdate} className="flex flex-col">
           <CardContent>
-            <div className="grid w-full items-center gap-4">
+            <div className="grid w-full items-center gap-4 pt-8">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">First Name</Label>
                 <Input

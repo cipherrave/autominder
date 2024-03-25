@@ -23,7 +23,7 @@ export function DeleteDoubleConfirm() {
     nav("/");
   }
 
-  async function handleSubmit(event) {
+  async function handleDelete(event) {
     // Prevent the default form submission
     event.preventDefault();
     const data = new FormData(event.target);
@@ -53,7 +53,7 @@ export function DeleteDoubleConfirm() {
             account and remove your data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleDelete}>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <Button variant="destructive" type="submit">

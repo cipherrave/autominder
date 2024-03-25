@@ -3,6 +3,16 @@ import axios from "axios";
 import SettingsCard from "./Cards/SettingsCard";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import VehicleList from "./Cards/VehicleList";
+import {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 function Settings() {
   // check token is valid
@@ -40,12 +50,32 @@ function Settings() {
   return isLoading ? (
     <div>Loading...</div>
   ) : (
-    <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm">
+    <div className=" h-screen flex overflow-hidden text-sm">
       <div className="flex-grow overflow-hidden h-full flex flex-col">
         <Header></Header>
-        <div className="flex-grow flex overflow-x-hidden w-full"></div>
-        <div className=" flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 w-full">
-          <SettingsCard></SettingsCard>
+        <div className=" flex overflow-x-hidden">
+          <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
+            <VehicleList></VehicleList>
+          </div>
+          <div className=" p-6 flex-grow overflow-auto">
+            <div className="flex flex-col justify-between gap-4">
+              <div>
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>Settings</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </BreadcrumbList>
+                </Breadcrumb>
+                <div className="flex justify-between">
+                  <h1 className="text-3xl font-semibold">Settings</h1>
+                </div>
+              </div>
+              <SettingsCard></SettingsCard>
+            </div>
+            <br />
+            <p className="text-end">Made with ❤️ by cipherrave</p>
+          </div>
         </div>
       </div>
     </div>

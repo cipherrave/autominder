@@ -8,7 +8,7 @@ import Service from "./pages/Service";
 import Settings from "./pages/Settings";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./pages/Register";
-import Validation from "./pages/Validation";
+import { ThemeProvider } from "./components/theme-provider";
 
 function App() {
   const router = createBrowserRouter([
@@ -23,10 +23,6 @@ function App() {
     {
       path: "/register",
       element: <Register />,
-    },
-    {
-      path: "/validate",
-      element: <Validation />,
     },
 
     {
@@ -60,7 +56,11 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <RouterProvider router={router}> </RouterProvider>
+    </ThemeProvider>
+  );
 }
 
 export default App;

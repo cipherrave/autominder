@@ -3,14 +3,15 @@ import SummaryDash from "./Cards/SummaryDash";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import VehicleList from "./Cards/VehicleList";
+
+import Spinner from "../components/spinner";
 
 function Dashboard() {
   const token = localStorage.getItem("token");
   const [isLoading, setLoading] = useState(true);
-  let fname = jwtDecode(token).fname;
   const nav = useNavigate();
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   async function checkToken() {
     // if token is not present, redirect to login
@@ -25,6 +26,7 @@ function Dashboard() {
           Authorization: `Bearer ${token}`,
         },
       });
+      await delay(3000);
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
@@ -39,18 +41,23 @@ function Dashboard() {
   }, []);
 
   return isLoading ? (
-    <div>Loading...</div>
+    <div className=" flex justify-center align-middle h-screen w-full">
+      <div className=" w-full overflow-hidden h-full flex flex-col">
+        <Header></Header>
+        <div className="flex self-center h-screen pt-10">
+          <Spinner></Spinner>
+        </div>
+      </div>
+    </div>
   ) : (
-    <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm">
-      <div className="flex-grow overflow-hidden h-full flex flex-col">
+    <div className=" h-screen flex overflow-hidden text-sm">
+      <div className=" w-full overflow-hidden h-full flex flex-col">
         <Header></Header>
         <div className="flex-grow flex overflow-x-hidden w-full">
-          <div className="w-[400px] p-5 overflow-y-auto hidden xl:block">
+          <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
             <VehicleList></VehicleList>
           </div>
-          <div className="flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 ">
-            <h1 className="text-3xl font-semibold">Welcome, {fname}!</h1>
-            <br />
+          <div className=" flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-8">
             <SummaryDash></SummaryDash>
           </div>
         </div>

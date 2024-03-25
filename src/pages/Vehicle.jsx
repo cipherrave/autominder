@@ -1,17 +1,42 @@
 import Header from "./Menus/Header";
-import VehicleDetails from "./Cards/VehicleDetails";
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { useReducer, useEffect, useState } from "react";
+import { reducer, initialState } from "../reducers/reducer";
+import { FETCH_ACTIONS } from "../actions";
 import { Button } from "@/components/ui/button";
 import VehicleList from "./Cards/VehicleList";
+import AddVehicleCard from "./Dialog/AddVehicleCard";
+import {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import VehicleDetails from "./Cards/VehicleDetails";
 
 function Vehicle() {
   // check token is valid
   const token = localStorage.getItem("token");
-  let fname = jwtDecode(token).fname;
+  const user_id = jwtDecode(token).user_id;
 
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { items, loading, error } = state;
   const navigate = useNavigate();
   function navAddVehicle() {
     navigate("/addVehicle");
@@ -46,40 +71,70 @@ function Vehicle() {
     checkToken();
   }, []);
 
+  useEffect(() => {
+    dispatch({ type: FETCH_ACTIONS.PROGRESS });
+    const getItems = async () => {
+      // parse vehicleData from localStorage
+      const readVehicle = JSON.parse(localStorage.getItem("vehicleData"));
+      dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readVehicle });
+    };
+    getItems();
+  }, []);
+
+  async function handleUpdate(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    try {
+      const response = await axios.put(baseURL, values);
+      localStorage.removeItem("token");
+      alert("Profile updated successfully! Re-login using new credentials.");
+      nav("/login");
+    } catch (error) {
+      console.error(error);
+      alert("Update failed :(");
+    }
+  }
+
   return isLoading ? (
     <div>Loading...</div>
   ) : (
-    <div className="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm">
-      <div className="flex-grow h-full flex flex-col">
+    <div className="h-screen flex overflow-hidden text-sm">
+      <div className="w-full h-full flex flex-col">
         <Header></Header>
         <div className="flex overflow-auto">
-          <div className="p-5 overflow-y-auto hidden xl:block">
+          <div className="min-w-[300px] p-5 overflow-y-auto hidden xl:block">
             <VehicleList></VehicleList>
           </div>
-          <div className=" flex-wrap border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto p-5 w-full gap-8">
-            <div className="flex flex-row gap-4 justify-between">
-              <h1 className="text-3xl font-semibold">{fname}'s Garage</h1>
-              <Button onClick={navAddVehicle}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6 mr-2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4.5v15m7.5-7.5h-15"
-                  />
-                </svg>
-                {"  "}
-                <p className="hidden sm:block"> Add Vehicle</p>
-              </Button>
+          <div className="flex flex-col flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-4">
+            <div className="flex flex-col justify-between gap-4">
+              <div>
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="/dashboard">
+                        Dashboard
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="/garage">Garage</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>Vehicle</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </BreadcrumbList>
+                </Breadcrumb>
+                <div className="flex flex-row justify-between">
+                  <h1 className="text-3xl font-semibold">Vehicle Details</h1>
+                  <AddVehicleCard></AddVehicleCard>
+                </div>
+              </div>
+
+              <VehicleDetails></VehicleDetails>
             </div>
-            <br />
-            <VehicleDetails></VehicleDetails>
           </div>
         </div>
       </div>

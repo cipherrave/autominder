@@ -12,52 +12,40 @@ import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "../../reducers/reducer";
 import { FETCH_ACTIONS } from "../../actions";
 import axios from "axios";
-import { Button } from "@material-tailwind/react";
+import { Button } from "@/components/ui/button";
+
+import Spinner from "../../components/spinner";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import * as React from "react";
+import ServiceTable from "../../components/ui/TanStackTableJS/ServiceTable";
 
 const ServiceList = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const token = localStorage.getItem("token");
   const { items, loading, error } = state;
   const [isLoading, setLoading] = useState(true);
+  const serviceData = localStorage.getItem("serviceData");
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
 
     const getItems = async () => {
+      if (!serviceData) {
+        await delay(2000);
+      }
       try {
-        setLoading(true);
-        let response = await axios.get(
-          "http://localhost:8989/user/service/all",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          // save response data into localStorage as vehicleData for other local uses
-          const serviceArray = response.data;
-          const serviceString = JSON.stringify(serviceArray);
-          localStorage.setItem("serviceData", serviceString);
-
-          // parse vehicleData from localStorage
-          const readService = JSON.parse(localStorage.getItem("serviceData"));
-          dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readService });
-        }
+        // parse serviceData from localStorage
+        const readService = JSON.parse(localStorage.getItem("serviceData"));
+        dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readService });
       } catch (err) {
         console.error(err);
         dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
@@ -87,7 +75,7 @@ const ServiceList = () => {
   }
 
   return isLoading ? (
-    <div>Loading...</div>
+    <Spinner></Spinner>
   ) : (
     <div className="flex flex-wrap flex-grow overflow-auto">
       <Table>
@@ -115,7 +103,7 @@ const ServiceList = () => {
               <TableCell className="text-center">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="text">
+                    <Button variant="text" size="icon">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -133,7 +121,6 @@ const ServiceList = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem>View Service</DropdownMenuItem>
                     <DropdownMenuItem>View Vehicle</DropdownMenuItem>
                     <DropdownMenuSeparator />

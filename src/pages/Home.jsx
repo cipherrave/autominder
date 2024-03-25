@@ -1,6 +1,18 @@
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { ModeToggle } from "../components/mode-toggle";
 
 const navigation = [
   { name: "AutoMinder", href: "#" },
@@ -15,7 +27,7 @@ function Home() {
   function navHome() {
     nav("/");
   }
-  function navDashboard() {
+  function navDash() {
     nav("/dashboard");
   }
   function navLogin() {
@@ -26,171 +38,159 @@ function Home() {
   }
   return (
     <div className="overflow-y-auto">
-      <div className="bg-white">
+      <div className="">
         <header className="absolute inset-x-0 top-0 z-50">
           <nav
-            className="flex items-center justify-between p-6 lg:px-8"
+            className="flex items-center justify-between p-6 lg:px-16"
             aria-label="Global"
           >
-            <div className="flex lg:flex-1">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img
-                  onClick={navHome}
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
-                />
-              </a>
+            <div className="flex flex-row gap-2">
+              <img
+                onClick={navHome}
+                className="h-8 w-auto"
+                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                alt=""
+              />
+              <h1 className="self-center">AutoMinder</h1>
             </div>
-            <div className="flex lg:hidden">
-              <button
-                type="button"
-                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white-700"
-                onClick={() => setMobileMenuOpen(true)}
-              >
-                <span className="sr-only">Open main menu</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6"
+            <div className="flex gap-2">
+              {" "}
+              <ModeToggle></ModeToggle>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="text" size="icon" className="w-10 flex">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                      />
+                    </svg>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent
+                  className="pt-12 w-11/12 max-w-[350px] flex flex-col justify-start gap-0"
+                  side="right"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div className="hidden lg:flex lg:gap-x-12">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-sm font-semibold leading-6 text-white-900"
-                >
-                  {item.name}
-                </a>
-              ))}
-            </div>
-            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-              <a
-                href="login"
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                Log in <span aria-hidden="true">&rarr;</span>
-              </a>
+                  <div className="flex flex-col gap-4">
+                    <div>
+                      {" "}
+                      <Button
+                        className="w-full flex flex-row justify-start gap-3"
+                        variant="text"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          fill="currentColor"
+                          className="bi bi-speedometer"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M8 2a.5.5 0 0 1 .5.5V4a.5.5 0 0 1-1 0V2.5A.5.5 0 0 1 8 2M3.732 3.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 8a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m.754-4.246a.39.39 0 0 0-.527-.02L7.547 7.31A.91.91 0 1 0 8.85 8.569l3.434-4.297a.39.39 0 0 0-.029-.518z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M6.664 15.889A8 8 0 1 1 9.336.11a8 8 0 0 1-2.672 15.78zm-4.665-4.283A11.95 11.95 0 0 1 8 10c2.186 0 4.236.585 6.001 1.606a7 7 0 1 0-12.002 0"
+                          />
+                        </svg>
+                        Dashboard{" "}
+                      </Button>
+                      <Button
+                        className="w-full flex flex-row justify-start gap-3"
+                        variant="text"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-5 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z"
+                          />
+                        </svg>
+                        Services
+                      </Button>
+                      <Button
+                        className="w-full flex flex-row justify-start gap-3"
+                        variant="text"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="20"
+                          height="20"
+                          fill="currentColor"
+                          className="bi bi-car-front"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M4 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0m10 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2zM4.862 4.276 3.906 6.19a.51.51 0 0 0 .497.731c.91-.073 2.35-.17 3.597-.17s2.688.097 3.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 10.691 4H5.309a.5.5 0 0 0-.447.276" />
+                          <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679q.05.242.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.8.8 0 0 0 .381-.404l.792-1.848ZM4.82 3a1.5 1.5 0 0 0-1.379.91l-.792 1.847a1.8 1.8 0 0 1-.853.904.8.8 0 0 0-.43.564L1.03 8.904a1.5 1.5 0 0 0-.03.294v.413c0 .796.62 1.448 1.408 1.484 1.555.07 3.786.155 5.592.155s4.037-.084 5.592-.155A1.48 1.48 0 0 0 15 9.611v-.413q0-.148-.03-.294l-.335-1.68a.8.8 0 0 0-.43-.563 1.8 1.8 0 0 1-.853-.904l-.792-1.848A1.5 1.5 0 0 0 11.18 3z" />
+                        </svg>
+                        Garage{" "}
+                      </Button>
+                      <br />
+                      <hr />
+                      <br />
+                      <Button
+                        variant="text"
+                        className="w-full flex flex-row justify-start gap-3"
+                        onClick={navLogin}
+                      >
+                        Login
+                      </Button>
+                      <Button
+                        variant="text"
+                        className="w-full flex flex-row justify-start gap-3"
+                        onClick={navRegister}
+                      >
+                        Register
+                      </Button>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </nav>
-
-          <Dialog
-            as="div"
-            className="lg:hidden"
-            open={mobileMenuOpen}
-            onClose={setMobileMenuOpen}
-          >
-            <div className="fixed inset-0 z-50" />
-            <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-              <div className="flex items-center justify-between">
-                <a href="#" className="-m-1.5 p-1.5">
-                  <span className="sr-only">Your Company</span>
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt=""
-                  />
-                </a>
-                <button
-                  type="button"
-                  className="-m-2.5 rounded-md p-2.5 text-gray-700"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <span className="sr-only">Close menu</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18 18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div className="mt-6 flow-root">
-                <div className="-my-6 divide-y divide-gray-500/10">
-                  <div className="space-y-2 py-6">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                  <div className="py-6">
-                    <a
-                      onClick={navLogin}
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
-                    >
-                      Log in
-                    </a>
-                    <a
-                      onClick={navRegister}
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
-                    >
-                      Register
-                    </a>
-                    <a
-                      onClick={navDashboard}
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
-                    >
-                      Dashboard
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </Dialog.Panel>
-          </Dialog>
         </header>
-        <section className="bg-gray-50">
+        <section>
           <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
             <div className="mx-auto max-w-xl text-center">
               <h1 className="text-3xl font-extrabold sm:text-5xl">
                 AutoMinder.
-                <strong className="font-extrabold text-red-700 sm:block">
+                <strong className="font-extrabold sm:block">
                   {" "}
                   Understand Your Vehicle.{" "}
                 </strong>
               </h1>
 
               <p className="mt-4 sm:text-xl/relaxed">
+                <br />
                 AutoMinder, the revolutionary car maintenance tracker app that
                 transforms your smartphone into a powerful vehicle management
-                tool. Designed for modern drivers, AutoMinder ensures your car
-                receives the care it deserves, keeping it in top-notch condition
-                day after day.
+                tool. Designed for modern drivers, <br />
+                <br />
+                AutoMinder ensures your car receives the care it deserves,
+                keeping it in top-notch condition day after day.
               </p>
 
-              <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <a
-                  className="block w-full rounded bg-red-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-red-700 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
-                  href="#"
+              <div className="mt-8 flex flex-wrap justify-center">
+                <Button
+                  className="w-full rounded text-md"
                   onClick={navRegister}
                 >
                   Get Started
-                </a>
+                </Button>
               </div>
             </div>
           </div>
@@ -370,7 +370,7 @@ function Home() {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  strokeWsidth="1.5"
+                  strokeWidth="1.5"
                   stroke="cyan"
                   className="w-6 h-6"
                 >
