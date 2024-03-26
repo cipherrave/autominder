@@ -9,7 +9,6 @@ import { reducer, initialState } from "../reducers/reducer";
 import { FETCH_ACTIONS } from "../actions";
 import { Button } from "@/components/ui/button";
 import VehicleList from "./Cards/VehicleList";
-import AddVehicleCard from "./Dialog/AddVehicleCard";
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -28,30 +27,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import Vehicle from "./Vehicle";
+import AddServiceCard from "./Dialog/AddServiceCard";
+import ServiceDetails from "./Cards/ServiceDetails";
 import Shortcuts from "./Menus/Shortcuts";
-import { useParams } from "react-router-dom";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import Spinner from "../components/spinner";
-
-function Garage() {
+function ServiceSingle() {
+  // check token is valid
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
-  const [isLoading, setLoading] = useState(true);
+
   const [state, dispatch] = useReducer(reducer, initialState);
   const { items, loading, error } = state;
   const navigate = useNavigate();
   function navAddVehicle() {
     navigate("/addVehicle");
   }
+
+  const [isLoading, setLoading] = useState(true);
 
   async function checkToken() {
     // if token is not present, redirect to login
@@ -86,18 +78,18 @@ function Garage() {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/user/vehicle/update", values);
-      alert("Vehicle updated successfully!");
-      nav("/dashboard");
+      const response = await axios.put(baseURL, values);
+      localStorage.removeItem("token");
+      alert("Profile updated successfully! Re-login using new credentials.");
+      nav("/login");
     } catch (error) {
-      // api error handling
-      alert("Vehicle not updated. Something is wrong...");
       console.error(error);
+      alert("Update failed :(");
     }
   }
 
   return isLoading ? (
-    <Spinner></Spinner>
+    <div>Loading...</div>
   ) : (
     <div className="h-screen flex overflow-hidden text-sm">
       <div className="w-full h-full flex flex-col">
@@ -108,7 +100,7 @@ function Garage() {
             <VehicleList></VehicleList>
           </div>
           <div className="flex flex-col flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-4">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col justify-between gap-4">
               <div>
                 <Breadcrumb>
                   <BreadcrumbList>
@@ -119,24 +111,20 @@ function Garage() {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                      <BreadcrumbPage>Garage</BreadcrumbPage>
+                      <BreadcrumbLink href="/services">Services</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>Service</BreadcrumbPage>
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
                 <div className="flex flex-row justify-between">
-                  <h1 className="text-3xl font-semibold">Garage</h1>
-                  <AddVehicleCard></AddVehicleCard>
+                  <h1 className="text-3xl font-semibold">Service Details</h1>
+                  <AddServiceCard></AddServiceCard>
                 </div>
               </div>
-              <Card className="h-[300px]">
-                <CardHeader>
-                  <CardContent>
-                    <h1 className="flex justify-center">
-                      Select vehicle from the sidebar to view its details
-                    </h1>
-                  </CardContent>
-                </CardHeader>
-              </Card>
+              <ServiceDetails></ServiceDetails>
             </div>
           </div>
         </div>
@@ -145,4 +133,4 @@ function Garage() {
   );
 }
 
-export default Garage;
+export default ServiceSingle;

@@ -23,6 +23,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import Shortcuts from "./Menus/Shortcuts";
+import Spinner from "../components/spinner";
 
 function Service() {
   // check token is valid
@@ -58,13 +60,21 @@ function Service() {
   }, []);
 
   return isLoading ? (
-    <div>Loading...</div>
+    <div className=" flex justify-center align-middle h-screen w-full">
+      <div className=" w-full overflow-hidden h-full flex flex-col">
+        <Header></Header>
+        <div className="flex self-center h-screen pt-10">
+          <Spinner></Spinner>
+        </div>
+      </div>
+    </div>
   ) : (
     <div className=" h-screen flex overflow-hidden text-sm ">
       <div className="w-full overflow-hidden h-full flex flex-col">
         <Header></Header>
         <div className=" flex overflow-x-hidden">
           <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
+            <Shortcuts></Shortcuts>
             <VehicleList></VehicleList>
           </div>
           <div className=" p-6 flex-grow overflow-auto">
@@ -72,7 +82,12 @@ function Service() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
-                    <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                    <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Service</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>

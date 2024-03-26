@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Garage from "./pages/Garage";
 import Vehicle from "./pages/Vehicle";
 import Service from "./pages/Service";
+import ServiceSingle from "./pages/ServiceSingle";
 import Settings from "./pages/Settings";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./pages/Register";
@@ -36,13 +37,18 @@ function App() {
     },
 
     {
-      path: "/vehicle",
+      path: "/garage/vehicle/:id",
       element: <Vehicle />,
     },
 
     {
-      path: "/service",
+      path: "/services",
       element: <Service />,
+    },
+
+    {
+      path: "/service",
+      element: <ServiceSingle />,
     },
 
     {
@@ -58,7 +64,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <RouterProvider router={router}> </RouterProvider>
+      <RouterProvider router={router}></RouterProvider>
     </ThemeProvider>
   );
 }

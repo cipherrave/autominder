@@ -100,7 +100,7 @@ export default function SummaryDash() {
         </div>
       </div>
       <div className="flex flex-row flex-wrap gap-4">
-        <Card className="h-fit flex flex-col flex-grow">
+        <Card className="h-fit flex flex-col flex-grow w-full">
           <CardHeader className="flex">
             <CardTitle className="text-3xl">Summary</CardTitle>
             <CardDescription className="pt-3">
@@ -127,14 +127,11 @@ export default function SummaryDash() {
               <p>on services</p>
             </div>
           </CardContent>
-          <CardFooter>
-            {" "}
-            <div className="flex flex-row gap-2">
-              <AddVehicleCard></AddVehicleCard>
-              <AddServiceCard></AddServiceCard>
-              <MileageDialog></MileageDialog>
-            </div>
-          </CardFooter>
+        </Card>{" "}
+        <Card className="flex flex-row w-full p-6">
+          <AddVehicleCard></AddVehicleCard>
+          <AddServiceCard></AddServiceCard>
+          <MileageDialog></MileageDialog>
         </Card>
         <Card className="flex flex-col w-full pb-8">
           <CardHeader>

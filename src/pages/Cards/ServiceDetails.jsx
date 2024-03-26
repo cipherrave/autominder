@@ -37,38 +37,52 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useNavigate } from "react-router-dom";
 
-export default function VehicleDetails() {
+export default function ServiceDetails() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { items, loading, error } = state;
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
+  const nav = useNavigate();
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
     const getItems = async () => {
-      // parse vehicleData from localStorage
-      const readVehicle = JSON.parse(localStorage.getItem("vehicleData"));
-      const readOneVehicle = readVehicle.length;
-      console.log(readVehicle);
-      console.log(readOneVehicle);
-      dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readVehicle });
+      // parse serviceData from localStorage
+      const readService = JSON.parse(localStorage.getItem("serviceData"));
+      const readOneService = readService.length;
+      console.log(readService);
+      console.log(readOneService);
+      dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readService.reverse() });
     };
     getItems();
   }, []);
 
-  const updateURL = "http://localhost:8989/user/vehicle/update";
   async function handleUpdate(event) {
     // Prevent the default form submission
     event.preventDefault();
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put(updateURL, values);
-      alert("Vehicle updated successfully!");
+      await axios.put("http://localhost:8989/user/service/update", values);
+      alert("Service updated successfully!");
+      nav("/services");
+      let getAllService = await axios.get(
+        "http://localhost:8989/user/service/all",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // save response data into localStorage as serviceData for other local uses
+      const serviceArray = getAllService.data;
+      const serviceString = JSON.stringify(serviceArray);
+      localStorage.setItem("serviceData", serviceString);
     } catch (error) {
       // api error handling
-      alert("Vehicle not updated. Something is wrong...");
+      alert("Service not updated. Something is wrong...");
       console.error(error);
     }
   }
@@ -84,103 +98,87 @@ export default function VehicleDetails() {
           {items.map((item) => (
             <Card
               className="flex flex-grow flex-col xl:flex-row w-full"
-              key={item.vehicle_id}
+              key={item.service_id}
             >
-              <CardTitle className="w-full h-[200px] bg-slate-600 rounded-xl flex justify-end pt-4"></CardTitle>
               <CardContent className="w-full pt-8 px-0">
                 <form onSubmit={handleUpdate}>
                   <CardContent>
                     <div className="w-full">
                       <div className="grid w-full items-center gap-4">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="transparent" className>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                                />
-                              </svg>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuItem>View Vehicle</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
                         <div className="flex flex-col space-y-1.5">
-                          <Label htmlFor="vname">Nickname</Label>
+                          <Label htmlFor="service_name">Service Name</Label>
                           <Input
-                            id="vname"
-                            name="vname"
+                            id="service_name"
+                            name="service_name"
                             type="text"
                             placeholder=""
-                            defaultValue={item.vname}
+                            defaultValue={item.service_name}
                             required
                           />
                         </div>
                         <div className="flex flex-col space-y-1.5">
-                          <Label htmlFor="name">Mileage</Label>
+                          <Label htmlFor="name">Vehicle</Label>
                           <Input
-                            id="mileage"
-                            name="mileage"
+                            id="vehicle_id"
+                            name="vehicle_id"
+                            type="text"
+                            placeholder=""
+                            defaultValue={item.vehicle_id}
+                            required
+                          />
+                        </div>
+                        <div className="flex flex-col space-y-1.5">
+                          <Label htmlFor="name">Cost (RM)</Label>
+                          <Input
+                            id="cost"
+                            name="cost"
                             type="number"
                             placeholder=""
-                            defaultValue={item.mileage}
+                            defaultValue={item.cost}
                             required
                           />
                         </div>
                         <div className="flex flex-col space-y-1.5">
-                          <Label htmlFor="name">Registration Number</Label>
+                          <Label htmlFor="name">Service Date</Label>
                           <Input
-                            id="reg_num"
-                            name="reg_num"
-                            type="text"
+                            id="service_date"
+                            name="service_date"
+                            type="date"
                             placeholder=""
-                            defaultValue={item.reg_num}
+                            defaultValue={item.service_date}
                             required
                           />
                         </div>
                         <div className="flex flex-col space-y-1.5">
-                          <Label htmlFor="name">Brand</Label>
+                          <Label htmlFor="name">Next Service Mileage</Label>
                           <Input
-                            id="brand"
-                            name="brand"
-                            type="text"
-                            placeholder=""
-                            defaultValue={item.brand}
-                            required
-                          />
-                        </div>
-                        <div className="flex flex-col space-y-1.5">
-                          <Label htmlFor="name">Model</Label>
-                          <Input
-                            id="model"
-                            name="model"
-                            type="text"
-                            placeholder=""
-                            defaultValue={item.model}
-                            required
-                          />
-                        </div>
-                        <div className="flex flex-col space-y-1.5">
-                          <Label htmlFor="name">Purchase Year</Label>
-                          <Input
-                            id="purchase_year"
-                            name="purchase_year"
+                            id="next_mileage"
+                            name="next_mileage"
                             type="number"
-                            min="1901"
-                            max="2099"
-                            step="1"
                             placeholder=""
-                            defaultValue={item.purchase_year}
+                            defaultValue={item.next_mileage}
+                            required
+                          />
+                        </div>
+                        <div className="flex flex-col space-y-1.5">
+                          <Label htmlFor="name">Next Service Date</Label>
+                          <Input
+                            id="service_date"
+                            name="service_date"
+                            type="date"
+                            placeholder=""
+                            defaultValue={item.next}
+                            required
+                          />
+                        </div>
+                        <div className="flex flex-col space-y-1.5">
+                          <Label htmlFor="name">Service Location</Label>
+                          <Input
+                            id="place"
+                            name="place"
+                            type="text"
+                            placeholder=""
+                            defaultValue={item.place}
                             required
                           />
                         </div>
@@ -203,7 +201,7 @@ export default function VehicleDetails() {
                             defaultValue={user_id}
                             required
                           />
-                          <Label htmlFor="vehicle_id">Vehicle ID</Label>
+                          <Label htmlFor="name">Vehicle ID</Label>
                           <Input
                             id="vehicle_id"
                             name="vehicle_id"
@@ -212,12 +210,24 @@ export default function VehicleDetails() {
                             defaultValue={item.vehicle_id}
                             required
                           />
+                          <Label htmlFor="service_id">Service ID</Label>
+                          <Input
+                            id="service_id"
+                            name="service_id"
+                            type="text"
+                            placeholder=""
+                            defaultValue={item.service_id}
+                            required
+                          />
                         </div>
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter className="flex justify-end gap-4">
                     <Button type="submit">Update</Button>
+                    <Button type="submit" variant="destructive">
+                      Delete
+                    </Button>
                   </CardFooter>
                 </form>
               </CardContent>

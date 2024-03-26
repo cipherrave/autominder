@@ -25,6 +25,7 @@ import { useReducer, useEffect, useState } from "react";
 import axios from "axios";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import VehicleList from "../Cards/VehicleList";
+import Shortcuts from "./Shortcuts";
 
 export default function Sidebar() {
   const nav = useNavigate();
@@ -62,6 +63,7 @@ export default function Sidebar() {
         className="pt-12 w-11/12 max-w-[350px] flex flex-col justify-end gap-0"
         side="left"
       >
+        <Shortcuts></Shortcuts>
         <ScrollArea className="h-[800px] pr-4">
           <VehicleList></VehicleList>
         </ScrollArea>

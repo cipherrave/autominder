@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import VehicleList from "./Cards/VehicleList";
-
+import Shortcuts from "./Menus/Shortcuts";
 import Spinner from "../components/spinner";
 
 function Dashboard() {
@@ -26,7 +26,7 @@ function Dashboard() {
           Authorization: `Bearer ${token}`,
         },
       });
-      await delay(3000);
+      await delay(1000);
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
@@ -55,6 +55,7 @@ function Dashboard() {
         <Header></Header>
         <div className="flex-grow flex overflow-x-hidden w-full">
           <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
+            <Shortcuts></Shortcuts>
             <VehicleList></VehicleList>
           </div>
           <div className=" flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-8">

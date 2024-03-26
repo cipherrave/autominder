@@ -13,7 +13,6 @@ import { reducer, initialState } from "../../reducers/reducer";
 import { FETCH_ACTIONS } from "../../actions";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-
 import Spinner from "../../components/spinner";
 
 import {
@@ -25,7 +24,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import * as React from "react";
-import ServiceTable from "../../components/ui/TanStackTableJS/ServiceTable";
 
 const ServiceList = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -40,12 +38,13 @@ const ServiceList = () => {
 
     const getItems = async () => {
       if (!serviceData) {
-        await delay(2000);
+        await delay(1000);
       }
       try {
+        await delay(1000);
         // parse serviceData from localStorage
         const readService = JSON.parse(localStorage.getItem("serviceData"));
-        dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readService });
+        dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readService.reverse() });
       } catch (err) {
         console.error(err);
         dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
@@ -75,7 +74,13 @@ const ServiceList = () => {
   }
 
   return isLoading ? (
-    <Spinner></Spinner>
+    <div className=" flex justify-center align-middle h-screen w-full">
+      <div className=" w-full overflow-hidden h-full flex flex-col">
+        <div className="flex self-center h-screen pt-10">
+          <Spinner></Spinner>
+        </div>
+      </div>
+    </div>
   ) : (
     <div className="flex flex-wrap flex-grow overflow-auto">
       <Table>
