@@ -31,8 +31,6 @@ const AddVehicleCard = () => {
     const values = Object.fromEntries(data.entries());
     try {
       await axios.post("http://localhost:8989/vehicle/create", values);
-      alert("Vehicle added successfully!");
-      nav("/garage");
       let getAllVehicle = await axios.get(
         "http://localhost:8989/user/vehicle/all",
         {
@@ -45,6 +43,7 @@ const AddVehicleCard = () => {
       const vehicleArray = getAllVehicle.data;
       const vehicleString = JSON.stringify(vehicleArray);
       localStorage.setItem("vehicleData", vehicleString);
+      window.location.reload();
     } catch (error) {
       // api error handling
       alert("Vehicle not added. Something is wrong...");

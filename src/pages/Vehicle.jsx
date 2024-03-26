@@ -41,6 +41,23 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import Spinner from "../components/spinner";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function Vehicle() {
   const token = localStorage.getItem("token");
@@ -50,16 +67,14 @@ function Vehicle() {
   const { items, loading, error } = state;
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  const navigate = useNavigate();
-  function navAddVehicle() {
-    navigate("/addVehicle");
-  }
+  const nav = useNavigate();
 
   const { id } = useParams();
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
     const getItems = async () => {
+      delay(2000);
       // parse vehicleData from localStorage
       const vehicleData = JSON.parse(localStorage.getItem("vehicleData"));
       let filteredVehicleData = vehicleData.filter((element) => {
@@ -67,7 +82,6 @@ function Vehicle() {
           return element;
         }
       });
-
       dispatch({ type: FETCH_ACTIONS.SUCCESS, data: filteredVehicleData });
     };
     getItems();
@@ -86,11 +100,10 @@ function Vehicle() {
           Authorization: `Bearer ${token}`,
         },
       });
-      delay(1000);
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
-      navigate("/login");
+      nav("/login");
     } finally {
       setLoading(false);
     }
@@ -103,15 +116,59 @@ function Vehicle() {
 
   async function handleUpdate(event) {
     // Prevent the default form submission
-    event.preventDefault();
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
       await axios.put("http://localhost:8989/user/vehicle/update", values);
       alert("Vehicle updated successfully!");
+      nav("/garage");
     } catch (error) {
       // api error handling
       alert("Vehicle not updated. Something is wrong...");
+      console.error(error);
+    }
+  }
+
+  async function handleDelete(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    try {
+      await axios.delete("http://localhost:8989/user/vehicle/delete", {
+        data: values,
+      });
+      nav("/garage");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function handleVehicle(event) {
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    const url = "/garage/vehicle/" + values.vehicle_id;
+    nav(url);
+  }
+
+  async function handleService(event) {
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    const url = "/services/service/" + values.service_id;
+    nav(url);
+  }
+
+  async function handleDeleteService(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    try {
+      await axios.delete("http://localhost:8989/user/service/delete", {
+        data: values,
+      });
+      window.location.reload();
+    } catch (error) {
       console.error(error);
     }
   }
@@ -128,43 +185,45 @@ function Vehicle() {
         <div className="w-full h-full flex flex-col">
           <Header></Header>
           <div className="flex overflow-auto">
-            <div className="min-w-[300px] p-5 overflow-y-auto hidden xl:block">
+            <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
               <Shortcuts></Shortcuts>
               <VehicleList></VehicleList>
             </div>
-            <div className="flex flex-col flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-4">
-              <div className="flex flex-col gap-4">
-                <div>
-                  <Breadcrumb>
-                    <BreadcrumbList>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink href="/dashboard">
-                          Dashboard
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbLink href="/garage">Garage</BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage>Vehicle</BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </BreadcrumbList>
-                  </Breadcrumb>
-                  <div className="flex flex-row justify-between">
-                    <h1 className="text-3xl font-semibold">
-                      Vehicle Details {id}
-                    </h1>
-                    <AddVehicleCard></AddVehicleCard>
+            {items.map((item) => (
+              <div
+                className="flex flex-col flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-4"
+                key={item.vehicle_id}
+              >
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <Breadcrumb>
+                      <BreadcrumbList>
+                        <BreadcrumbItem>
+                          <BreadcrumbLink href="/dashboard">
+                            Dashboard
+                          </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                          <BreadcrumbLink href="/garage">Garage</BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                          <BreadcrumbPage>Vehicle</BreadcrumbPage>
+                        </BreadcrumbItem>
+                      </BreadcrumbList>
+                    </Breadcrumb>
+                    <div className="flex flex-row justify-between">
+                      <h1 className="text-3xl font-semibold">
+                        Vehicle Details
+                      </h1>
+                    </div>
                   </div>
-                </div>
 
-                <Card className="flex flex-grow flex-col xl:flex-row w-full">
-                  <CardTitle className="w-full h-[200px] bg-slate-600 rounded-xl flex justify-end pt-4"></CardTitle>
-                  <CardContent className="w-full pt-8 px-0">
-                    {items.map((item) => (
-                      <form onSubmit={handleUpdate} key={item.vehicle_id}>
+                  <Card className="flex flex-grow flex-col xl:flex-row w-full">
+                    <CardTitle className="w-full h-[200px] bg-slate-600 rounded-xl flex justify-end pt-4"></CardTitle>
+                    <CardContent className="w-full pt-8 px-0">
+                      <form onSubmit={handleUpdate}>
                         <CardContent>
                           <div className="w-full">
                             <div className="grid w-full items-center gap-4">
@@ -272,19 +331,188 @@ function Vehicle() {
                           </div>
                         </CardContent>
                         <CardFooter className="flex justify-end gap-4">
-                          <Button
-                            type="submit"
-                            onClick={() => window.location.reload(false)}
-                          >
-                            Update
-                          </Button>
+                          <Button type="submit">Update</Button>
                         </CardFooter>
                       </form>
-                    ))}
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
+                <div className="flex flex-wrap flex-grow overflow-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Service Name</TableHead>
+                        <TableHead>Service Date</TableHead>
+                        <TableHead>Next Mileage</TableHead>
+                        <TableHead>Next Service Date</TableHead>
+                        <TableHead>Cost (RM)</TableHead>
+                        <TableHead>Vehicle ID</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {items.map((item) => (
+                        <TableRow key={item.service_id}>
+                          <TableCell className="font-semibold">
+                            {item.service_name}
+                          </TableCell>
+                          <TableCell>{item.service_date}</TableCell>
+                          <TableCell>{item.next_mileage}</TableCell>
+                          <TableCell>{item.next_date}</TableCell>
+                          <TableCell>{item.cost}</TableCell>
+                          <TableCell>{item.vehicle_id}</TableCell>
+                          <TableCell className="text-center">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="text" size="icon">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-6 h-6"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+                                    />
+                                  </svg>
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuItem>
+                                  <form onSubmit={handleService}>
+                                    <input
+                                      type="text"
+                                      id="service_id"
+                                      name="service_id"
+                                      defaultValue={item.service_id}
+                                      className="hidden"
+                                    />
+                                    <Button
+                                      type="submit"
+                                      variant="text"
+                                      className="p-0 font-normal"
+                                    >
+                                      View Service
+                                    </Button>
+                                  </form>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <form onSubmit={handleVehicle}>
+                                    <input
+                                      type="text"
+                                      id="vehicle_id"
+                                      name="vehicle_id"
+                                      defaultValue={item.vehicle_id}
+                                      className="hidden"
+                                    />
+                                    <Button
+                                      type="submit"
+                                      variant="text"
+                                      className="p-0 font-normal"
+                                    >
+                                      View Vehicle
+                                    </Button>
+                                  </form>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <AlertDialog>
+                                  <AlertDialogTrigger asChild>
+                                    <Button
+                                      variant="text"
+                                      className="font-normal hover:bg-red-500 w-full flex justify-start p-2"
+                                    >
+                                      Delete
+                                    </Button>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>
+                                        Delete {item.service_name}?
+                                      </AlertDialogTitle>
+                                      <AlertDialogDescription className="font-bold">
+                                        This action cannot be undone. This will
+                                        permanently delete this vehicle from our
+                                        servers.
+                                      </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <form onSubmit={handleDelete}>
+                                      <AlertDialogFooter>
+                                        <AlertDialogCancel>
+                                          Cancel
+                                        </AlertDialogCancel>
+                                        <input
+                                          type="text"
+                                          id="user_id"
+                                          name="user_id"
+                                          defaultValue={user_id}
+                                          className="hidden"
+                                        />
+                                        <input
+                                          type="text"
+                                          id="service_id"
+                                          name="service_id"
+                                          defaultValue={item.service_id}
+                                          className="hidden"
+                                        />
+                                        <Button
+                                          variant="destructive"
+                                          type="submit"
+                                        >
+                                          Yes, I am really sure
+                                        </Button>
+                                      </AlertDialogFooter>
+                                    </form>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive">Delete</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete {item.vname}?</AlertDialogTitle>
+                      <AlertDialogDescription className="font-bold">
+                        This action cannot be undone. This will permanently
+                        delete this vehicle from our servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <form onSubmit={handleDeleteService}>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <input
+                          type="text"
+                          id="user_id"
+                          name="user_id"
+                          defaultValue={user_id}
+                          className="hidden"
+                        />
+                        <input
+                          type="text"
+                          id="vehicle_id"
+                          name="vehicle_id"
+                          defaultValue={item.vehicle_id}
+                          className="hidden"
+                        />
+                        <Button variant="destructive" type="submit">
+                          Yes, I am really sure
+                        </Button>
+                      </AlertDialogFooter>
+                    </form>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       )}

@@ -70,7 +70,7 @@ const AddServiceCard = () => {
         values
       );
       alert("Service created successfully!");
-      nav("/service");
+      window.location.reload();
       let getAllService = await axios.get(
         "http://localhost:8989/user/service/all",
         {
@@ -83,6 +83,7 @@ const AddServiceCard = () => {
       const serviceArray = getAllService.data;
       const serviceString = JSON.stringify(serviceArray);
       localStorage.setItem("serviceData", serviceString);
+      window.location.reload();
     } catch (error) {
       // api error handling
       alert("Create service failed. Something is wrong...");

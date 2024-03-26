@@ -50,9 +50,9 @@ function Service() {
   const { items, loading, error } = state;
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-  const navigate = useNavigate();
+  const nav = useNavigate();
   function navAddVehicle() {
-    navigate("/addVehicle");
+    nav("/addVehicle");
   }
 
   const { id } = useParams();
@@ -76,7 +76,7 @@ function Service() {
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
-      navigate("/login");
+      nav("/login");
     }
     // validate token by calling the private API
     try {
@@ -107,8 +107,9 @@ function Service() {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/user/vehicle/update", values);
+      await axios.put("http://localhost:8989/user/service/update", values);
       alert("Service updated successfully!");
+      nav("/services");
     } catch (error) {
       // api error handling
       alert("Service not updated. Something is wrong...");
@@ -116,8 +117,31 @@ function Service() {
     }
   }
 
+  async function handleDelete(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    try {
+      await axios.delete("http://localhost:8989/user/service/delete", {
+        data: values,
+      });
+      alert("Service deleted.");
+      nav("/services");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return isLoading ? (
-    <Spinner></Spinner>
+    <div className=" flex justify-center align-middle h-screen w-full">
+      <div className=" w-full overflow-hidden h-full flex flex-col">
+        <Header></Header>
+        <div className="flex self-center h-screen pt-10">
+          <Spinner></Spinner>
+        </div>
+      </div>
+    </div>
   ) : (
     <div className="h-screen flex overflow-hidden text-sm">
       {loading ? (
@@ -128,41 +152,45 @@ function Service() {
         <div className="w-full h-full flex flex-col">
           <Header></Header>
           <div className="flex overflow-auto">
-            <div className="min-w-[300px] p-5 overflow-y-auto hidden xl:block">
+            <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
               <Shortcuts></Shortcuts>
               <VehicleList></VehicleList>
             </div>
-            <div className="flex flex-col flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-4">
-              <div className="flex flex-col gap-4">
-                <div>
-                  <Breadcrumb>
-                    <BreadcrumbList>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink href="/dashboard">
-                          Dashboard
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbLink href="/services">
-                          Services
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage>Service</BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </BreadcrumbList>
-                  </Breadcrumb>
-                  <div className="flex flex-row justify-between">
-                    <h1 className="text-3xl font-semibold">Service Details</h1>
-                    <AddServiceCard></AddServiceCard>
+            {items.map((item) => (
+              <div
+                className="flex flex-col flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-4"
+                key={item.vehicle_id}
+              >
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <Breadcrumb>
+                      <BreadcrumbList>
+                        <BreadcrumbItem>
+                          <BreadcrumbLink href="/dashboard">
+                            Dashboard
+                          </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                          <BreadcrumbLink href="/services">
+                            Services
+                          </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbItem>
+                          <BreadcrumbPage>Service</BreadcrumbPage>
+                        </BreadcrumbItem>
+                      </BreadcrumbList>
+                    </Breadcrumb>
+                    <div className="flex flex-row justify-between">
+                      <h1 className="text-3xl font-semibold">
+                        Service Details
+                      </h1>
+                      <AddServiceCard></AddServiceCard>
+                    </div>
                   </div>
-                </div>
-                <Card className="flex flex-grow flex-col xl:flex-row w-full">
-                  <CardTitle className="w-full h-[200px] bg-slate-600 rounded-xl flex justify-end pt-4"></CardTitle>
-                  <CardContent className="w-full pt-8 px-0">
-                    {items.map((item) => (
+                  <Card className="flex flex-grow flex-col xl:flex-row w-full">
+                    <CardContent className="w-full pt-8 px-0">
                       <form onSubmit={handleUpdate} key={item.vehicle_id}>
                         <CardContent>
                           <div className="w-full">
@@ -256,6 +284,14 @@ function Service() {
                                   name="vehicle_id"
                                   type="text"
                                   placeholder=""
+                                  defaultValue={item.vehicle_id}
+                                  required
+                                />
+                                <Input
+                                  id="service_id"
+                                  name="service_id"
+                                  type="text"
+                                  placeholder=""
                                   defaultValue={item.service_id}
                                   required
                                 />
@@ -264,19 +300,50 @@ function Service() {
                           </div>
                         </CardContent>
                         <CardFooter className="flex justify-end gap-4">
-                          <Button
-                            type="submit"
-                            onClick={() => window.location.reload(false)}
-                          >
-                            Update
-                          </Button>
+                          <Button type="submit">Update</Button>
                         </CardFooter>
                       </form>
-                    ))}
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive">Delete</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Delete {item.vname}?</AlertDialogTitle>
+                      <AlertDialogDescription className="font-bold">
+                        This action cannot be undone. This will permanently
+                        delete this vehicle from our servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <form onSubmit={handleDelete}>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <input
+                          type="text"
+                          id="user_id"
+                          name="user_id"
+                          defaultValue={user_id}
+                          className="hidden"
+                        />
+                        <input
+                          type="text"
+                          id="service_id"
+                          name="service_id"
+                          defaultValue={item.service_id}
+                          className="hidden"
+                        />
+                        <Button variant="destructive" type="submit">
+                          Yes, I am really sure
+                        </Button>
+                      </AlertDialogFooter>
+                    </form>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       )}

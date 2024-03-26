@@ -103,7 +103,7 @@ function Garage() {
       <div className="w-full h-full flex flex-col">
         <Header></Header>
         <div className="flex overflow-auto">
-          <div className="min-w-[300px] p-5 overflow-y-auto hidden xl:block">
+          <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
             <Shortcuts></Shortcuts>
             <VehicleList></VehicleList>
           </div>
