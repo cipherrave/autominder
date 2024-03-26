@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ServiceList from "./ServiceList";
-import MileageDialog from "../Dialog/MileageDialog";
 import AddServiceCard from "../Dialog/AddServiceCard";
 import AddVehicleCard from "../Dialog/AddVehicleCard";
 import { useReducer, useEffect, useState } from "react";
@@ -36,7 +35,7 @@ export default function SummaryDash() {
   let fname = jwtDecode(token).fname;
 
   function navService() {
-    nav("/service");
+    nav("/services");
   }
   function navAddVehicle() {
     nav("/addVehicle");
@@ -131,7 +130,6 @@ export default function SummaryDash() {
         <Card className="flex flex-row w-full p-6">
           <AddVehicleCard></AddVehicleCard>
           <AddServiceCard></AddServiceCard>
-          <MileageDialog></MileageDialog>
         </Card>
         <Card className="flex flex-col w-full pb-8">
           <CardHeader>

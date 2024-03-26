@@ -4,8 +4,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Garage from "./pages/Garage";
 import Vehicle from "./pages/Vehicle";
+import Services from "./pages/Services";
 import Service from "./pages/Service";
-import ServiceSingle from "./pages/ServiceSingle";
 import Settings from "./pages/Settings";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./pages/Register";
@@ -43,12 +43,17 @@ function App() {
 
     {
       path: "/services",
+      element: <Services />,
+    },
+
+    {
+      path: "/services",
       element: <Service />,
     },
 
     {
-      path: "/service",
-      element: <ServiceSingle />,
+      path: "/services/service/:id",
+      element: <Service />,
     },
 
     {

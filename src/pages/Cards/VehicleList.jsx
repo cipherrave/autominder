@@ -1,5 +1,5 @@
 import { useReducer, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { reducer, initialState } from "../../reducers/reducer";
 import { FETCH_ACTIONS } from "../../actions";
@@ -31,6 +31,11 @@ const VehicleList = () => {
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const nav = useNavigate();
+
+  function handleVehicle() {
+    const url = "/garage/vehicle/" + value;
+    //nav(url);
+  }
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
@@ -93,7 +98,16 @@ const VehicleList = () => {
                     <CardDescription>{item.reg_num}</CardDescription>
                   </div>
                   <div>
-                    <a href=""></a>
+                    <form onSubmit={handleVehicle}>
+                      <input
+                        type="text"
+                        defaultValue={item.vehicle_id}
+                        className="hidden"
+                      />
+                      <Button type="submit" variant="text">
+                        View
+                      </Button>
+                    </form>
                   </div>
                 </div>
                 <hr />
