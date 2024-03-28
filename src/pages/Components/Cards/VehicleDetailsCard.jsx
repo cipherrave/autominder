@@ -35,24 +35,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import Spinner from "../../../components/spinner";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 function VehicleDetailsCard(props) {
   const token = localStorage.getItem("token");
@@ -87,8 +69,7 @@ function VehicleDetailsCard(props) {
     const values = Object.fromEntries(data.entries());
     try {
       await axios.put("http://localhost:8989/user/vehicle/update", values);
-      delay(1000);
-      window.location.reload();
+      nav("/garage");
     } catch (error) {
       // api error handling
       console.error(error);
@@ -111,7 +92,7 @@ function VehicleDetailsCard(props) {
   }
 
   return (
-    <div className="w-full xl:max-w-[350px] ">
+    <div className="w-full ">
       {loading ? (
         <p>Loading...</p>
       ) : error ? (

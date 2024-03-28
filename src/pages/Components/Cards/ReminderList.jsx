@@ -36,7 +36,7 @@ import * as React from "react";
 import { jwtDecode } from "jwt-decode";
 import VehicleDetailsTag from "../Tags/VehicleDetailsTag";
 
-const ServiceList = () => {
+const ReminderList = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
@@ -127,31 +127,25 @@ const ServiceList = () => {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Vehicle Details</TableHead>
             <TableHead>Service Name</TableHead>
-            <TableHead>Service Date</TableHead>
-            <TableHead>Cost (RM)</TableHead>
             <TableHead>Next Mileage</TableHead>
             <TableHead>Next Service Date</TableHead>
-            <TableHead>Place</TableHead>
             <TableHead>Progress</TableHead>
-            <TableHead>Vehicle Details</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.service_id}>
-              <TableCell className="font-semibold">
-                {item.service_name}
-              </TableCell>
-              <TableCell>{item.service_date}</TableCell>
-              <TableCell>{item.cost}</TableCell>
-              <TableCell>{item.next_date}</TableCell>
-              <TableCell>{item.next_mileage}</TableCell>
-              <TableCell>{item.place}</TableCell>
-              <TableHead>{item.progress}</TableHead>
               <TableCell>
                 <VehicleDetailsTag id={item.vehicle_id}></VehicleDetailsTag>
               </TableCell>
+              <TableCell className="font-semibold">
+                {item.service_name}
+              </TableCell>
+              <TableCell>{item.next_mileage}</TableCell>
+              <TableCell>{item.next_date}</TableCell>
+              <TableCell>{item.progress}</TableCell>
               <TableCell className="text-center">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -264,4 +258,4 @@ const ServiceList = () => {
   );
 };
 
-export default ServiceList;
+export default ReminderList;

@@ -121,7 +121,13 @@ function Vehicle() {
   }, []);
 
   return isLoading ? (
-    <Spinner></Spinner>
+    <div className=" flex justify-center align-middle h-screen w-full">
+      <div className=" w-full overflow-hidden h-full flex flex-col">
+        <div className="flex self-center h-screen pt-10">
+          <Spinner></Spinner>
+        </div>
+      </div>
+    </div>
   ) : (
     <div className="h-screen flex overflow-hidden text-sm">
       <div className="w-full h-full flex flex-col">
@@ -156,17 +162,13 @@ function Vehicle() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row flex-wrap h-full w-full gap-8">
-              <VehicleDetailsCard id={id}></VehicleDetailsCard>
-              <div className="flex flex-col flex-grow overflow-hidden gap-4">
-                <div className="flex flex-row justify-between">
-                  <div className="flex flex-col gap-2">
-                    <h1 className="text-3xl font-semibold">Services</h1>
-                    <p>Services related to this vehicle</p>
-                  </div>
-                  <AddServiceCard></AddServiceCard>
-                </div>
-
+            <div className="grid xl:grid-cols-3 w-full gap-8">
+              <div className="xl:col-span-1">
+                {" "}
+                <VehicleDetailsCard id={id}></VehicleDetailsCard>
+              </div>
+              <div className="xl:col-span-2 overflow-auto">
+                {" "}
                 <ServiceListSingle id={id}></ServiceListSingle>
               </div>
             </div>

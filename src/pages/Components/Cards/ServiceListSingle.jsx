@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import * as React from "react";
 import { jwtDecode } from "jwt-decode";
+import AddServiceCard from "../Dialog/AddServiceCard";
 
 export default function ServiceListSingle(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -98,7 +99,14 @@ export default function ServiceListSingle(props) {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <div className="flex flex-wrap flex-grow">
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-3xl font-semibold">Services</h1>
+              <p>Services related to this vehicle</p>
+            </div>
+            <AddServiceCard></AddServiceCard>
+          </div>
           <Table>
             <TableHeader>
               <TableRow>
@@ -108,8 +116,7 @@ export default function ServiceListSingle(props) {
                 <TableHead>Next Mileage</TableHead>
                 <TableHead>Next Service Date</TableHead>
                 <TableHead>Place</TableHead>
-                <TableHead>Completed</TableHead>
-                <TableHead>Option</TableHead>
+                <TableHead>Progress</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -123,8 +130,7 @@ export default function ServiceListSingle(props) {
                   <TableCell>{item.next_date}</TableCell>
                   <TableCell>{item.next_mileage}</TableCell>
                   <TableCell>{item.place}</TableCell>
-                  <TableCell>{item.completed}</TableCell>
-
+                  <TableHead>{item.progress}</TableHead>
                   <TableCell className="text-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

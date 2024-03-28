@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ServiceList from "./ServiceList";
-
 import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "../reducers/reducer";
 import Spinner from "../../../components/spinner";
@@ -24,6 +23,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { jwtDecode } from "jwt-decode";
+import ReminderList from "./ReminderList";
 
 export default function SummaryDash() {
   const nav = useNavigate();
@@ -96,49 +96,44 @@ export default function SummaryDash() {
           <h1 className="text-3xl font-semibold">Welcome, {fname}!</h1>
         </div>
       </div>
-      <div className="flex flex-row flex-wrap gap-4">
-        <Card className="h-fit flex flex-col flex-grow w-full">
+      <div className="grid  xl:grid-cols-3 sm:grid-cols-1 gap-4">
+        <Card className="flex flex-col flex-grow">
           <CardHeader className="flex">
             <CardTitle className="text-3xl">Summary</CardTitle>
             <CardDescription className="pt-3">
               The following is the summary of your driving trend{" "}
             </CardDescription>
           </CardHeader>
-          <CardContent className="md:flex-row sm:flex justify-evenly sm:justify-center gap-4 text-center">
-            <div className="w-full sm:w-1/3 h-32">
+          <CardContent className="grid grid-cols-3">
+            <div>
               <h1 className="text-2xl ml-[-5px]">🚘🏍️</h1>
               <h1>You own</h1>
               <h1 className="text-3xl font-semibold">{totalVehicle}</h1>
               <p>vehicles</p>
             </div>
-            <div className="w-full sm:w-1/3  h-32">
+            <div>
               <h1 className="text-2xl ml-[-5px]">🛣️</h1>
               <h1>You drove</h1>
               <h1 className="text-3xl font-semibold">{sumMileage} km</h1>
               <p>in total</p>
             </div>
-            <div className="w-full sm:w-1/3  h-32">
+            <div>
               <h1 className="text-2xl ml-[-5px]">💸</h1>
               <h1>You spent</h1>
               <h1 className="text-3xl font-semibold">RM {sumCost}</h1>
               <p>on services</p>
             </div>
           </CardContent>
-        </Card>{" "}
-        <Card className="flex flex-col w-full pb-8">
+        </Card>
+        <Card className="flex flex-col flex-grow overflow-hidden xl:col-span-2">
           <CardHeader>
             <CardTitle className="text-3xl">Reminders</CardTitle>
-            <CardDescription>Meow</CardDescription>
           </CardHeader>
-          <div className="flex flex-row px-6 gap-4">
-            <Card className="w-full h-[150px]">Meow</Card>
-            <Card className="w-full h-[150px]">Meow</Card>
-            <Card className="w-full h-[150px]">Meow</Card>
-            <Card className="w-full h-[150px]">Meow</Card>
-            <Card className="w-full h-[150px]">Meow</Card>
-          </div>
+          <CardContent>
+            <ReminderList></ReminderList>
+          </CardContent>
         </Card>
-        <Card className="flex flex-col flex-grow overflow-hidden">
+        <Card className="flex flex-col flex-grow overflow-hidden xl:col-span-3">
           <CardHeader>
             <CardTitle className="text-3xl">Services</CardTitle>
             <CardDescription>

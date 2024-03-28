@@ -203,11 +203,11 @@ const AddServiceCard = () => {
                 <Textarea id="notes" name="notes" type="text" placeholder="" />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Completed</Label>{" "}
+                <Label htmlFor="name">Progress</Label>{" "}
                 <Input
-                  id="completed"
-                  name="completed"
-                  type="checkbox"
+                  id="progress"
+                  name="progress"
+                  type="text"
                   valueChecked="true"
                 />
               </div>

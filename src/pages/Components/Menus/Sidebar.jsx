@@ -64,7 +64,7 @@ export default function Sidebar() {
         side="left"
       >
         <Shortcuts></Shortcuts>
-        <ScrollArea className="h-[800px] pr-4">
+        <ScrollArea className="h-[100vh] pr-4">
           <VehicleList></VehicleList>
         </ScrollArea>
       </SheetContent>
