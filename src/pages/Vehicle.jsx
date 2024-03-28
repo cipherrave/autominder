@@ -1,15 +1,15 @@
-import Header from "./Menus/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useReducer, useEffect, useState } from "react";
-import { reducer, initialState } from "../reducers/reducer";
+import { reducer, initialState } from "./Components/reducers/reducer";
 import { FETCH_ACTIONS } from "../actions";
+import Header from "./Components/Menus/Header";
 import { Button } from "@/components/ui/button";
-import VehicleList from "./Cards/VehicleList";
-import AddVehicleCard from "./Dialog/AddVehicleCard";
+import VehicleList from "./Components/Cards/VehicleList";
+import AddVehicleCard from "./Components/Dialog/AddVehicleCard";
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -28,7 +28,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import Shortcuts from "./Menus/Shortcuts";
 import { useParams } from "react-router-dom";
 import {
   AlertDialog,
@@ -58,6 +57,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import VehicleDetailsCard from "./Components/Cards/VehicleDetailsCard";
+import AddServiceCard from "./Components/Dialog/AddServiceCard";
+import ServiceListSingle from "./Components/Cards/ServiceListSingle";
+import Shortcuts from "./Components/Menus/Shortcuts";
 
 function Vehicle() {
   const token = localStorage.getItem("token");
@@ -73,8 +76,7 @@ function Vehicle() {
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
-    const getItems = async () => {
-      delay(2000);
+    const getVehicle = async () => {
       // parse vehicleData from localStorage
       const vehicleData = JSON.parse(localStorage.getItem("vehicleData"));
       let filteredVehicleData = vehicleData.filter((element) => {
@@ -82,9 +84,13 @@ function Vehicle() {
           return element;
         }
       });
-      dispatch({ type: FETCH_ACTIONS.SUCCESS, data: filteredVehicleData });
+      dispatch({
+        type: FETCH_ACTIONS.SUCCESS,
+        data: filteredVehicleData,
+      });
     };
-    getItems();
+
+    getVehicle();
   }, []);
 
   async function checkToken() {
@@ -114,408 +120,59 @@ function Vehicle() {
     checkToken();
   }, []);
 
-  async function handleUpdate(event) {
-    // Prevent the default form submission
-    const data = new FormData(event.target);
-    const values = Object.fromEntries(data.entries());
-    try {
-      await axios.put("http://localhost:8989/user/vehicle/update", values);
-      alert("Vehicle updated successfully!");
-      nav("/garage");
-    } catch (error) {
-      // api error handling
-      alert("Vehicle not updated. Something is wrong...");
-      console.error(error);
-    }
-  }
-
-  async function handleDelete(event) {
-    // Prevent the default form submission
-    event.preventDefault();
-    const data = new FormData(event.target);
-    const values = Object.fromEntries(data.entries());
-    try {
-      await axios.delete("http://localhost:8989/user/vehicle/delete", {
-        data: values,
-      });
-      nav("/garage");
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function handleVehicle(event) {
-    const data = new FormData(event.target);
-    const values = Object.fromEntries(data.entries());
-    const url = "/garage/vehicle/" + values.vehicle_id;
-    nav(url);
-  }
-
-  async function handleService(event) {
-    const data = new FormData(event.target);
-    const values = Object.fromEntries(data.entries());
-    const url = "/services/service/" + values.service_id;
-    nav(url);
-  }
-
-  async function handleDeleteService(event) {
-    // Prevent the default form submission
-    event.preventDefault();
-    const data = new FormData(event.target);
-    const values = Object.fromEntries(data.entries());
-    try {
-      await axios.delete("http://localhost:8989/user/service/delete", {
-        data: values,
-      });
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   return isLoading ? (
     <Spinner></Spinner>
   ) : (
     <div className="h-screen flex overflow-hidden text-sm">
-      {loading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : (
-        <div className="w-full h-full flex flex-col">
-          <Header></Header>
-          <div className="flex overflow-auto">
-            <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
-              <Shortcuts></Shortcuts>
-              <VehicleList></VehicleList>
-            </div>
-            {items.map((item) => (
-              <div
-                className="flex flex-col flex-wrap border-r  h-full overflow-y-auto p-5 w-full gap-4"
-                key={item.vehicle_id}
-              >
-                <div className="flex flex-col gap-4">
-                  <div>
-                    <Breadcrumb>
-                      <BreadcrumbList>
-                        <BreadcrumbItem>
-                          <BreadcrumbLink href="/dashboard">
-                            Dashboard
-                          </BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbItem>
-                          <BreadcrumbLink href="/garage">Garage</BreadcrumbLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbItem>
-                          <BreadcrumbPage>Vehicle</BreadcrumbPage>
-                        </BreadcrumbItem>
-                      </BreadcrumbList>
-                    </Breadcrumb>
-                    <div className="flex flex-row justify-between">
-                      <h1 className="text-3xl font-semibold">
-                        Vehicle Details
-                      </h1>
-                    </div>
-                  </div>
-
-                  <Card className="flex flex-grow flex-col xl:flex-row w-full">
-                    <CardTitle className="w-full h-[200px] bg-slate-600 rounded-xl flex justify-end pt-4"></CardTitle>
-                    <CardContent className="w-full pt-8 px-0">
-                      <form onSubmit={handleUpdate}>
-                        <CardContent>
-                          <div className="w-full">
-                            <div className="grid w-full items-center gap-4">
-                              <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="vname">Nickname</Label>
-                                <Input
-                                  id="vname"
-                                  name="vname"
-                                  type="text"
-                                  placeholder=""
-                                  defaultValue={item.vname}
-                                  required
-                                />
-                              </div>
-                              <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="name">Mileage</Label>
-                                <Input
-                                  id="mileage"
-                                  name="mileage"
-                                  type="number"
-                                  placeholder=""
-                                  defaultValue={item.mileage}
-                                  required
-                                />
-                              </div>
-                              <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="name">
-                                  Registration Number
-                                </Label>
-                                <Input
-                                  id="reg_num"
-                                  name="reg_num"
-                                  type="text"
-                                  placeholder=""
-                                  defaultValue={item.reg_num}
-                                  required
-                                />
-                              </div>
-                              <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="name">Brand</Label>
-                                <Input
-                                  id="brand"
-                                  name="brand"
-                                  type="text"
-                                  placeholder=""
-                                  defaultValue={item.brand}
-                                  required
-                                />
-                              </div>
-                              <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="name">Model</Label>
-                                <Input
-                                  id="model"
-                                  name="model"
-                                  type="text"
-                                  placeholder=""
-                                  defaultValue={item.model}
-                                  required
-                                />
-                              </div>
-                              <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="name">Purchase Year</Label>
-                                <Input
-                                  id="purchase_year"
-                                  name="purchase_year"
-                                  type="number"
-                                  min="1901"
-                                  max="2099"
-                                  step="1"
-                                  placeholder=""
-                                  defaultValue={item.purchase_year}
-                                  required
-                                />
-                              </div>
-                              <div className="flex flex-col space-y-1.5">
-                                <Label htmlFor="name">Notes </Label>
-                                <Textarea
-                                  id="note"
-                                  name="note"
-                                  placeholder=""
-                                  defaultValue={item.notes}
-                                />
-                              </div>
-                              <div className="hidden">
-                                <Label htmlFor="user_id">User ID</Label>
-                                <Input
-                                  id="user_id"
-                                  name="user_id"
-                                  type="text"
-                                  placeholder=""
-                                  defaultValue={user_id}
-                                  required
-                                />
-                                <Label htmlFor="vehicle_id">Vehicle ID</Label>
-                                <Input
-                                  id="vehicle_id"
-                                  name="vehicle_id"
-                                  type="text"
-                                  placeholder=""
-                                  defaultValue={item.vehicle_id}
-                                  required
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                        <CardFooter className="flex justify-end gap-4">
-                          <Button type="submit">Update</Button>
-                        </CardFooter>
-                      </form>
-                    </CardContent>
-                  </Card>
+      <div className="w-full h-full flex flex-col">
+        <Header></Header>
+        <div className="flex overflow-auto">
+          <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
+            <Shortcuts></Shortcuts>
+            <VehicleList></VehicleList>
+          </div>
+          <div className=" flex-wrap border-r flex h-full overflow-auto p-5 w-full gap-4">
+            <div className="flex flex-row justify-between">
+              <div>
+                <Breadcrumb>
+                  <BreadcrumbList>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="/dashboard">
+                        Dashboard
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbLink href="/garage">Garage</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>Vehicle</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </BreadcrumbList>
+                </Breadcrumb>
+                <div className="flex flex-row flex-wrap justify-between">
+                  <h1 className="text-3xl font-semibold">Vehicle Details</h1>
                 </div>
-                <div className="flex flex-wrap flex-grow overflow-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Service Name</TableHead>
-                        <TableHead>Service Date</TableHead>
-                        <TableHead>Next Mileage</TableHead>
-                        <TableHead>Next Service Date</TableHead>
-                        <TableHead>Cost (RM)</TableHead>
-                        <TableHead>Vehicle ID</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {items.map((item) => (
-                        <TableRow key={item.service_id}>
-                          <TableCell className="font-semibold">
-                            {item.service_name}
-                          </TableCell>
-                          <TableCell>{item.service_date}</TableCell>
-                          <TableCell>{item.next_mileage}</TableCell>
-                          <TableCell>{item.next_date}</TableCell>
-                          <TableCell>{item.cost}</TableCell>
-                          <TableCell>{item.vehicle_id}</TableCell>
-                          <TableCell className="text-center">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="text" size="icon">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth="1.5"
-                                    stroke="currentColor"
-                                    className="w-6 h-6"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-                                    />
-                                  </svg>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem>
-                                  <form onSubmit={handleService}>
-                                    <input
-                                      type="text"
-                                      id="service_id"
-                                      name="service_id"
-                                      defaultValue={item.service_id}
-                                      className="hidden"
-                                    />
-                                    <Button
-                                      type="submit"
-                                      variant="text"
-                                      className="p-0 font-normal"
-                                    >
-                                      View Service
-                                    </Button>
-                                  </form>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <form onSubmit={handleVehicle}>
-                                    <input
-                                      type="text"
-                                      id="vehicle_id"
-                                      name="vehicle_id"
-                                      defaultValue={item.vehicle_id}
-                                      className="hidden"
-                                    />
-                                    <Button
-                                      type="submit"
-                                      variant="text"
-                                      className="p-0 font-normal"
-                                    >
-                                      View Vehicle
-                                    </Button>
-                                  </form>
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <AlertDialog>
-                                  <AlertDialogTrigger asChild>
-                                    <Button
-                                      variant="text"
-                                      className="font-normal hover:bg-red-500 w-full flex justify-start p-2"
-                                    >
-                                      Delete
-                                    </Button>
-                                  </AlertDialogTrigger>
-                                  <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                      <AlertDialogTitle>
-                                        Delete {item.service_name}?
-                                      </AlertDialogTitle>
-                                      <AlertDialogDescription className="font-bold">
-                                        This action cannot be undone. This will
-                                        permanently delete this vehicle from our
-                                        servers.
-                                      </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <form onSubmit={handleDelete}>
-                                      <AlertDialogFooter>
-                                        <AlertDialogCancel>
-                                          Cancel
-                                        </AlertDialogCancel>
-                                        <input
-                                          type="text"
-                                          id="user_id"
-                                          name="user_id"
-                                          defaultValue={user_id}
-                                          className="hidden"
-                                        />
-                                        <input
-                                          type="text"
-                                          id="service_id"
-                                          name="service_id"
-                                          defaultValue={item.service_id}
-                                          className="hidden"
-                                        />
-                                        <Button
-                                          variant="destructive"
-                                          type="submit"
-                                        >
-                                          Yes, I am really sure
-                                        </Button>
-                                      </AlertDialogFooter>
-                                    </form>
-                                  </AlertDialogContent>
-                                </AlertDialog>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive">Delete</Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Delete {item.vname}?</AlertDialogTitle>
-                      <AlertDialogDescription className="font-bold">
-                        This action cannot be undone. This will permanently
-                        delete this vehicle from our servers.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <form onSubmit={handleDeleteService}>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <input
-                          type="text"
-                          id="user_id"
-                          name="user_id"
-                          defaultValue={user_id}
-                          className="hidden"
-                        />
-                        <input
-                          type="text"
-                          id="vehicle_id"
-                          name="vehicle_id"
-                          defaultValue={item.vehicle_id}
-                          className="hidden"
-                        />
-                        <Button variant="destructive" type="submit">
-                          Yes, I am really sure
-                        </Button>
-                      </AlertDialogFooter>
-                    </form>
-                  </AlertDialogContent>
-                </AlertDialog>
               </div>
-            ))}
+            </div>
+            <div className="flex flex-col md:flex-row flex-wrap h-full w-full gap-8">
+              <VehicleDetailsCard id={id}></VehicleDetailsCard>
+              <div className="flex flex-col flex-grow overflow-hidden gap-4">
+                <div className="flex flex-row justify-between">
+                  <div className="flex flex-col gap-2">
+                    <h1 className="text-3xl font-semibold">Services</h1>
+                    <p>Services related to this vehicle</p>
+                  </div>
+                  <AddServiceCard></AddServiceCard>
+                </div>
+
+                <ServiceListSingle id={id}></ServiceListSingle>
+              </div>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

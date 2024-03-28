@@ -12,7 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ModeToggle } from "../components/mode-toggle";
+import ModeToggle from "../components/mode-toggle";
 
 const navigation = [
   { name: "AutoMinder", href: "#" },

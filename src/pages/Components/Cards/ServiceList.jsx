@@ -9,11 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useReducer, useEffect, useState } from "react";
-import { reducer, initialState } from "../../reducers/reducer";
-import { FETCH_ACTIONS } from "../../actions";
+import { reducer, initialState } from "../reducers/reducer";
+import { FETCH_ACTIONS } from "../../../actions";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import Spinner from "../../components/spinner";
+import Spinner from "../../../components/spinner";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import * as React from "react";
 import { jwtDecode } from "jwt-decode";
+import VehicleDetailsTag from "../Tags/VehicleDetailsTag";
 
 const ServiceList = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -128,10 +129,13 @@ const ServiceList = () => {
           <TableRow>
             <TableHead>Service Name</TableHead>
             <TableHead>Service Date</TableHead>
+            <TableHead>Cost (RM)</TableHead>
             <TableHead>Next Mileage</TableHead>
             <TableHead>Next Service Date</TableHead>
-            <TableHead>Cost (RM)</TableHead>
-            <TableHead>Vehicle ID</TableHead>
+            <TableHead>Place</TableHead>
+            <TableHead>Completed</TableHead>
+            <TableHead>Vehicle Details</TableHead>
+            <TableHead>Option</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -141,10 +145,15 @@ const ServiceList = () => {
                 {item.service_name}
               </TableCell>
               <TableCell>{item.service_date}</TableCell>
-              <TableCell>{item.next_mileage}</TableCell>
-              <TableCell>{item.next_date}</TableCell>
               <TableCell>{item.cost}</TableCell>
-              <TableCell>{item.vehicle_id}</TableCell>
+              <TableCell>{item.next_date}</TableCell>
+              <TableCell>{item.next_mileage}</TableCell>
+              <TableCell>{item.place}</TableCell>
+              <TableCell>{item.completed}</TableCell>
+
+              <TableCell>
+                <VehicleDetailsTag id={item.vehicle_id}></VehicleDetailsTag>
+              </TableCell>
               <TableCell className="text-center">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -167,24 +176,6 @@ const ServiceList = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem>
-                      <form onSubmit={handleService}>
-                        <input
-                          type="text"
-                          id="service_id"
-                          name="service_id"
-                          defaultValue={item.service_id}
-                          className="hidden"
-                        />
-                        <Button
-                          type="submit"
-                          variant="text"
-                          className="p-0 font-normal"
-                        >
-                          View Service
-                        </Button>
-                      </form>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
                       <form onSubmit={handleVehicle}>
                         <input
                           type="text"
@@ -202,12 +193,30 @@ const ServiceList = () => {
                         </Button>
                       </form>
                     </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <form onSubmit={handleService}>
+                        <input
+                          type="text"
+                          id="service_id"
+                          name="service_id"
+                          defaultValue={item.service_id}
+                          className="hidden"
+                        />
+                        <Button
+                          type="submit"
+                          variant="text"
+                          className="p-0 font-normal"
+                        >
+                          View Service
+                        </Button>
+                      </form>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button
                           variant="text"
-                          className="font-normal hover:bg-red-500 w-full flex justify-start p-2"
+                          className="font-normal bg-red-500 text-white w-full flex justify-start p-2"
                         >
                           Delete
                         </Button>

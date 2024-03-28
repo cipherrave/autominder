@@ -10,11 +10,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ServiceList from "./ServiceList";
-import AddServiceCard from "../Dialog/AddServiceCard";
-import AddVehicleCard from "../Dialog/AddVehicleCard";
+
 import { useReducer, useEffect, useState } from "react";
-import { reducer, initialState } from "../../reducers/reducer";
-import Spinner from "../../components/spinner";
+import { reducer, initialState } from "../reducers/reducer";
+import Spinner from "../../../components/spinner";
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -87,7 +86,6 @@ export default function SummaryDash() {
     <div className="flex flex-col gap-4">
       <div className="flex flex-row justify-between">
         <div>
-          {" "}
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -127,10 +125,6 @@ export default function SummaryDash() {
             </div>
           </CardContent>
         </Card>{" "}
-        <Card className="flex flex-row w-full p-6">
-          <AddVehicleCard></AddVehicleCard>
-          <AddServiceCard></AddServiceCard>
-        </Card>
         <Card className="flex flex-col w-full pb-8">
           <CardHeader>
             <CardTitle className="text-3xl">Reminders</CardTitle>

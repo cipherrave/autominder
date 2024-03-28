@@ -1,8 +1,8 @@
 import { useReducer, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { reducer, initialState } from "../../reducers/reducer";
-import { FETCH_ACTIONS } from "../../actions";
+import { reducer, initialState } from "../reducers/reducer";
+import { FETCH_ACTIONS } from "../../../actions";
 import axios from "axios";
 import {
   DropdownMenu,
@@ -20,7 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Spinner from "../../components/spinner";
+import Spinner from "../../../components/spinner";
 
 const VehicleList = () => {
   const [state, dispatch] = useReducer(reducer, initialState);

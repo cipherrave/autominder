@@ -1,15 +1,15 @@
-import Header from "./Menus/Header";
+import Header from "./Components/Menus/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useReducer, useEffect, useState } from "react";
-import { reducer, initialState } from "../reducers/reducer";
+import { reducer, initialState } from "./Components/reducers/reducer";
 import { FETCH_ACTIONS } from "../actions";
 import { Button } from "@/components/ui/button";
-import VehicleList from "./Cards/VehicleList";
-import AddVehicleCard from "./Dialog/AddVehicleCard";
+import VehicleList from "./Components/Cards/VehicleList";
+import AddVehicleCard from "./Components/Dialog/AddVehicleCard";
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -28,7 +28,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import Shortcuts from "./Menus/Shortcuts";
+import Shortcuts from "./Components/Menus/Shortcuts";
 import { useParams } from "react-router-dom";
 import {
   AlertDialog,

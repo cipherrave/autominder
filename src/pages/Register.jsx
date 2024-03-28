@@ -22,7 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ModeToggle } from "../components/mode-toggle";
+import ModeToggle from "../components/mode-toggle";
 
 const baseURL = "http://localhost:8989/register";
 

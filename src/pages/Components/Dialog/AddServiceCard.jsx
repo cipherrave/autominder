@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useReducer, useEffect } from "react";
-import { reducer, initialState } from "../../reducers/reducer";
-import { FETCH_ACTIONS } from "../../actions";
+import { reducer, initialState } from "../reducers/reducer";
+import { FETCH_ACTIONS } from "../../../actions";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@material-tailwind/react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const AddServiceCard = () => {
   const token = localStorage.getItem("token");
@@ -200,6 +201,15 @@ const AddServiceCard = () => {
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Notes </Label>
                 <Textarea id="notes" name="notes" type="text" placeholder="" />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Completed</Label>{" "}
+                <Input
+                  id="completed"
+                  name="completed"
+                  type="checkbox"
+                  valueChecked="true"
+                />
               </div>
               <div className="hidden">
                 <Label htmlFor="user_id">User ID</Label>

@@ -1,10 +1,10 @@
-import Header from "./Menus/Header";
-import SummaryDash from "./Cards/SummaryDash";
+import Header from "./Components/Menus/Header";
+import SummaryDash from "./Components/Cards/SummaryDash";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import VehicleList from "./Cards/VehicleList";
-import Shortcuts from "./Menus/Shortcuts";
+import VehicleList from "./Components/Cards/VehicleList";
+import Shortcuts from "./Components/Menus/Shortcuts";
 import Spinner from "../components/spinner";
 
 function Dashboard() {

@@ -10,7 +10,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import { ModeToggle } from "../../components/mode-toggle";
+import ModeToggle from "../../../components/mode-toggle";
 
 export default function Header() {
   const [fname, setFname] = useState(null);

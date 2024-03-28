@@ -1,4 +1,4 @@
-import { FETCH_ACTIONS } from "../actions";
+import { FETCH_ACTIONS } from "../../../actions";
 
 const initialState = {
   items: [],

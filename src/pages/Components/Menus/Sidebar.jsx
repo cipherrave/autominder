@@ -19,8 +19,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { reducer, initialState } from "../../reducers/reducer";
-import { FETCH_ACTIONS } from "../../actions";
+import { reducer, initialState } from "../reducers/reducer";
+import { FETCH_ACTIONS } from "../../../actions";
 import { useReducer, useEffect, useState } from "react";
 import axios from "axios";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";

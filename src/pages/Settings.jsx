@@ -1,9 +1,9 @@
-import Header from "./Menus/Header";
+import Header from "./Components/Menus/Header";
 import axios from "axios";
-import SettingsCard from "./Cards/SettingsCard";
+import SettingsCard from "./Components/Cards/SettingsCard";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import VehicleList from "./Cards/VehicleList";
+import VehicleList from "./Components/Cards/VehicleList";
 import {
   Breadcrumb,
   BreadcrumbEllipsis,

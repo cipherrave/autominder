@@ -1,7 +1,7 @@
-import VehicleList from "./Cards/VehicleList";
-import Header from "./Menus/Header";
-import ServiceList from "./Cards/ServiceList";
-import AddServiceCard from "./Dialog/AddServiceCard";
+import VehicleList from "./Components/Cards/VehicleList";
+import Header from "./Components/Menus/Header";
+import ServiceList from "./Components/Cards/ServiceList";
+import AddServiceCard from "./Components/Dialog/AddServiceCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,8 +23,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import Shortcuts from "./Menus/Shortcuts";
+import Shortcuts from "./Components/Menus/Shortcuts";
 import Spinner from "../components/spinner";
+import VehicleDetailsTag from "./Components/Tags/VehicleDetailsTag";
 
 function Services() {
   // check token is valid
@@ -85,7 +86,6 @@ function Services() {
                     <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
-
                   <BreadcrumbItem>
                     <BreadcrumbPage>Services</BreadcrumbPage>
                   </BreadcrumbItem>
@@ -98,6 +98,7 @@ function Services() {
             </div>
             <br />
             <ServiceList></ServiceList>
+            <VehicleDetailsTag></VehicleDetailsTag>
           </div>
         </div>
       </div>
