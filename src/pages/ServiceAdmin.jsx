@@ -20,7 +20,7 @@ import ServiceDetailsCard from "./Components/Cards/ServiceDetailsCard";
 
 function ServiceAdmin() {
   const token = localStorage.getItem("token");
-  const user_id = jwtDecode(token).user_id;
+  const admin_id = jwtDecode(token).admin_id;
   const [isLoading, setLoading] = useState(true);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { items, loading, error } = state;
@@ -50,14 +50,14 @@ function ServiceAdmin() {
     // if token is not present, redirect to login
     if (!token) {
       nav("/login");
-    } else if (admin_id === "") {
+    } else if (!admin_id) {
       nav("/login");
     }
     // validate token by calling the private API
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:8989/admin/protected",
+        "https://autominder-backend.onrender.com/admin/protected",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -84,7 +84,10 @@ function ServiceAdmin() {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/user/service/update", values);
+      await axios.put(
+        "https://autominder-backend.onrender.com/user/service/update",
+        values
+      );
       alert("Service updated successfully!");
       nav("/services");
     } catch (error) {
@@ -100,9 +103,12 @@ function ServiceAdmin() {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/user/service/delete", {
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/user/service/delete",
+        {
+          data: values,
+        }
+      );
       alert("Service deleted.");
       nav("/services");
     } catch (error) {

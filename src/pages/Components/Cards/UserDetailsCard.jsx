@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useReducer, useEffect, useState } from "react";
@@ -18,13 +17,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 function UserDetailsCard(props) {
   const token = localStorage.getItem("token");
@@ -57,7 +49,10 @@ function UserDetailsCard(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/admin/updateUser", values);
+      await axios.put(
+        "https://autominder-backend.onrender.com/admin/updateUser",
+        values
+      );
       alert("Account details have been updated!");
       nav("/admin/users");
     } catch (error) {
@@ -71,9 +66,12 @@ function UserDetailsCard(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/user/vehicle/delete", {
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/user/vehicle/delete",
+        {
+          data: values,
+        }
+      );
       nav("/admin/users");
     } catch (error) {
       console.error(error);

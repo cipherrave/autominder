@@ -52,7 +52,8 @@ export default function MileageDialog() {
     getItems();
   }, []);
 
-  const updateURL = "http://localhost:8989/user/vehicle/update";
+  const updateURL =
+    "https://autominder-backend.onrender.com/user/vehicle/update";
   async function handleUpdate(event) {
     // Prevent the default form submission
     event.preventDefault();

@@ -50,7 +50,7 @@ const ServiceListAdmin = () => {
       try {
         await delay(1000);
         let getAllService = await axios.get(
-          "http://localhost:8989/admin/service/all",
+          "https://autominder-backend.onrender.com/admin/service/all",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -105,9 +105,12 @@ const ServiceListAdmin = () => {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/admin/service/delete", {
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/admin/service/delete",
+        {
+          data: values,
+        }
+      );
       window.location.reload();
     } catch (error) {
       console.error(error);

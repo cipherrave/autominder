@@ -23,8 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ModeToggle from "../components/mode-toggle";
-
-const baseURL = "http://localhost:8989/register";
+import AutominderLogo from "../assets/icons/autominder";
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,7 +42,10 @@ function Register() {
     const values = Object.fromEntries(data.entries());
     try {
       setIsLoading(true);
-      const response = await axios.post(baseURL, values);
+      const response = await axios.post(
+        "https://autominder-backend.onrender.com/register",
+        values
+      );
       nav("/login");
     } catch (error) {
       alert("Registration failed");
@@ -57,10 +59,11 @@ function Register() {
     <div>
       <div className="flex flex-col align-middle justify-center py-12">
         <div className="mx-auto w-[350px] gap-6">
-          <div>
+          <div className="flex justify-end">
             <ModeToggle></ModeToggle>
           </div>
           <div className="flex flex-col gap-2 text-start">
+            <AutominderLogo></AutominderLogo>
             <h1 className="text-3xl font-bold">Welcome!</h1>
             <p className="text-balance text-muted-foreground">
               Let's get you started.

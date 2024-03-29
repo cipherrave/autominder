@@ -30,9 +30,12 @@ const AddVehicleCard = () => {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.post("http://localhost:8989/vehicle/create", values);
+      await axios.post(
+        "https://autominder-backend.onrender.com/vehicle/create",
+        values
+      );
       let getAllVehicle = await axios.get(
-        "http://localhost:8989/user/vehicle/all",
+        "https://autominder-backend.onrender.com/user/vehicle/all",
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -13,10 +13,12 @@ import {
 } from "@/components/ui/breadcrumb";
 import ShortcutsAdmin from "./Components/Menus/ShortcutsAdmin";
 import Spinner from "../components/spinner";
+import { jwtDecode } from "jwt-decode";
 
 function UsersAdmin() {
   // check token is valid
   const token = localStorage.getItem("token");
+  const admin_id = jwtDecode(token).admin_id;
   const [isLoading, setLoading] = useState(true);
   const nav = useNavigate();
 
@@ -24,14 +26,14 @@ function UsersAdmin() {
     // if token is not present, redirect to login
     if (!token) {
       nav("/login");
-    } else if (admin_id === "") {
+    } else if (!admin_id) {
       nav("/login");
     }
     // validate token by calling the private API
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:8989/admin/protected",
+        "https://autominder-backend.onrender.com/admin/protected",
         {
           headers: {
             Authorization: `Bearer ${token}`,

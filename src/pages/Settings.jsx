@@ -25,11 +25,14 @@ function Settings() {
     // validate token by calling the private API
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8989/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://autominder-backend.onrender.com/protected",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);

@@ -8,8 +8,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import Spinner from "../../../components/spinner";
@@ -40,7 +38,7 @@ const VehicleList = () => {
       }
       try {
         let getAllVehicle = await axios.get(
-          "http://localhost:8989/user/vehicle/all",
+          "https://autominder-backend.onrender.com/user/vehicle/all",
           {
             headers: {
               Authorization: `Bearer ${token}`,

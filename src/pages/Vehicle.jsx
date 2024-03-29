@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "./Components/reducers/reducer";
 import { FETCH_ACTIONS } from "../actions";
@@ -23,7 +22,6 @@ import ServiceList from "./Components/Cards/ServiceList";
 
 function Vehicle() {
   const token = localStorage.getItem("token");
-  const user_id = jwtDecode(token).user_id;
   const [isLoading, setLoading] = useState(true);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { items, loading, error } = state;
@@ -60,11 +58,14 @@ function Vehicle() {
     // validate token by calling the private API
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8989/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://autominder-backend.onrender.com/protected",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);

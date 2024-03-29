@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useReducer, useEffect, useState } from "react";
+import { useReducer, useEffect } from "react";
 import { reducer, initialState } from "../reducers/reducer";
 import { FETCH_ACTIONS } from "../../../actions";
 import { Button } from "@/components/ui/button";
@@ -51,7 +51,10 @@ function VehicleDetailsCard(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/user/vehicle/update", values);
+      await axios.put(
+        "https://autominder-backend.onrender.com/user/vehicle/update",
+        values
+      );
       nav("/garage");
     } catch (error) {
       // api error handling
@@ -65,9 +68,12 @@ function VehicleDetailsCard(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/user/vehicle/delete", {
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/user/vehicle/delete",
+        {
+          data: values,
+        }
+      );
       nav("/garage");
     } catch (error) {
       console.error(error);
@@ -87,19 +93,12 @@ function VehicleDetailsCard(props) {
               <Card className="flex flex-grow flex-col">
                 <CardTitle className="h-[200px] rounded-xl flex justify-end p-4">
                   <form
-                    action="/user/photo"
-                    encType="multipart/form-data"
+                    action="/uploadphoto"
+                    enctype="multipart/form-data"
                     method="POST"
                   >
-                    <div className="form-group">
-                      {" "}
-                      <input
-                        type="file"
-                        className="form-control-file"
-                        name={item.vname}
-                      />
-                      <input type="submit" value="Upload Photo" />
-                    </div>
+                    <input type="file" name={item.vname} accept="image/*" />
+                    <input type="submit" value="Upload Photo" />
                   </form>
                 </CardTitle>
                 <CardContent className="w-full pt-8 px-0">

@@ -70,7 +70,10 @@ function ServiceDetailsCard(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/user/service/update", values);
+      await axios.put(
+        "https://autominder-backend.onrender.com/user/service/update",
+        values
+      );
       window.location.reload();
     } catch (error) {
       // api error handling
@@ -84,9 +87,12 @@ function ServiceDetailsCard(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/user/service/delete", {
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/user/service/delete",
+        {
+          data: values,
+        }
+      );
       alert("Service deleted.");
       nav("/services");
     } catch (error) {

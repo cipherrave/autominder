@@ -53,7 +53,7 @@ const UsersList = () => {
       try {
         await delay(1000);
         let getAllUser = await axios.get(
-          "http://localhost:8989/admin/user/all",
+          "https://autominder-backend.onrender.com/admin/user/all",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -95,12 +95,15 @@ const UsersList = () => {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/admin/deleteUser", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/admin/deleteUser",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: values,
+        }
+      );
       window.location.reload();
     } catch (error) {
       console.error(error);

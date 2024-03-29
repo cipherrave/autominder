@@ -22,8 +22,6 @@ import { DeleteAccountDialog } from "../Dialog/DeleteAccountDialog";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
-const baseURL = "http://localhost:8989/user/updateUser";
-
 const SettingsCardAdmin = () => {
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
@@ -41,7 +39,7 @@ const SettingsCardAdmin = () => {
     const values = Object.fromEntries(data.entries());
     try {
       const response = await axios.put(
-        "http://localhost:8989/user/updateUser",
+        "https://autominder-backend.onrender.com/user/updateUser",
         values
       );
       localStorage.removeItem("token");

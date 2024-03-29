@@ -5,8 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ModeToggle from "../components/mode-toggle";
-
-const baseURL = "http://localhost:8989/admin/login";
+import AutominderLogo from "../assets/icons/autominder";
 
 function LoginAdmin() {
   const nav = useNavigate();
@@ -25,37 +24,14 @@ function LoginAdmin() {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      const response = await axios.post(baseURL, values);
+      const response = await axios.post(
+        "https://autominder-backend.onrender.com/admin/login",
+        values
+      );
       const token = response.data.token;
       // Save the token to local storage to call private APIs
       localStorage.setItem("token", token);
       nav("/admin/dashboard");
-
-      let getAllVehicle = await axios.get(
-        "http://localhost:8989/admin/vehicle/all",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      // save response data into localStorage as vehicleData for other local uses
-      const vehicleArray = getAllVehicle.data;
-      const vehicleString = JSON.stringify(vehicleArray);
-      localStorage.setItem("vehicleData", vehicleString);
-
-      let getAllService = await axios.get(
-        "http://localhost:8989/admin/service/all",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      // save response data into localStorage as serviceData for other local uses
-      const serviceArray = getAllService.data;
-      const serviceString = JSON.stringify(serviceArray);
-      localStorage.setItem("serviceData", serviceString);
     } catch (error) {
       alert(
         "Login failed. Make sure email and password are entered correctly."
@@ -68,10 +44,11 @@ function LoginAdmin() {
     <div>
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
-          <div>
+          <div className="flex justify-end">
             <ModeToggle></ModeToggle>
           </div>
           <div className="flex flex-col gap-2 text-start">
+            <AutominderLogo></AutominderLogo>
             <h1 className="text-3xl font-bold">Welcome!</h1>
             <p className="text-balance text-muted-foreground">
               Let's get you back in, admin.

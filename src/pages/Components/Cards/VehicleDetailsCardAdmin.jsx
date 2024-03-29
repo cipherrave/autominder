@@ -51,7 +51,10 @@ function VehicleDetailsCardAdmin(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/admin/vehicle/update", values);
+      await axios.put(
+        "https://autominder-backend.onrender.com/admin/vehicle/update",
+        values
+      );
     } catch (error) {
       // api error handling
       console.error(error);
@@ -64,9 +67,12 @@ function VehicleDetailsCardAdmin(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/admin/vehicle/delete", {
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/admin/vehicle/delete",
+        {
+          data: values,
+        }
+      );
     } catch (error) {
       console.error(error);
     }

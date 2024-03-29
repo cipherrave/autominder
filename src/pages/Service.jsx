@@ -14,10 +14,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-
 import Shortcuts from "./Components/Menus/Shortcuts";
 import { useParams } from "react-router-dom";
-
 import Spinner from "../components/spinner";
 import ServiceDetailsCard from "./Components/Cards/ServiceDetailsCard";
 
@@ -57,11 +55,14 @@ function Service() {
     // validate token by calling the private API
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8989/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://autominder-backend.onrender.com/protected",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       delay(1000);
     } catch (error) {
       // if token is invalid, redirect to login
@@ -83,7 +84,10 @@ function Service() {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/user/service/update", values);
+      await axios.put(
+        "https://autominder-backend.onrender.com/user/service/update",
+        values
+      );
       alert("Service updated successfully!");
       nav("/services");
     } catch (error) {
@@ -99,9 +103,12 @@ function Service() {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/user/service/delete", {
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/user/service/delete",
+        {
+          data: values,
+        }
+      );
       alert("Service deleted.");
       nav("/services");
     } catch (error) {

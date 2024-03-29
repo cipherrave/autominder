@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const baseURL = "http://localhost:8989/user/deleteUser";
+const baseURL = "https://autominder-backend.onrender.com/user/deleteUser";
 
 export function DeleteDoubleConfirm() {
   const token = localStorage.getItem("token");

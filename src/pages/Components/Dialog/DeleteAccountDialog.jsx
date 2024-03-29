@@ -12,8 +12,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { DeleteDoubleConfirm } from "./DeleteDoubleConfirm";
 
-const baseURL = "http://localhost:8989/user/deleteUser";
-
 export function DeleteAccountDialog() {
   const nav = useNavigate();
 

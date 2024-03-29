@@ -52,7 +52,7 @@ const VehicleListAdmin = () => {
       }
       try {
         let getAllVehicle = await axios.get(
-          "http://localhost:8989/admin/vehicle/all",
+          "https://autominder-backend.onrender.com/admin/vehicle/all",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -104,9 +104,12 @@ const VehicleListAdmin = () => {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/admin/vehicle/delete", {
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/admin/vehicle/delete",
+        {
+          data: values,
+        }
+      );
       alert("Vehicle deleted.");
       window.location.reload();
     } catch (error) {

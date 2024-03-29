@@ -3,35 +3,33 @@ import axios from "axios";
 import SettingsCardAdmin from "./Components/Cards/SettingsCardAdmin";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import VehicleList from "./Components/Cards/VehicleList";
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { jwtDecode } from "jwt-decode";
 
 function SettingsAdmin() {
   // check token is valid
-  const navigate = useNavigate();
+  const nav = useNavigate();
   const token = localStorage.getItem("token");
+  const admin_id = jwtDecode(token).admin_id;
   const [isLoading, setLoading] = useState(true);
 
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
       nav("/login");
-    } else if (admin_id === "") {
+    } else if (!admin_id) {
       nav("/login");
     }
     // validate token by calling the private API
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:8989/admin/protected",
+        "https://autominder-backend.onrender.com/admin/protected",
         {
           headers: {
             Authorization: `Bearer ${token}`,

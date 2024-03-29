@@ -63,13 +63,13 @@ const AddServiceCard = () => {
     const values = Object.fromEntries(data.entries());
     try {
       const response = await axios.post(
-        "http://localhost:8989/service/create",
+        "https://autominder-backend.onrender.com/service/create",
         values
       );
       alert("Service created successfully!");
       window.location.reload();
       let getAllService = await axios.get(
-        "http://localhost:8989/user/service/all",
+        "https://autominder-backend.onrender.com/user/service/all",
         {
           headers: {
             Authorization: `Bearer ${token}`,

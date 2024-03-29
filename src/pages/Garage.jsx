@@ -1,9 +1,7 @@
 import Header from "./Components/Menus/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { useReducer, useEffect, useState } from "react";
-import { reducer, initialState } from "./Components/reducers/reducer";
 import VehicleList from "./Components/Cards/VehicleList";
 import AddVehicleCard from "./Components/Dialog/AddVehicleCard";
 import {
@@ -29,11 +27,14 @@ function Garage() {
     // validate token by calling the private API
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8989/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://autominder-backend.onrender.com/protected",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
@@ -54,7 +55,10 @@ function Garage() {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/user/vehicle/update", values);
+      await axios.put(
+        "https://autominder-backend.onrender.com/user/vehicle/update",
+        values
+      );
       alert("Vehicle updated successfully!");
       nav("/dashboard");
     } catch (error) {

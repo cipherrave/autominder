@@ -13,24 +13,27 @@ import {
 import ShortcutsAdmin from "./Components/Menus/ShortcutsAdmin";
 import Spinner from "../components/spinner";
 import VehicleListAdmin from "./Components/Cards/VehicleListAdmin";
+import { jwtDecode } from "jwt-decode";
 
 function GarageAdmin() {
   const token = localStorage.getItem("token");
   const [isLoading, setLoading] = useState(true);
+  const admin_id = jwtDecode(token).admin_id;
+
   const navigate = useNavigate();
 
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
       nav("/login");
-    } else if (admin_id === "") {
+    } else if (!admin_id) {
       nav("/login");
     }
     // validate token by calling the private API
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:8989/admin/protected",
+        "https://autominder-backend.onrender.com/admin/protected",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -57,7 +60,10 @@ function GarageAdmin() {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/user/vehicle/update", values);
+      await axios.put(
+        "https://autominder-backend.onrender.com/user/vehicle/update",
+        values
+      );
       alert("Vehicle updated successfully!");
       nav("/dashboard");
     } catch (error) {

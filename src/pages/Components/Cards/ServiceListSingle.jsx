@@ -75,9 +75,12 @@ export default function ServiceListSingle(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/user/service/delete", {
-        data: values,
-      });
+      await axios.delete(
+        "https://autominder-backend.onrender.com/user/service/delete",
+        {
+          data: values,
+        }
+      );
       window.location.reload();
     } catch (error) {
       console.error(error);

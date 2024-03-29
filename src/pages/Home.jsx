@@ -1,18 +1,9 @@
-import { useState } from "react";
-import { Dialog } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import ModeToggle from "../components/mode-toggle";
+import Logo from "../assets/icons/logo.png";
+import AutominderLogo from "../assets/icons/autominder";
 
 const navigation = [
   { name: "AutoMinder", href: "#" },
@@ -22,7 +13,6 @@ const navigation = [
 ];
 
 function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const nav = useNavigate();
   function navHome() {
     nav("/");
@@ -36,6 +26,13 @@ function Home() {
   function navRegister() {
     nav("/register");
   }
+  function navGarage() {
+    nav("/garage");
+  }
+  function navServices() {
+    nav("/services");
+  }
+
   return (
     <div className="overflow-y-auto">
       <div className="">
@@ -45,16 +42,10 @@ function Home() {
             aria-label="Global"
           >
             <div className="flex flex-row gap-2">
-              <img
-                onClick={navHome}
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-              />
+              <AutominderLogo></AutominderLogo>
               <h1 className="self-center">AutoMinder</h1>
             </div>
             <div className="flex gap-2">
-              {" "}
               <ModeToggle></ModeToggle>
               <Sheet>
                 <SheetTrigger asChild>
@@ -81,10 +72,10 @@ function Home() {
                 >
                   <div className="flex flex-col gap-4">
                     <div>
-                      {" "}
                       <Button
                         className="w-full flex flex-row justify-start gap-3"
                         variant="text"
+                        onClick={navDash}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -100,11 +91,12 @@ function Home() {
                             d="M6.664 15.889A8 8 0 1 1 9.336.11a8 8 0 0 1-2.672 15.78zm-4.665-4.283A11.95 11.95 0 0 1 8 10c2.186 0 4.236.585 6.001 1.606a7 7 0 1 0-12.002 0"
                           />
                         </svg>
-                        Dashboard{" "}
+                        Dashboard
                       </Button>
                       <Button
                         className="w-full flex flex-row justify-start gap-3"
                         variant="text"
+                        onClick={navServices}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -125,6 +117,7 @@ function Home() {
                       <Button
                         className="w-full flex flex-row justify-start gap-3"
                         variant="text"
+                        onClick={navGarage}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -137,7 +130,7 @@ function Home() {
                           <path d="M4 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0m10 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2zM4.862 4.276 3.906 6.19a.51.51 0 0 0 .497.731c.91-.073 2.35-.17 3.597-.17s2.688.097 3.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 10.691 4H5.309a.5.5 0 0 0-.447.276" />
                           <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679q.05.242.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.8.8 0 0 0 .381-.404l.792-1.848ZM4.82 3a1.5 1.5 0 0 0-1.379.91l-.792 1.847a1.8 1.8 0 0 1-.853.904.8.8 0 0 0-.43.564L1.03 8.904a1.5 1.5 0 0 0-.03.294v.413c0 .796.62 1.448 1.408 1.484 1.555.07 3.786.155 5.592.155s4.037-.084 5.592-.155A1.48 1.48 0 0 0 15 9.611v-.413q0-.148-.03-.294l-.335-1.68a.8.8 0 0 0-.43-.563 1.8 1.8 0 0 1-.853-.904l-.792-1.848A1.5 1.5 0 0 0 11.18 3z" />
                         </svg>
-                        Garage{" "}
+                        Garage
                       </Button>
                       <br />
                       <hr />
@@ -166,13 +159,14 @@ function Home() {
         <section>
           <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
             <div className="mx-auto max-w-xl text-center">
-              <h1 className="text-3xl font-extrabold sm:text-5xl">
-                AutoMinder.
-                <strong className="font-extrabold sm:block">
-                  {" "}
-                  Understand Your Vehicle.{" "}
-                </strong>
-              </h1>
+              <div className="flex flex-col align-middle jus ">
+                <h1 className="text-3xl font-extrabold sm:text-5xl">
+                  AutoMinder.
+                  <strong className="font-extrabold sm:block">
+                    Understand Your Vehicle.{" "}
+                  </strong>
+                </h1>
+              </div>
 
               <p className="mt-4 sm:text-xl/relaxed">
                 <br />
@@ -439,83 +433,19 @@ function Home() {
 
         <footer className="bg-gray-100">
           <div className="relative mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 lg:pt-24">
-            <div className="absolute end-4 top-4 sm:end-6 sm:top-6 lg:end-8 lg:top-8">
-              <a
-                className="inline-block rounded-full bg-teal-600 p-2 text-white shadow transition hover:bg-teal-500 sm:p-3 lg:p-4"
-                href="#MainContent"
-              >
-                <span className="sr-only">Back to top</span>
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
-
             <div className="lg:flex lg:items-end lg:justify-between">
               <div>
                 <div className="flex justify-center text-teal-600 lg:justify-start">
-                  /* LOGO HERE */
+                  <img src={Logo} className="w-[200px]" />
                 </div>
                 <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
                   Made in Malaysia
                 </p>
               </div>
-
-              <ul className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12">
-                <li>
-                  <a
-                    className="text-gray-700 transition hover:text-gray-700/75"
-                    href="#"
-                  >
-                    {" "}
-                    About{" "}
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    className="text-gray-700 transition hover:text-gray-700/75"
-                    href="#"
-                  >
-                    {" "}
-                    Services{" "}
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    className="text-gray-700 transition hover:text-gray-700/75"
-                    href="#"
-                  >
-                    {" "}
-                    Projects{" "}
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    className="text-gray-700 transition hover:text-gray-700/75"
-                    href="#"
-                  >
-                    {" "}
-                    Blog{" "}
-                  </a>
-                </li>
-              </ul>
             </div>
 
             <p className="mt-12 text-center text-sm text-gray-500 lg:text-right">
-              Copyright &copy; 2024. All rights reserved.
+              Arif Akmal 2024. All rights reserved.
             </p>
           </div>
         </footer>

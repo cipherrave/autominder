@@ -12,8 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ModeToggle from "../components/mode-toggle";
-
-const baseURL = "http://localhost:8989/login";
+import AutominderLogo from "../assets/icons/autominder";
 
 function Login() {
   const nav = useNavigate();
@@ -38,14 +37,17 @@ function Login() {
     const values = Object.fromEntries(data.entries());
 
     try {
-      const response = await axios.post(baseURL, values);
+      const response = await axios.post(
+        "https://autominder-backend.onrender.com/login",
+        values
+      );
       const token = response.data.token;
       // Save the token to local storage to call private APIs
       localStorage.setItem("token", token);
       nav("/dashboard");
 
       let getAllVehicle = await axios.get(
-        "http://localhost:8989/user/vehicle/all",
+        "https://autominder-backend.onrender.com/user/vehicle/all",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -58,7 +60,7 @@ function Login() {
       localStorage.setItem("vehicleData", vehicleString);
 
       let getAllService = await axios.get(
-        "http://localhost:8989/user/service/all",
+        "https://autominder-backend.onrender.com/user/service/all",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -81,10 +83,11 @@ function Login() {
     <div>
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
-          <div>
+          <div className="flex justify-end">
             <ModeToggle></ModeToggle>
           </div>
           <div className="flex flex-col gap-2 text-start">
+            <AutominderLogo></AutominderLogo>
             <h1 className="text-3xl font-bold">Welcome!</h1>
             <p className="text-balance text-muted-foreground">
               Let's get you back in.{" "}
