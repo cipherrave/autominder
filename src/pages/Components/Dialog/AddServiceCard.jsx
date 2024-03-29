@@ -76,7 +76,6 @@ const AddServiceCard = () => {
           },
         }
       );
-      window.location.reload();
     } catch (error) {
       // api error handling
       alert("Create service failed. Something is wrong...");

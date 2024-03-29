@@ -89,7 +89,6 @@ function Service() {
         values
       );
       alert("Service updated successfully!");
-      nav("/services");
     } catch (error) {
       // api error handling
       alert("Service not updated. Something is wrong...");
@@ -110,7 +109,6 @@ function Service() {
         }
       );
       alert("Service deleted.");
-      nav("/services");
     } catch (error) {
       console.error(error);
     }

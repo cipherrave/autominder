@@ -44,7 +44,6 @@ const SettingsCardAdmin = () => {
       );
       localStorage.removeItem("token");
       alert("Profile updated successfully! Re-login using new credentials.");
-      nav("/login");
     } catch (error) {
       console.error(error);
       alert("Update failed :(");

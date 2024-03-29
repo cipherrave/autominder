@@ -74,7 +74,6 @@ function ServiceDetailsCard(props) {
         "https://autominder-backend.onrender.com/user/service/update",
         values
       );
-      window.location.reload();
     } catch (error) {
       // api error handling
       console.error(error);
@@ -94,7 +93,6 @@ function ServiceDetailsCard(props) {
         }
       );
       alert("Service deleted.");
-      nav("/services");
     } catch (error) {
       console.error(error);
     }

@@ -85,7 +85,6 @@ export default function ServiceListSingle(props) {
       await axios.delete("http://localhost:8989/user/service/delete", {
         data: values,
       });
-      window.location.reload();
     } catch (error) {
       console.error(error);
     }

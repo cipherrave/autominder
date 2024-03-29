@@ -111,7 +111,6 @@ const ServiceListAdmin = () => {
           data: values,
         }
       );
-      window.location.reload();
     } catch (error) {
       console.error(error);
     }

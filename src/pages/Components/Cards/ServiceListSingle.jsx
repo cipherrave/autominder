@@ -81,7 +81,6 @@ export default function ServiceListSingle(props) {
           data: values,
         }
       );
-      window.location.reload();
     } catch (error) {
       console.error(error);
     }

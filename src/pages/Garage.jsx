@@ -60,7 +60,6 @@ function Garage() {
         values
       );
       alert("Vehicle updated successfully!");
-      nav("/dashboard");
     } catch (error) {
       // api error handling
       alert("Vehicle not updated. Something is wrong...");

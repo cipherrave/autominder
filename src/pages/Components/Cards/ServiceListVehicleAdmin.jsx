@@ -86,7 +86,6 @@ export default function ServiceListVehicleAdmin(props) {
           data: values,
         }
       );
-      window.location.reload();
     } catch (error) {
       console.error(error);
     }

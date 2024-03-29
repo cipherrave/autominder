@@ -55,7 +55,6 @@ function VehicleDetailsCard(props) {
         "https://autominder-backend.onrender.com/user/vehicle/update",
         values
       );
-      nav("/garage");
     } catch (error) {
       // api error handling
       console.error(error);
@@ -74,7 +73,6 @@ function VehicleDetailsCard(props) {
           data: values,
         }
       );
-      nav("/garage");
     } catch (error) {
       console.error(error);
     }

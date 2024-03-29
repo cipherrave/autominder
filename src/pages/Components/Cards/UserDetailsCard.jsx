@@ -54,7 +54,6 @@ function UserDetailsCard(props) {
         values
       );
       alert("Account details have been updated!");
-      nav("/admin/users");
     } catch (error) {
       // api error handling
       console.error(error);
@@ -72,7 +71,6 @@ function UserDetailsCard(props) {
           data: values,
         }
       );
-      nav("/admin/users");
     } catch (error) {
       console.error(error);
     }

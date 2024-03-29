@@ -43,7 +43,6 @@ export default function SummaryDash() {
 
   async function checkData() {
     if (!vehicleData | !serviceData) {
-      nav("/login");
     }
     try {
       setLoading(true);

@@ -111,7 +111,6 @@ const VehicleListAdmin = () => {
         }
       );
       alert("Vehicle deleted.");
-      window.location.reload();
     } catch (error) {
       console.error(error);
     }

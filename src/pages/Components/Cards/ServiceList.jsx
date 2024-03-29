@@ -110,7 +110,6 @@ const ServiceList = () => {
         }
       );
       alert("Service deleted.");
-      window.location.reload();
     } catch (error) {
       console.error(error);
     }
