@@ -39,7 +39,10 @@ const SettingsCard = () => {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      const response = await axios.put(baseURL, values);
+      const response = await axios.put(
+        "http://localhost:8989/user/updateUser",
+        values
+      );
       localStorage.removeItem("token");
       alert("Profile updated successfully! Re-login using new credentials.");
       nav("/login");

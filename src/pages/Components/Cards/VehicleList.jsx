@@ -5,14 +5,6 @@ import { reducer, initialState } from "../reducers/reducer";
 import { FETCH_ACTIONS } from "../../../actions";
 import axios from "axios";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import AddVehicleCard from "../Dialog/AddVehicleCard";
-import {
   Card,
   CardContent,
   CardDescription,

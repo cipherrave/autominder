@@ -8,7 +8,7 @@ import { reducer, initialState } from "./Components/reducers/reducer";
 import { FETCH_ACTIONS } from "../actions";
 import Header from "./Components/Menus/Header";
 import { Button } from "@/components/ui/button";
-import VehicleList from "./Components/Cards/VehicleList";
+import VehicleListAdmin from "./Components/Cards/VehicleListAdmin";
 import AddVehicleCard from "./Components/Dialog/AddVehicleCard";
 import {
   Breadcrumb,
@@ -49,9 +49,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import VehicleDetailsCard from "./Components/Cards/VehicleDetailsCard";
 import ServiceListSingle from "./Components/Cards/ServiceListSingle";
-import Shortcuts from "./Components/Menus/Shortcuts";
+import ShortcutsAdmin from "./Components/Menus/ShortcutsAdmin";
 
-function Vehicle() {
+function VehicleAdmin() {
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
   const [isLoading, setLoading] = useState(true);
@@ -123,8 +123,7 @@ function Vehicle() {
         <Header></Header>
         <div className="flex overflow-auto">
           <div className="min-w-[300px] p-5 overflow-y-auto hidden md:block">
-            <Shortcuts></Shortcuts>
-            <VehicleList></VehicleList>
+            <ShortcutsAdmin></ShortcutsAdmin>
           </div>
           <div className=" flex-wrap border-r flex h-full overflow-auto p-5 w-full gap-4">
             <div className="flex flex-row justify-between">
@@ -155,7 +154,7 @@ function Vehicle() {
               <div className="xl:col-span-1">
                 <VehicleDetailsCard id={id}></VehicleDetailsCard>
               </div>
-              <div className="xl:col-span-2 overflow-auto">
+              <div className="xl:col-span-1 overflow-auto">
                 <ServiceListSingle id={id}></ServiceListSingle>
               </div>
             </div>
@@ -166,4 +165,4 @@ function Vehicle() {
   );
 }
 
-export default Vehicle;
+export default VehicleAdmin;
