@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { useReducer, useEffect, useState } from "react";
+import { useReducer, useEffect } from "react";
 import { reducer, initialState } from "../reducers/reducer";
 import { FETCH_ACTIONS } from "../../../actions";
 import { Card } from "@/components/ui/card";
 
-function VehicleDetailsTag(props) {
+function UserDetailsTag(props) {
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -15,21 +15,21 @@ function VehicleDetailsTag(props) {
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
-    const getVehicle = async () => {
+    const getUser = async () => {
       // parse vehicleData from localStorage
-      const vehicleData = JSON.parse(localStorage.getItem("vehicleData"));
-      let filteredVehicleData = vehicleData.filter((element) => {
-        if (element.vehicle_id === props.id) {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      let filteredUserData = userData.filter((element) => {
+        if (element.user_id === props.id) {
           return element;
         }
       });
       dispatch({
         type: FETCH_ACTIONS.SUCCESS,
-        data: filteredVehicleData,
+        data: filteredUserData,
       });
     };
 
-    getVehicle();
+    getUser();
   }, []);
 
   return (
@@ -42,17 +42,16 @@ function VehicleDetailsTag(props) {
         <div>
           {items.map((item) => (
             <Card
-              key={item.vehicle_id}
+              key={item.user_id}
               className="p-2
             "
             >
               <div className="w-full">
-                <p>{item.vname}</p>
-                <p>{item.reg_num}</p>
                 <p>
-                  {item.brand}, {item.model}
+                  {item.fname} {item.lname}
                 </p>
-                <p>Mileage: {item.mileage} km</p>
+                <p>{item.company}</p>
+                <p>{item.email}</p>
               </div>
             </Card>
           ))}
@@ -62,4 +61,4 @@ function VehicleDetailsTag(props) {
   );
 }
 
-export default VehicleDetailsTag;
+export default UserDetailsTag;

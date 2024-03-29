@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useReducer, useEffect, useState } from "react";
+import { useReducer, useEffect, useState, useParams } from "react";
 import { reducer, initialState } from "../reducers/reducer";
 import { FETCH_ACTIONS } from "../../../actions";
 import axios from "axios";
@@ -32,8 +32,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import * as React from "react";
-import { jwtDecode } from "jwt-decode";
-import AddServiceCard from "../Dialog/AddServiceCard";
 
 export default function VehicleListSingleAdmin(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -65,14 +63,14 @@ export default function VehicleListSingleAdmin(props) {
   async function handleVehicle(event) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
-    const url = "/garage/vehicle/" + values.vehicle_id;
+    const url = "/admin/garage/vehicle/" + values.vehicle_id;
     nav(url);
   }
 
   async function handleService(event) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
-    const url = "/services/service/" + values.service_id;
+    const url = "/admin/services/service/" + values.service_id;
     nav(url);
   }
 
@@ -104,32 +102,27 @@ export default function VehicleListSingleAdmin(props) {
               <h1 className="text-3xl font-semibold">Vehicles</h1>
               <p>Vehicles related to this user</p>
             </div>
-            <AddServiceCard></AddServiceCard>
           </div>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Service Name</TableHead>
-                <TableHead>Service Date</TableHead>
-                <TableHead>Cost (RM)</TableHead>
-                <TableHead>Next Mileage</TableHead>
-                <TableHead>Next Service Date</TableHead>
-                <TableHead>Place</TableHead>
-                <TableHead>Progress</TableHead>
+                <TableHead>Vehicle Name</TableHead>
+                <TableHead>Registration Number</TableHead>
+                <TableHead>Brand</TableHead>
+                <TableHead>Model</TableHead>
+                <TableHead>Purchase Year</TableHead>
+                <TableHead>Mileage (km)</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {items.map((item) => (
-                <TableRow key={item.service_id}>
-                  <TableCell className="font-semibold">
-                    {item.service_name}
-                  </TableCell>
-                  <TableCell>{item.service_date}</TableCell>
-                  <TableCell>{item.cost}</TableCell>
-                  <TableCell>{item.next_date}</TableCell>
-                  <TableCell>{item.next_mileage}</TableCell>
-                  <TableCell>{item.place}</TableCell>
-                  <TableHead>{item.progress}</TableHead>
+                <TableRow key={item.vehicle_id}>
+                  <TableCell className="font-semibold">{item.vname}</TableCell>
+                  <TableCell>{item.reg_num}</TableCell>
+                  <TableCell>{item.brand}</TableCell>
+                  <TableCell>{item.model}</TableCell>
+                  <TableCell>{item.purchase_year}</TableCell>
+                  <TableCell>{item.mileage}</TableCell>
                   <TableCell className="text-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -151,6 +144,24 @@ export default function VehicleListSingleAdmin(props) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
+                        <DropdownMenuItem>
+                          <form onSubmit={handleVehicle}>
+                            <input
+                              type="text"
+                              id="vehicle_id"
+                              name="vehicle_id"
+                              defaultValue={item.vehicle_id}
+                              className="hidden"
+                            />
+                            <Button
+                              type="submit"
+                              variant="text"
+                              className="p-0 font-normal"
+                            >
+                              View Vehicle
+                            </Button>
+                          </form>
+                        </DropdownMenuItem>
                         <DropdownMenuItem>
                           <form onSubmit={handleService}>
                             <input
@@ -197,7 +208,7 @@ export default function VehicleListSingleAdmin(props) {
                                   type="text"
                                   id="user_id"
                                   name="user_id"
-                                  defaultValue={user_id}
+                                  defaultValue={items.user_id}
                                   className="hidden"
                                 />
                                 <input

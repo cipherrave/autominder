@@ -1,7 +1,5 @@
-import VehicleListAdmin from "./Components/Cards/VehicleListAdmin";
 import Header from "./Components/Menus/Header";
 import ServiceListAdmin from "./Components/Cards/ServiceListAdmin";
-import AddServiceCard from "./Components/Dialog/AddServiceCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +13,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import ShortcutsAdmin from "./Components/Menus/ShortcutsAdmin";
 import Spinner from "../components/spinner";
-import VehicleDetailsTag from "./Components/Tags/VehicleDetailsTag";
 
 function ServicesAdmin() {
   // check token is valid
@@ -26,20 +23,25 @@ function ServicesAdmin() {
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
-      navigate("/login");
+      nav("/login");
+    } else if (admin_id === "") {
+      nav("/login");
     }
     // validate token by calling the private API
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8989/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:8989/admin/protected",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
-      navigate("/login");
+      nav("/login");
     } finally {
       setLoading(false);
     }
@@ -72,7 +74,7 @@ function ServicesAdmin() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
-                    <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+                    <BreadcrumbLink>Admin</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
@@ -82,7 +84,6 @@ function ServicesAdmin() {
               </Breadcrumb>
               <div className="flex justify-between">
                 <h1 className="text-3xl font-semibold">Services</h1>
-                <AddServiceCard></AddServiceCard>
               </div>
             </div>
             <br />

@@ -1,20 +1,18 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import ServiceList from "./ServiceList";
 import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "../reducers/reducer";
 import Spinner from "../../../components/spinner";
 import {
   Breadcrumb,
+  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
@@ -22,7 +20,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { jwtDecode } from "jwt-decode";
-import ReminderList from "./ReminderList";
 
 export default function SummaryDash() {
   const nav = useNavigate();
@@ -31,12 +28,6 @@ export default function SummaryDash() {
   const { items, loading, error } = state;
   const token = localStorage.getItem("token");
   let fname = jwtDecode(token).fname;
-
-  function navService() {
-    nav("/services");
-  }
-
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const vehicleData = localStorage.getItem("vehicleData");
   const serviceData = localStorage.getItem("serviceData");
@@ -77,6 +68,10 @@ export default function SummaryDash() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
+                <BreadcrumbLink>Admin</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator></BreadcrumbSeparator>
+              <BreadcrumbItem>
                 <BreadcrumbPage>Dashboard</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -85,7 +80,7 @@ export default function SummaryDash() {
         </div>
       </div>
       <div className="grid  xl:grid-cols-3 sm:grid-cols-1 gap-4">
-        <Card className="flex flex-col flex-grow">
+        <Card className="flex flex-col col-span-2 flex-grow">
           <CardHeader className="flex">
             <CardTitle className="text-3xl">Summary</CardTitle>
             <CardDescription className="pt-3">
@@ -95,30 +90,22 @@ export default function SummaryDash() {
           <CardContent className="grid xl:grid-cols-3 gap-4">
             <div>
               <h1 className="text-2xl ml-[-5px]">🚘🏍️</h1>
-              <h1>You own</h1>
+              <h1>Total of</h1>
               <h1 className="text-3xl font-semibold">{totalVehicle}</h1>
-              <p>vehicles</p>
+              <p>vehicles registered</p>
             </div>
             <div>
               <h1 className="text-2xl ml-[-5px]">🛣️</h1>
-              <h1>You drove</h1>
+              <h1>Total of</h1>
               <h1 className="text-3xl font-semibold">{sumMileage} km</h1>
-              <p>in total</p>
+              <p>mileage recorded</p>
             </div>
             <div>
               <h1 className="text-2xl ml-[-5px]">💸</h1>
-              <h1>You spent</h1>
+              <h1>Total of</h1>
               <h1 className="text-3xl font-semibold">RM {sumCost}</h1>
-              <p>on services</p>
+              <p>transactions recorded</p>
             </div>
-          </CardContent>
-        </Card>
-        <Card className="flex flex-col flex-grow overflow-hidden xl:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-3xl">Reminders</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ReminderList></ReminderList>
           </CardContent>
         </Card>
       </div>

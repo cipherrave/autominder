@@ -1,22 +1,10 @@
-import VehicleList from "./Components/Cards/VehicleList";
 import Header from "./Components/Menus/Header";
 import UsersList from "./Components/Cards/UsersList";
-import AddServiceCard from "./Components/Dialog/AddServiceCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
@@ -25,7 +13,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import ShortcutsAdmin from "./Components/Menus/ShortcutsAdmin";
 import Spinner from "../components/spinner";
-import VehicleDetailsTag from "./Components/Tags/VehicleDetailsTag";
 
 function UsersAdmin() {
   // check token is valid
@@ -36,20 +23,25 @@ function UsersAdmin() {
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
-      navigate("/login");
+      nav("/login");
+    } else if (admin_id === "") {
+      nav("/login");
     }
     // validate token by calling the private API
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8989/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:8989/admin/protected",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
-      navigate("/login");
+      nav("/login");
     } finally {
       setLoading(false);
     }
@@ -82,7 +74,7 @@ function UsersAdmin() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
-                    <BreadcrumbLink href="/dashboard">Admin</BreadcrumbLink>
+                    <BreadcrumbLink>Admin</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
@@ -92,12 +84,10 @@ function UsersAdmin() {
               </Breadcrumb>
               <div className="flex justify-between">
                 <h1 className="text-3xl font-semibold">Users</h1>
-                <AddServiceCard></AddServiceCard>
               </div>
             </div>
             <br />
             <UsersList></UsersList>
-            <VehicleDetailsTag></VehicleDetailsTag>
           </div>
         </div>
       </div>

@@ -1,9 +1,7 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -34,6 +32,7 @@ import {
 import * as React from "react";
 import { jwtDecode } from "jwt-decode";
 import AddServiceCard from "../Dialog/AddServiceCard";
+import ConvertTimeTag from "../Tags/ConvertTimeTag";
 
 export default function ServiceListSingle(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -62,13 +61,6 @@ export default function ServiceListSingle(props) {
 
     getService();
   }, []);
-
-  async function handleVehicle(event) {
-    const data = new FormData(event.target);
-    const values = Object.fromEntries(data.entries());
-    const url = "/garage/vehicle/" + values.vehicle_id;
-    nav(url);
-  }
 
   async function handleService(event) {
     const data = new FormData(event.target);
@@ -125,9 +117,13 @@ export default function ServiceListSingle(props) {
                   <TableCell className="font-semibold">
                     {item.service_name}
                   </TableCell>
-                  <TableCell>{item.service_date}</TableCell>
+                  <TableCell>
+                    <ConvertTimeTag date={item.service_date}></ConvertTimeTag>
+                  </TableCell>
                   <TableCell>{item.cost}</TableCell>
-                  <TableCell>{item.next_date}</TableCell>
+                  <TableCell>
+                    <ConvertTimeTag date={item.next_date}></ConvertTimeTag>
+                  </TableCell>
                   <TableCell>{item.next_mileage}</TableCell>
                   <TableCell>{item.place}</TableCell>
                   <TableHead>{item.progress}</TableHead>

@@ -1,13 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,11 +10,11 @@ const baseURL = "http://localhost:8989/admin/login";
 
 function LoginAdmin() {
   const nav = useNavigate();
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   function navHome() {
     nav("/");
   }
+
   function navRegisterAdmin() {
     nav("/admin/register");
   }
@@ -31,7 +24,6 @@ function LoginAdmin() {
     event.preventDefault();
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
-
     try {
       const response = await axios.post(baseURL, values);
       const token = response.data.token;
@@ -64,15 +56,16 @@ function LoginAdmin() {
       const serviceArray = getAllService.data;
       const serviceString = JSON.stringify(serviceArray);
       localStorage.setItem("serviceData", serviceString);
-      await delay(5000);
     } catch (error) {
-      alert("Login failed :(");
+      alert(
+        "Login failed. Make sure email and password are entered correctly."
+      );
       console.error(error);
     }
   }
 
   return (
-    <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <div>
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div>
@@ -121,15 +114,6 @@ function LoginAdmin() {
             </a>
           </div>
         </div>
-      </div>
-      <div className="hidden bg-muted lg:block">
-        <img
-          src="/placeholder.svg"
-          alt="Image"
-          width="1920"
-          height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale bg-slate-400"
-        />
       </div>
     </div>
   );

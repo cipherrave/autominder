@@ -1,9 +1,7 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -14,7 +12,7 @@ import { FETCH_ACTIONS } from "../../../actions";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Spinner from "../../../components/spinner";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,6 +33,7 @@ import {
 import * as React from "react";
 import { jwtDecode } from "jwt-decode";
 import VehicleDetailsTag from "../Tags/VehicleDetailsTag";
+import ConvertTimeTag from "../Tags/ConvertTimeTag";
 
 const ServiceList = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -63,7 +62,6 @@ const ServiceList = () => {
             },
           }
         );
-
         // save response data into localStorage as vehicleData for other local uses
         const serviceArray = getAllService.data;
         const serviceString = JSON.stringify(serviceArray);
@@ -108,6 +106,7 @@ const ServiceList = () => {
       await axios.delete("http://localhost:8989/user/service/delete", {
         data: values,
       });
+      alert("Service deleted.");
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -130,7 +129,7 @@ const ServiceList = () => {
             <TableHead>Service Name</TableHead>
             <TableHead>Service Date</TableHead>
             <TableHead>Cost (RM)</TableHead>
-            <TableHead>Next Mileage</TableHead>
+            <TableHead>Next Mileage (km)</TableHead>
             <TableHead>Next Service Date</TableHead>
             <TableHead>Place</TableHead>
             <TableHead>Progress</TableHead>
@@ -143,10 +142,14 @@ const ServiceList = () => {
               <TableCell className="font-semibold">
                 {item.service_name}
               </TableCell>
-              <TableCell>{item.service_date}</TableCell>
+              <TableCell>
+                <ConvertTimeTag date={item.service_date}></ConvertTimeTag>
+              </TableCell>
               <TableCell>{item.cost}</TableCell>
-              <TableCell>{item.next_date}</TableCell>
               <TableCell>{item.next_mileage}</TableCell>
+              <TableCell>
+                <ConvertTimeTag date={item.next_date}></ConvertTimeTag>
+              </TableCell>
               <TableCell>{item.place}</TableCell>
               <TableHead>{item.progress}</TableHead>
               <TableCell>

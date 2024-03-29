@@ -60,13 +60,10 @@ export default function SidebarAdmin() {
         </Button>
       </SheetTrigger>
       <SheetContent
-        className="pt-12 w-11/12 max-w-[350px] flex flex-col justify-end gap-0"
+        className="pt-12 w-11/12 max-w-[350px] flex flex-col justify-start gap-0"
         side="left"
       >
         <ShortcutsAdmin></ShortcutsAdmin>
-        <ScrollArea className="h-[100vh] pr-4">
-          <VehicleListAdmin></VehicleListAdmin>
-        </ScrollArea>
       </SheetContent>
     </Sheet>
   );

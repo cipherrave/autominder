@@ -126,12 +126,6 @@ function Service() {
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem>
-                      <BreadcrumbLink href="/dashboard">
-                        Dashboard
-                      </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
                       <BreadcrumbLink href="/services">Services</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />

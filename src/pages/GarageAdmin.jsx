@@ -1,11 +1,7 @@
 import Header from "./Components/Menus/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { useReducer, useEffect, useState } from "react";
-import { reducer, initialState } from "./Components/reducers/reducer";
-import VehicleList from "./Components/Cards/VehicleList";
-import AddVehicleCard from "./Components/Dialog/AddVehicleCard";
+import { useEffect, useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,7 +10,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import ShortcutsAdmin from "./Components/Menus/ShortcutsAdmin";
 import Spinner from "../components/spinner";
 import VehicleListAdmin from "./Components/Cards/VehicleListAdmin";
@@ -22,26 +17,30 @@ import VehicleListAdmin from "./Components/Cards/VehicleListAdmin";
 function GarageAdmin() {
   const token = localStorage.getItem("token");
   const [isLoading, setLoading] = useState(true);
-  const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
 
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
-      navigate("/login");
+      nav("/login");
+    } else if (admin_id === "") {
+      nav("/login");
     }
     // validate token by calling the private API
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8989/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:8989/admin/protected",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
-      navigate("/login");
+      nav("/login");
     } finally {
       setLoading(false);
     }
@@ -84,9 +83,7 @@ function GarageAdmin() {
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem>
-                      <BreadcrumbLink href="/dashboard">
-                        Dashboard
-                      </BreadcrumbLink>
+                      <BreadcrumbLink>Admin</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
@@ -95,8 +92,7 @@ function GarageAdmin() {
                   </BreadcrumbList>
                 </Breadcrumb>
                 <div className="flex flex-row justify-between">
-                  <h1 className="text-3xl font-semibold">Garage</h1>
-                  <AddVehicleCard></AddVehicleCard>
+                  <h1 className="text-3xl font-semibold">Garages</h1>
                 </div>
               </div>
               <VehicleListAdmin></VehicleListAdmin>

@@ -7,7 +7,8 @@ import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "../reducers/reducer";
 import { FETCH_ACTIONS } from "../../../actions";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -18,38 +19,31 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
-function UserDetailsCard(props) {
+function VehicleDetailsCardAdmin(props) {
   const token = localStorage.getItem("token");
+  const user_id = jwtDecode(token).user_id;
   const [state, dispatch] = useReducer(reducer, initialState);
   const { items, loading, error } = state;
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const nav = useNavigate();
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
-    const getUser = async () => {
+    const getVehicle = async () => {
       // parse vehicleData from localStorage
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      let filteredUserData = userData.filter((element) => {
-        if (element.user_id === props.id) {
+      const vehicleData = JSON.parse(localStorage.getItem("vehicleData"));
+      let filteredVehicleData = vehicleData.filter((element) => {
+        if (element.vehicle_id === props.id) {
           return element;
         }
       });
       dispatch({
         type: FETCH_ACTIONS.SUCCESS,
-        data: filteredUserData,
+        data: filteredVehicleData,
       });
     };
 
-    getUser();
+    getVehicle();
   }, []);
 
   async function handleUpdate(event) {
@@ -57,9 +51,7 @@ function UserDetailsCard(props) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.put("http://localhost:8989/admin/updateUser", values);
-      alert("Account details have been updated!");
-      nav("/admin/users");
+      await axios.put("http://localhost:8989/admin/vehicle/update", values);
     } catch (error) {
       // api error handling
       console.error(error);
@@ -68,13 +60,13 @@ function UserDetailsCard(props) {
 
   async function handleDelete(event) {
     // Prevent the default form submission
+    event.preventDefault();
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/user/vehicle/delete", {
+      await axios.delete("http://localhost:8989/admin/vehicle/delete", {
         data: values,
       });
-      nav("/admin/users");
     } catch (error) {
       console.error(error);
     }
@@ -89,64 +81,109 @@ function UserDetailsCard(props) {
       ) : (
         <div>
           {items.map((item) => (
-            <div key={item.user_id}>
+            <div key={item.vehicle_id}>
               <Card className="flex flex-grow flex-col">
+                <CardTitle className="h-[200px] rounded-xl flex justify-end p-4">
+                  <form
+                    action="/user/photo"
+                    encType="multipart/form-data"
+                    method="POST"
+                  >
+                    <div className="form-group">
+                      {" "}
+                      <input
+                        type="file"
+                        className="form-control-file"
+                        name={item.vname}
+                      />
+                      <input type="submit" value="Upload Photo" />
+                    </div>
+                  </form>
+                </CardTitle>
                 <CardContent className="w-full pt-8 px-0">
                   <form onSubmit={handleUpdate}>
                     <CardContent>
                       <div className="w-full">
                         <div className="grid w-full items-center gap-4">
                           <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="fname">First Name</Label>
+                            <Label htmlFor="vname">Nickname</Label>
                             <Input
-                              id="fname"
-                              name="fname"
+                              id="vname"
+                              name="vname"
                               type="text"
-                              defaultValue={item.fname}
+                              placeholder=""
+                              defaultValue={item.vname}
                               required
                             />
                           </div>
                           <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="lname">Last Name</Label>
+                            <Label htmlFor="name">Mileage</Label>
                             <Input
-                              id="lname"
-                              name="lname"
+                              id="mileage"
+                              name="mileage"
+                              type="number"
+                              placeholder=""
+                              defaultValue={item.mileage}
+                              required
+                            />
+                          </div>
+                          <div className="flex flex-col space-y-1.5">
+                            <Label htmlFor="name">Registration Number</Label>
+                            <Input
+                              id="reg_num"
+                              name="reg_num"
                               type="text"
-                              defaultValue={item.lname}
+                              placeholder=""
+                              defaultValue={item.reg_num}
                               required
                             />
                           </div>
                           <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="name">Brand</Label>
                             <Input
-                              id="email"
-                              name="email"
-                              type="email"
-                              defaultValue={item.email}
-                              required
-                            />
-                          </div>
-                          <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="password">Change Password</Label>
-                            <Input
-                              id="password"
-                              name="password"
-                              type="password"
-                              placeholder="Password"
-                              defaultValue={item.password}
-                              required
-                            />
-                          </div>
-                          <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="company_name">Company Name</Label>
-                            <Input
-                              id="company_name"
-                              name="company_name"
+                              id="brand"
+                              name="brand"
                               type="text"
-                              defaultValue={item.company_name}
+                              placeholder=""
+                              defaultValue={item.brand}
+                              required
                             />
                           </div>
-                          <div>
+                          <div className="flex flex-col space-y-1.5">
+                            <Label htmlFor="name">Model</Label>
+                            <Input
+                              id="model"
+                              name="model"
+                              type="text"
+                              placeholder=""
+                              defaultValue={item.model}
+                              required
+                            />
+                          </div>
+                          <div className="flex flex-col space-y-1.5">
+                            <Label htmlFor="name">Purchase Year</Label>
+                            <Input
+                              id="purchase_year"
+                              name="purchase_year"
+                              type="number"
+                              min="1901"
+                              max="2099"
+                              step="1"
+                              placeholder=""
+                              defaultValue={item.purchase_year}
+                              required
+                            />
+                          </div>
+                          <div className="flex flex-col space-y-1.5">
+                            <Label htmlFor="name">Notes </Label>
+                            <Textarea
+                              id="note"
+                              name="note"
+                              placeholder=""
+                              defaultValue={item.notes}
+                            />
+                          </div>
+                          <div className="hidden">
                             <Label htmlFor="user_id">User ID</Label>
                             <Input
                               id="user_id"
@@ -155,17 +192,16 @@ function UserDetailsCard(props) {
                               placeholder=""
                               defaultValue={item.user_id}
                               required
-                              className="hidden"
                             />
-                            <p>{item.user_id}</p>
-                          </div>
-                          <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="admin_id">Admin ID</Label>
-                            <h1>{item.admin_id}</h1>
-                          </div>
-                          <div>
-                            <Label htmlFor="user_id">Created On</Label>
-                            <h1>{item.creation_date}</h1>
+                            <Label htmlFor="vehicle_id">Vehicle ID</Label>
+                            <Input
+                              id="vehicle_id"
+                              name="vehicle_id"
+                              type="text"
+                              placeholder=""
+                              defaultValue={item.vehicle_id}
+                              required
+                            />
                           </div>
                         </div>
                       </div>
@@ -194,7 +230,7 @@ function UserDetailsCard(props) {
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>
-                              Delete {item.fname}?
+                              Delete {item.vname}?
                             </AlertDialogTitle>
                             <AlertDialogDescription className="font-bold">
                               This action cannot be undone. This will
@@ -208,7 +244,14 @@ function UserDetailsCard(props) {
                                 type="text"
                                 id="user_id"
                                 name="user_id"
-                                defaultValue={item.user_id}
+                                defaultValue={user_id}
+                                className="hidden"
+                              />
+                              <input
+                                type="text"
+                                id="vehicle_id"
+                                name="vehicle_id"
+                                defaultValue={item.vehicle_id}
                                 className="hidden"
                               />
                               <Button variant="destructive" type="submit">
@@ -230,4 +273,4 @@ function UserDetailsCard(props) {
   );
 }
 
-export default UserDetailsCard;
+export default VehicleDetailsCardAdmin;

@@ -1,52 +1,56 @@
-import { useReducer, useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { reducer, initialState } from "../reducers/reducer";
-import { FETCH_ACTIONS } from "../../../actions";
-import axios from "axios";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
-import Spinner from "../../../components/spinner";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useReducer, useEffect, useState } from "react";
+import { reducer, initialState } from "../reducers/reducer";
+import { FETCH_ACTIONS } from "../../../actions";
+import axios from "axios";
+import { Button } from "@/components/ui/button";
+import Spinner from "../../../components/spinner";
+import { useNavigate } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import * as React from "react";
+import VehicleDetailsTag from "../Tags/VehicleDetailsTag";
+import UserDetailsTag from "../Tags/UserDetailsTag";
 
-const VehicleListAdmin = (props) => {
+const VehicleListAdmin = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const token = localStorage.getItem("token");
   const { items, loading, error } = state;
   const [isLoading, setLoading] = useState(true);
-  const vehicleData = localStorage.getItem("vehicleData");
+  const vehicleData = localStorage.getItem("serviceData");
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const nav = useNavigate();
-
-  async function handleVehicle(event) {
-    const data = new FormData(event.target);
-    const values = Object.fromEntries(data.entries());
-    const url = "/garage/vehicle/" + values.vehicle_id;
-    nav(url);
-  }
 
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
 
-    const getVehicle = async () => {
+    const getItems = async () => {
       if (!vehicleData) {
+        await delay(1000);
       }
       try {
-        await delay(1000);
         let getAllVehicle = await axios.get(
           "http://localhost:8989/admin/vehicle/all",
           {
@@ -61,7 +65,7 @@ const VehicleListAdmin = (props) => {
         localStorage.setItem("vehicleData", vehicleString);
         // parse vehicleData from localStorage
         const readVehicle = JSON.parse(localStorage.getItem("vehicleData"));
-        dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readVehicle.reverse() });
+        dispatch({ type: FETCH_ACTIONS.SUCCESS, data: readVehicle });
       } catch (err) {
         console.error(err);
         dispatch({ type: FETCH_ACTIONS.ERROR, error: err.message });
@@ -70,8 +74,45 @@ const VehicleListAdmin = (props) => {
       }
     };
 
-    getVehicle();
+    getItems();
   }, []);
+
+  async function handleUser(event) {
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    const url = "/admin/users/" + values.user_id;
+    nav(url);
+  }
+
+  async function handleVehicle(event) {
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    const url = "/admin/garage/vehicle/" + values.vehicle_id;
+    nav(url);
+  }
+
+  async function handleService(event) {
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    const url = "/admin/services/service/" + values.service_id;
+    nav(url);
+  }
+
+  async function handleDelete(event) {
+    // Prevent the default form submission
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    try {
+      await axios.delete("http://localhost:8989/admin/vehicle/delete", {
+        data: values,
+      });
+      alert("Vehicle deleted.");
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return isLoading ? (
     <div className=" flex justify-center align-middle h-screen w-full">
@@ -86,29 +127,31 @@ const VehicleListAdmin = (props) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Service Name</TableHead>
-            <TableHead>Service Date</TableHead>
-            <TableHead>Cost (RM)</TableHead>
-            <TableHead>Next Mileage</TableHead>
-            <TableHead>Next Service Date</TableHead>
-            <TableHead>Place</TableHead>
-            <TableHead>Progress</TableHead>
-            <TableHead>Vehicle Details</TableHead>
+            <TableHead>Vehicle Name</TableHead>
+            <TableHead>Registration Number</TableHead>
+            <TableHead>Brand</TableHead>
+            <TableHead>Model</TableHead>
+            <TableHead>Purchase Year</TableHead>
+            <TableHead>Mileage</TableHead>
+            <TableHead>Vehicle ID</TableHead>
+            <TableHead>User ID</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.vehicle_id}>
               <TableCell className="font-semibold">{item.vname}</TableCell>
-              <TableCell>{item.service_date}</TableCell>
-              <TableCell>{item.cost}</TableCell>
-              <TableCell>{item.next_date}</TableCell>
-              <TableCell>{item.next_mileage}</TableCell>
-              <TableCell>{item.place}</TableCell>
-              <TableHead>{item.progress}</TableHead>
-              <TableCell>
+              <TableCell>{item.reg_num}</TableCell>
+              <TableCell>{item.brand}</TableCell>
+              <TableCell>{item.model}</TableCell>
+              <TableCell>{item.purchase_year}</TableCell>
+              <TableCell>{item.mileage}</TableCell>
+              <TableHead>
                 <VehicleDetailsTag id={item.vehicle_id}></VehicleDetailsTag>
-              </TableCell>
+              </TableHead>
+              <TableHead>
+                <UserDetailsTag id={item.user_id}></UserDetailsTag>
+              </TableHead>
               <TableCell className="text-center">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -130,6 +173,24 @@ const VehicleListAdmin = (props) => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
+                    <DropdownMenuItem>
+                      <form onSubmit={handleUser}>
+                        <input
+                          type="text"
+                          id="user_id"
+                          name="user_id"
+                          defaultValue={item.user_id}
+                          className="hidden"
+                        />
+                        <Button
+                          type="submit"
+                          variant="text"
+                          className="p-0 font-normal"
+                        >
+                          View User
+                        </Button>
+                      </form>
+                    </DropdownMenuItem>
                     <DropdownMenuItem>
                       <form onSubmit={handleVehicle}>
                         <input
@@ -179,7 +240,7 @@ const VehicleListAdmin = (props) => {
                       <AlertDialogContent>
                         <AlertDialogHeader>
                           <AlertDialogTitle>
-                            Delete {item.service_name}?
+                            Delete {item.vname}?
                           </AlertDialogTitle>
                           <AlertDialogDescription className="font-bold">
                             This action cannot be undone. This will permanently
@@ -191,16 +252,9 @@ const VehicleListAdmin = (props) => {
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <input
                               type="text"
-                              id="user_id"
-                              name="user_id"
-                              defaultValue={item.user_id}
-                              className="hidden"
-                            />
-                            <input
-                              type="text"
-                              id="service_id"
-                              name="service_id"
-                              defaultValue={item.service_id}
+                              id="vehicle_id"
+                              name="vehicle_id"
+                              defaultValue={item.vehicle_id}
                               className="hidden"
                             />
                             <Button variant="destructive" type="submit">

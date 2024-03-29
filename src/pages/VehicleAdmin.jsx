@@ -1,15 +1,9 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "./Components/reducers/reducer";
 import { FETCH_ACTIONS } from "../actions";
 import Header from "./Components/Menus/Header";
-import { Button } from "@/components/ui/button";
-import VehicleListAdmin from "./Components/Cards/VehicleListAdmin";
-import AddVehicleCard from "./Components/Dialog/AddVehicleCard";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,45 +13,15 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { useParams } from "react-router-dom";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import Spinner from "../components/spinner";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import VehicleDetailsCard from "./Components/Cards/VehicleDetailsCard";
-import ServiceListSingle from "./Components/Cards/ServiceListSingle";
+import VehicleDetailsCardAdmin from "./Components/Cards/VehicleDetailsCardAdmin";
 import ShortcutsAdmin from "./Components/Menus/ShortcutsAdmin";
+import ServiceListVehicleAdmin from "./Components/Cards/ServiceListVehicleAdmin";
 
-function VehicleAdmin() {
+function VehicleAdmin(props) {
   const token = localStorage.getItem("token");
-  const user_id = jwtDecode(token).user_id;
   const [isLoading, setLoading] = useState(true);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { items, loading, error } = state;
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const nav = useNavigate();
 
@@ -69,7 +33,7 @@ function VehicleAdmin() {
       // parse vehicleData from localStorage
       const vehicleData = JSON.parse(localStorage.getItem("vehicleData"));
       let filteredVehicleData = vehicleData.filter((element) => {
-        if (element.vehicle_id === id) {
+        if (element.vehicle_id === props.id) {
           return element;
         }
       });
@@ -85,16 +49,21 @@ function VehicleAdmin() {
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
-      navigate("/login");
+      nav("/login");
+    } else if (admin_id === "") {
+      nav("/login");
     }
     // validate token by calling the private API
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8989/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:8989/admin/protected",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
@@ -131,13 +100,13 @@ function VehicleAdmin() {
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem>
-                      <BreadcrumbLink href="/dashboard">
-                        Dashboard
-                      </BreadcrumbLink>
+                      <BreadcrumbLink>Admin</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                      <BreadcrumbLink href="/garage">Garage</BreadcrumbLink>
+                      <BreadcrumbLink href="/admin/garage">
+                        Garage
+                      </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
@@ -152,10 +121,10 @@ function VehicleAdmin() {
             </div>
             <div className="grid xl:grid-cols-3 w-full gap-8">
               <div className="xl:col-span-1">
-                <VehicleDetailsCard id={id}></VehicleDetailsCard>
+                <VehicleDetailsCardAdmin id={id}></VehicleDetailsCardAdmin>
               </div>
-              <div className="xl:col-span-1 overflow-auto">
-                <ServiceListSingle id={id}></ServiceListSingle>
+              <div className="xl:col-span-2 overflow-auto">
+                <ServiceListVehicleAdmin id={id}></ServiceListVehicleAdmin>
               </div>
             </div>
           </div>

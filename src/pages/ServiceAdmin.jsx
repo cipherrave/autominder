@@ -2,45 +2,20 @@ import Header from "./Components/Menus/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "./Components/reducers/reducer";
 import { FETCH_ACTIONS } from "../actions";
-import { Button } from "@/components/ui/button";
-import VehicleList from "./Components/Cards/VehicleList";
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import ShortcutsAdmin from "./Components/Menus/ShortcutsAdmin";
 import { useParams } from "react-router-dom";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import Spinner from "../components/spinner";
-import AddServiceCard from "./Components/Dialog/AddServiceCard";
 import ServiceDetailsCard from "./Components/Cards/ServiceDetailsCard";
 
 function ServiceAdmin() {
@@ -52,9 +27,6 @@ function ServiceAdmin() {
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const nav = useNavigate();
-  function navAddVehicle() {
-    nav("/addVehicle");
-  }
 
   const { id } = useParams();
 
@@ -78,20 +50,24 @@ function ServiceAdmin() {
     // if token is not present, redirect to login
     if (!token) {
       nav("/login");
+    } else if (admin_id === "") {
+      nav("/login");
     }
     // validate token by calling the private API
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:8989/protected", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      delay(1000);
+      const response = await axios.get(
+        "http://localhost:8989/admin/protected",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (error) {
       // if token is invalid, redirect to login
       console.error(error);
-      navigate("/login");
+      nav("/login");
     } finally {
       setLoading(false);
     }
@@ -150,9 +126,7 @@ function ServiceAdmin() {
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem>
-                      <BreadcrumbLink href="/dashboard">
-                        Dashboard
-                      </BreadcrumbLink>
+                      <BreadcrumbLink>Admin</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>

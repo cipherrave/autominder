@@ -1,9 +1,7 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -14,7 +12,7 @@ import { FETCH_ACTIONS } from "../../../actions";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Spinner from "../../../components/spinner";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,6 +33,7 @@ import {
 import * as React from "react";
 import { jwtDecode } from "jwt-decode";
 import VehicleDetailsTag from "../Tags/VehicleDetailsTag";
+import ConvertTimeTag from "../Tags/ConvertTimeTag";
 
 const ReminderList = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -127,9 +126,9 @@ const ReminderList = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Vehicle Details</TableHead>
             <TableHead>Service Name</TableHead>
-            <TableHead>Next Mileage</TableHead>
+            <TableHead>Vehicle Details</TableHead>
+            <TableHead>Next Mileage (km)</TableHead>
             <TableHead>Next Service Date</TableHead>
             <TableHead>Progress</TableHead>
           </TableRow>
@@ -137,14 +136,16 @@ const ReminderList = () => {
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.service_id}>
-              <TableCell>
-                <VehicleDetailsTag id={item.vehicle_id}></VehicleDetailsTag>
-              </TableCell>
               <TableCell className="font-semibold">
                 {item.service_name}
               </TableCell>
+              <TableCell>
+                <VehicleDetailsTag id={item.vehicle_id}></VehicleDetailsTag>
+              </TableCell>
               <TableCell>{item.next_mileage}</TableCell>
-              <TableCell>{item.next_date}</TableCell>
+              <TableCell>
+                <ConvertTimeTag date={item.next_date}></ConvertTimeTag>
+              </TableCell>
               <TableCell>{item.progress}</TableCell>
               <TableCell className="text-center">
                 <DropdownMenu>

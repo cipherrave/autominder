@@ -9,15 +9,17 @@ import UserSingleAdmin from "./pages/UserSingleAdmin";
 import Garage from "./pages/Garage";
 import GarageAdmin from "./pages/GarageAdmin";
 import Vehicle from "./pages/Vehicle";
+import VehicleAdmin from "./pages/VehicleAdmin";
 import Services from "./pages/Services";
+import ServicesAdmin from "./pages/ServicesAdmin";
 import Service from "./pages/Service";
+import ServiceAdmin from "./pages/ServiceAdmin";
 import Settings from "./pages/Settings";
+import SettingsAdmin from "./pages/SettingsAdmin";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./pages/Register";
 import RegisterAdmin from "./pages/RegisterAdmin";
 import { ThemeProvider } from "./components/theme-provider";
-import ServicesAdmin from "./pages/ServicesAdmin";
-import UserDetailsCard from "./pages/Components/Cards/UserDetailsCard";
 
 function App() {
   const router = createBrowserRouter([
@@ -70,6 +72,10 @@ function App() {
       element: <Vehicle />,
     },
     {
+      path: "/admin/garage/vehicle/:id",
+      element: <VehicleAdmin />,
+    },
+    {
       path: "/services",
       element: <Services />,
     },
@@ -82,8 +88,16 @@ function App() {
       element: <Service />,
     },
     {
+      path: "/admin/services/service/:id",
+      element: <ServiceAdmin />,
+    },
+    {
       path: "/settings",
       element: <Settings />,
+    },
+    {
+      path: "/admin/settings",
+      element: <SettingsAdmin />,
     },
     {
       path: "*",

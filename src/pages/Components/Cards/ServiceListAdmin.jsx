@@ -1,9 +1,7 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -14,7 +12,7 @@ import { FETCH_ACTIONS } from "../../../actions";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import Spinner from "../../../components/spinner";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,15 +31,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import * as React from "react";
-import { jwtDecode } from "jwt-decode";
 import VehicleDetailsTag from "../Tags/VehicleDetailsTag";
+import UserDetailsTag from "../Tags/UserDetailsTag";
+import ConvertTimeTag from "../Tags/ConvertTimeTag";
 
 const ServiceListAdmin = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const token = localStorage.getItem("token");
   const { items, loading, error } = state;
   const [isLoading, setLoading] = useState(true);
-  const serviceData = localStorage.getItem("serviceData");
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const nav = useNavigate();
 
@@ -49,8 +47,6 @@ const ServiceListAdmin = () => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
 
     const getService = async () => {
-      if (!serviceData) {
-      }
       try {
         await delay(1000);
         let getAllService = await axios.get(
@@ -82,17 +78,24 @@ const ServiceListAdmin = () => {
     getService();
   }, []);
 
+  async function handleUser(event) {
+    const data = new FormData(event.target);
+    const values = Object.fromEntries(data.entries());
+    const url = "/admin/users/" + values.user_id;
+    nav(url);
+  }
+
   async function handleVehicle(event) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
-    const url = "/garage/vehicle/" + values.vehicle_id;
+    const url = "/admin/garage/vehicle/" + values.vehicle_id;
     nav(url);
   }
 
   async function handleService(event) {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
-    const url = "/services/service/" + values.service_id;
+    const url = "/admin/services/service/" + values.service_id;
     nav(url);
   }
 
@@ -102,7 +105,7 @@ const ServiceListAdmin = () => {
     const data = new FormData(event.target);
     const values = Object.fromEntries(data.entries());
     try {
-      await axios.delete("http://localhost:8989/user/service/delete", {
+      await axios.delete("http://localhost:8989/admin/service/delete", {
         data: values,
       });
       window.location.reload();
@@ -127,11 +130,12 @@ const ServiceListAdmin = () => {
             <TableHead>Service Name</TableHead>
             <TableHead>Service Date</TableHead>
             <TableHead>Cost (RM)</TableHead>
-            <TableHead>Next Mileage</TableHead>
+            <TableHead>Next Mileage (km)</TableHead>
             <TableHead>Next Service Date</TableHead>
             <TableHead>Place</TableHead>
             <TableHead>Progress</TableHead>
             <TableHead>Vehicle Details</TableHead>
+            <TableHead>User</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -140,14 +144,21 @@ const ServiceListAdmin = () => {
               <TableCell className="font-semibold">
                 {item.service_name}
               </TableCell>
-              <TableCell>{item.service_date}</TableCell>
+              <TableCell>
+                <ConvertTimeTag date={item.service_date}></ConvertTimeTag>
+              </TableCell>
               <TableCell>{item.cost}</TableCell>
-              <TableCell>{item.next_date}</TableCell>
+              <TableCell>
+                <ConvertTimeTag date={item.next_date}></ConvertTimeTag>
+              </TableCell>
               <TableCell>{item.next_mileage}</TableCell>
               <TableCell>{item.place}</TableCell>
               <TableHead>{item.progress}</TableHead>
               <TableCell>
                 <VehicleDetailsTag id={item.vehicle_id}></VehicleDetailsTag>
+              </TableCell>
+              <TableCell>
+                <UserDetailsTag id={item.user_id}></UserDetailsTag>
               </TableCell>
               <TableCell className="text-center">
                 <DropdownMenu>
@@ -170,6 +181,24 @@ const ServiceListAdmin = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
+                    <DropdownMenuItem>
+                      <form onSubmit={handleUser}>
+                        <input
+                          type="text"
+                          id="user_id"
+                          name="user_id"
+                          defaultValue={item.user_id}
+                          className="hidden"
+                        />
+                        <Button
+                          type="submit"
+                          variant="text"
+                          className="p-0 font-normal"
+                        >
+                          View User
+                        </Button>
+                      </form>
+                    </DropdownMenuItem>
                     <DropdownMenuItem>
                       <form onSubmit={handleVehicle}>
                         <input

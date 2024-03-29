@@ -20,7 +20,6 @@ import { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -29,7 +28,6 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@material-tailwind/react";
-import { Checkbox } from "@/components/ui/checkbox";
 
 const AddServiceCard = () => {
   const token = localStorage.getItem("token");
@@ -38,8 +36,6 @@ const AddServiceCard = () => {
   const { items, loading, error } = state;
   const [isLoading, setLoading] = useState(true);
   const serviceData = localStorage.getItem("serviceData");
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const nav = useNavigate();
   useEffect(() => {
     dispatch({ type: FETCH_ACTIONS.PROGRESS });
@@ -80,10 +76,6 @@ const AddServiceCard = () => {
           },
         }
       );
-      // save response data into localStorage as serviceData for other local uses
-      const serviceArray = getAllService.data;
-      const serviceString = JSON.stringify(serviceArray);
-      localStorage.setItem("serviceData", serviceString);
       window.location.reload();
     } catch (error) {
       // api error handling
@@ -158,13 +150,7 @@ const AddServiceCard = () => {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="cost">Cost (RM)</Label>
-                <Input
-                  id="cost"
-                  name="cost"
-                  type="number"
-                  placeholder=""
-                  required
-                />
+                <Input id="cost" name="cost" type="number" placeholder="" />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Service Date</Label>
@@ -173,11 +159,10 @@ const AddServiceCard = () => {
                   name="service_date"
                   placeholder=""
                   type="date"
-                  required
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Next Service Mileage</Label>
+                <Label htmlFor="name">Next Service Mileage (km)</Label>
                 <Input
                   id="next_mileage"
                   name="next_mileage"
@@ -203,13 +188,17 @@ const AddServiceCard = () => {
                 <Textarea id="notes" name="notes" type="text" placeholder="" />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Progress</Label>{" "}
-                <Input
-                  id="progress"
-                  name="progress"
-                  type="text"
-                  valueChecked="true"
-                />
+                <Label htmlFor="name">Progress</Label>
+                <Select id="progress" name="progress">
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select progress stage" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Not Completed">Not Completed</SelectItem>
+                    <SelectItem value="In Progress">In Progress</SelectItem>
+                    <SelectItem value="Completed">Completed</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="hidden">
                 <Label htmlFor="user_id">User ID</Label>

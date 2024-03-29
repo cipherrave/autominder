@@ -27,8 +27,8 @@ import ModeToggle from "../components/mode-toggle";
 function RegisterAdmin() {
   const [isLoading, setIsLoading] = useState(false);
   const nav = useNavigate();
-  function navLogin() {
-    nav("/login");
+  function navLoginAdmin() {
+    nav("/admin/login");
   }
   function navHome() {
     nav("/");
@@ -55,8 +55,8 @@ function RegisterAdmin() {
   }
 
   return (
-    <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-      <div className="flex flex-col items-center justify-center py-12">
+    <div>
+      <div className="flex flex-col align-middle justify-center py-12">
         <div className="mx-auto w-[350px] gap-6">
           <div>
             <ModeToggle></ModeToggle>
@@ -300,21 +300,12 @@ function RegisterAdmin() {
 
             <p className="mt-4 text-sm sm:mt-0">
               Already have an admin account?{" "}
-              <a onClick={navLogin} className="underline cursor-pointer">
+              <a onClick={navLoginAdmin} className="underline cursor-pointer">
                 Log in as admin
               </a>
             </p>
           </div>
         </div>
-      </div>
-      <div className="hidden bg-muted lg:block">
-        <img
-          src="/placeholder.svg"
-          alt="Image"
-          width="1920"
-          height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale bg-slate-400"
-        />
       </div>
     </div>
   );

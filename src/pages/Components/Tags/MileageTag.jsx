@@ -1,16 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "../reducers/reducer";
 import { FETCH_ACTIONS } from "../../../actions";
 import { Card } from "@/components/ui/card";
 
 function VehicleDetailsTag(props) {
-  const token = localStorage.getItem("token");
-  const user_id = jwtDecode(token).user_id;
   const [state, dispatch] = useReducer(reducer, initialState);
   const { items, loading, error } = state;
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const nav = useNavigate();
 
   useEffect(() => {
@@ -52,7 +48,6 @@ function VehicleDetailsTag(props) {
                 <p>
                   {item.brand}, {item.model}
                 </p>
-                <p>Mileage: {item.mileage} km</p>
               </div>
             </Card>
           ))}

@@ -1,15 +1,11 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "./Components/reducers/reducer";
 import { FETCH_ACTIONS } from "../actions";
 import Header from "./Components/Menus/Header";
-import { Button } from "@/components/ui/button";
 import VehicleList from "./Components/Cards/VehicleList";
-import AddVehicleCard from "./Components/Dialog/AddVehicleCard";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,37 +15,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { useParams } from "react-router-dom";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import Spinner from "../components/spinner";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import VehicleDetailsCard from "./Components/Cards/VehicleDetailsCard";
 import ServiceListSingle from "./Components/Cards/ServiceListSingle";
 import Shortcuts from "./Components/Menus/Shortcuts";
+import ServiceList from "./Components/Cards/ServiceList";
 
 function Vehicle() {
   const token = localStorage.getItem("token");
@@ -132,12 +102,6 @@ function Vehicle() {
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem>
-                      <BreadcrumbLink href="/dashboard">
-                        Dashboard
-                      </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
                       <BreadcrumbLink href="/garage">Garage</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
@@ -157,6 +121,9 @@ function Vehicle() {
               </div>
               <div className="xl:col-span-2 overflow-auto">
                 <ServiceListSingle id={id}></ServiceListSingle>
+                <div className="hidden">
+                  <ServiceList className="hidden"></ServiceList>
+                </div>
               </div>
             </div>
           </div>

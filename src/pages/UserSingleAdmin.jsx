@@ -5,7 +5,6 @@ import { useReducer, useEffect, useState } from "react";
 import { reducer, initialState } from "./Components/reducers/reducer";
 import { FETCH_ACTIONS } from "../actions";
 import Header from "./Components/Menus/Header";
-import VehicleListAdmin from "./Components/Cards/VehicleListAdmin";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -52,7 +51,9 @@ function UserSingleAdmin(props) {
   async function checkToken() {
     // if token is not present, redirect to login
     if (!token) {
-      navigate("/login");
+      nav("/login");
+    } else if (admin_id === "") {
+      nav("/login");
     }
     // validate token by calling the private API
     try {
@@ -122,10 +123,10 @@ function UserSingleAdmin(props) {
               <div className="xl:col-span-1">
                 <UserDetailsCard id={id}></UserDetailsCard>
               </div>
-              <div className="xl:col-span-1">
+              <div className="xl:col-span-2">
                 <VehicleListSingleAdmin id={id}></VehicleListSingleAdmin>
               </div>
-              <div className="xl:col-span-1 overflow-auto">
+              <div className="xl:col-span-3 overflow-auto">
                 <ServiceListSingleAdmin id={id}></ServiceListSingleAdmin>
               </div>
             </div>

@@ -9,7 +9,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +18,7 @@ export function DeleteDoubleConfirm() {
   const token = localStorage.getItem("token");
   const nav = useNavigate();
   function handleLogout() {
-    localStorage.removeItem("token");
+    localStorage.clear();
     nav("/");
   }
 

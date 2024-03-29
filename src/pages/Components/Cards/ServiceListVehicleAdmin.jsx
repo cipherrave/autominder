@@ -1,9 +1,7 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -33,10 +31,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import * as React from "react";
 import { jwtDecode } from "jwt-decode";
-import ConvertTimeTag from "../Tags/ConvertTimeTag";
-import VehicleDetailsTag from "../Tags/VehicleDetailsTag";
 
-export default function ServiceListSingle(props) {
+export default function ServiceListVehicleAdmin(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const token = localStorage.getItem("token");
   const user_id = jwtDecode(token).user_id;
@@ -51,7 +47,7 @@ export default function ServiceListSingle(props) {
       // parse vehicleData from localStorage
       const serviceData = JSON.parse(localStorage.getItem("serviceData"));
       let filteredServiceData = serviceData.filter((element) => {
-        if (element.user_id === props.id) {
+        if (element.vehicle_id === props.id) {
           return element;
         }
       });
@@ -104,7 +100,7 @@ export default function ServiceListSingle(props) {
           <div className="flex justify-between">
             <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-semibold">Services</h1>
-              <p>Services related to this user</p>
+              <p>Services related to this vehicle</p>
             </div>
           </div>
           <Table>
@@ -113,11 +109,10 @@ export default function ServiceListSingle(props) {
                 <TableHead>Service Name</TableHead>
                 <TableHead>Service Date</TableHead>
                 <TableHead>Cost (RM)</TableHead>
-                <TableHead>Next Mileage (km)</TableHead>
+                <TableHead>Next Mileage</TableHead>
                 <TableHead>Next Service Date</TableHead>
                 <TableHead>Place</TableHead>
                 <TableHead>Progress</TableHead>
-                <TableHead>Vehicle</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -126,20 +121,12 @@ export default function ServiceListSingle(props) {
                   <TableCell className="font-semibold">
                     {item.service_name}
                   </TableCell>
-                  <TableCell>
-                    <ConvertTimeTag date={item.service_date}></ConvertTimeTag>
-                  </TableCell>
+                  <TableCell>{item.service_date}</TableCell>
                   <TableCell>{item.cost}</TableCell>
-                  <TableCell>
-                    <ConvertTimeTag date={item.next_date}></ConvertTimeTag>
-                  </TableCell>
+                  <TableCell>{item.next_date}</TableCell>
                   <TableCell>{item.next_mileage}</TableCell>
                   <TableCell>{item.place}</TableCell>
                   <TableHead>{item.progress}</TableHead>
-                  <TableHead>
-                    <VehicleDetailsTag id={item.vehicle_id}></VehicleDetailsTag>
-                  </TableHead>
-
                   <TableCell className="text-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
